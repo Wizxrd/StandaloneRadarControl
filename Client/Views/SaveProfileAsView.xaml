@@ -1,0 +1,101 @@
+﻿<Window x:Class="Client.Views.SaveProfileAsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client.Views"
+        mc:Ignorable="d"
+        Width="350" Height="150"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Height="30" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="0,0,0,1" MouseDown="BorderMouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Width="20" Height="20" Source="pack://application:,,,/Images/SaveProfileAs.png" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+                    <TextBlock Text="Save Profile As" Grid.Column="1" Foreground="{DynamicResource TextColor}" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <Button
+                        x:Name="SaveProfileAsCloseButton"
+                        ToolTip="Close"
+                        Grid.Column="4"
+                        Width="45"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Tag="pack://application:,,,/Images/Close.png"
+                        Click="CloseButtonClick">
+                    </Button>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="New Profile Name:" Foreground="{DynamicResource TextColor}" Margin="10,20,0,5"/>
+                    <TextBox
+                        Name="ProfileNameTextBox"
+                        Grid.Row="1"
+                        Width="330" Height="24"
+                        FontFamily="Consolas" FontWeight="Light" FontSize="12"
+                        TextAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                        Background="{DynamicResource GrayBackgroundLight}"
+                        BorderBrush="{DynamicResource BlueBorder}"
+                        BorderThickness="1"
+                        Foreground="{DynamicResource TextColor}"
+                        Style="{DynamicResource TextBoxStyle}"
+                        TextChanged="ProfileNameTextBoxTextChanged"
+                        KeyDown="ProfileNameTextBoxKeyDown">
+                    </TextBox>
+                </Grid>
+            </Border>
+            <Border Grid.Row="2" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        IsEnabled="False"
+                        Name="SaveProfileButton"
+                        Content="Save Profile"
+                        Grid.Column="0"
+                        Width="100" Height="25"
+                        Background="{DynamicResource GrayBackgroundDark}"
+                        BorderBrush="{DynamicResource BlueBorder}"
+                        BorderThickness="1"
+                        Foreground="{DynamicResource TextColor}"
+                        HorizontalAlignment="Right"
+                        Template="{DynamicResource MainButtonTemplate}"
+                        Click="SaveProfileAsButtonClick">
+                    </Button>
+                    <Button
+                        Name="CancelButton"
+                        Content="Cancel"
+                        Grid.Column="1"
+                        Width="75" Height="25"
+                        Background="{DynamicResource GrayBackgroundLight}"
+                        BorderBrush="{DynamicResource GrayBorder}"
+                        BorderThickness="1"
+                        Foreground="{DynamicResource TextColor}"
+                        Margin="5,0,9,0"
+                        Template="{DynamicResource MainButtonTemplate}"
+                        Click="CloseButtonClick">
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,70 @@
+﻿<Window x:Class="Client.Views.SaveProfileView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client.Views"
+        mc:Ignorable="d"
+        Width="350" Height="150"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Height="30" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="0,0,0,1" MouseDown="BorderMouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Width="20" Height="20" Source="pack://application:,,,/Images/QuestionBlue.png" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+                    <TextBlock Text="Confirm Save Profile" Grid.Column="1" Foreground="{DynamicResource TextColor}" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <Button
+                        x:Name="SaveProfileCloseButton"
+                        ToolTip="Close"
+                        Grid.Column="4"
+                        Width="45"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Tag="pack://application:,,,/Images/Close.png"
+                        Click="CloseButtonClick">
+                    </Button>
+                </Grid>
+            </Border>
+            <TextBlock Name="MessageTextBlock" Grid.Row="1" Text="Save Profile:" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" Margin="10,25,0,0"/>
+            <Border Grid.Row="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                    <Button
+                        Name="YesButton"
+                        Content="Yes"
+                        Width="75" Height="25"
+                        Background="{DynamicResource GrayBackgroundLight}"
+                        BorderBrush="{DynamicResource BlueBorder}"
+                        Foreground="{DynamicResource TextColor}"
+                        Margin="0,0,5,0"
+                        Template="{DynamicResource MainButtonTemplate}"
+                        Click="YesButtonClick">
+                    </Button>
+                    <Button
+                        Name="NoButton"
+                        Content="No"
+                        Width="75" Height="25"
+                        Background="{DynamicResource GrayBackgroundLight}"
+                        BorderBrush="{DynamicResource GrayBorder}"
+                        Foreground="{DynamicResource TextColor}"
+                        Margin="5,0,0,0"
+                        Template="{DynamicResource MainButtonTemplate}"
+                        Click="CloseButtonClick">
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

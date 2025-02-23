@@ -1,0 +1,327 @@
+﻿<UserControl x:Class="Client.Views.MenuPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.Views"
+             mc:Ignorable="d"
+             Width="275" Height="400"
+             Cursor="Arrow">
+    <Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+        <StackPanel>
+            <Button x:Name="ConnectButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="ConnectButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Connect"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+F12"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="NewProfileButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="NewProfileButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="New Profile"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+N"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="LoadProfileButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="LoadProfileButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Load Profile"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+L"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="SaveProfileButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="SaveProfileButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Save Profile"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+S"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="SaveProfileAsButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="SaveProfileAsButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Save Profile As"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+Shift+S"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="GeneralSettingsButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="GeneralSettingsButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="General Settings"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+G"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="DisplaySettingsButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="DisplaySettingsButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Display Settings"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+D"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Name="ViewButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="ViewButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="View"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <Path Margin="100,0,0,0" Grid.Column="1" Fill="White" HorizontalAlignment="Right" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 0 8 Z"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Popup Name="ViewPopup" Placement="Right" PlacementTarget="{Binding ElementName=ViewButton}" StaysOpen="False" AllowsTransparency="True">
+                <Border Width="275" Height="Auto" Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+                    <StackPanel>
+                        <CheckBox
+                            IsChecked="True"
+                            Margin="10,10,0,0"
+                            Style="{DynamicResource CheckBoxStyle}">
+                            <CheckBox.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Text="Title Bar"
+                                            Grid.Column="0"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            VerticalAlignment="Center"/>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            Text="Ctrl+B"
+                                            VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CheckBox.ContentTemplate>
+                        </CheckBox>
+                        <CheckBox
+                            Margin="10,10,0,0"
+                            Style="{DynamicResource CheckBoxStyle}">
+                            <CheckBox.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Text="Messages"
+                                            Grid.Column="0"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            VerticalAlignment="Center"/>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            Text="Ctrl+M"
+                                            VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CheckBox.ContentTemplate>
+                        </CheckBox>
+                        <CheckBox
+                            Margin="10,10,0,10"
+                            Style="{DynamicResource CheckBoxStyle}">
+                            <CheckBox.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Text="Controllers List"
+                                            Grid.Column="0"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            VerticalAlignment="Center"/>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextColor}"
+                                            Text="Ctrl+L"
+                                            VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CheckBox.ContentTemplate>
+                        </CheckBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Button Name="HelpButton" Height="30" Template="{StaticResource MenuButtonTemplate}" Click="HelpButtonClick">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Help"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                VerticalAlignment="Center"
+                                Padding="10"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextColor}"
+                                Text="Ctrl+H"
+                                VerticalAlignment="Center"
+                                Padding="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </StackPanel>
+    </Border>
+</UserControl>

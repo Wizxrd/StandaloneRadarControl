@@ -1,0 +1,17 @@
+{
+  "ILS_FAR_HOMER": true,
+  "ILS_NEAR_HOMER": true,
+  "ILS_LOCALIZER": true,
+  "ILS_GLIDESLOPE": true,
+  "TACAN": true,
+  "AIRPORT_HOMER": true,
+  "VOR": true,
+  "AIRPORT_HOMER_WITH_MARKER": true,
+  "PRMG_LOCALIZER": true,
+  "PRMG_GLIDESLOPE": true,
+  "RSBN": true,
+  "HOMER": true,
+  "VOR_DME": true,
+  "DME": true,
+  "VORTAC": true
+}

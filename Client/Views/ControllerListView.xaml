@@ -1,0 +1,54 @@
+﻿<Window x:Class="Client.Views.ControllerListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client.Views"
+        mc:Ignorable="d"
+        Width="250" Height="400"
+        Cursor="Arrow"
+        WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Border Background="Black">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Height="24" Background="{DynamicResource TitleBarColor}" MouseDown="BorderMouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Controllers" Grid.Column="0" Foreground="{DynamicResource TextColor}" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <Button
+                        x:Name="ControllerListCloseButton"
+                        ToolTip="Close"
+                        Grid.Column="1"
+                        Width="45"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Tag="pack://application:,,,/Images/Close.png"
+                        Click="CloseButtonClick">
+                    </Button>
+                </Grid>
+            </Border>
+            <Border Name="MessageArea" Grid.Row="2" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Text="[BLUE] Wizard"
+                        Grid.Row="0"
+                        Margin="5"
+                        Foreground="{DynamicResource YellowText}"
+                        FontFamily="Consolas" FontWeight="Light" FontSize="12">
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

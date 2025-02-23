@@ -1,0 +1,205 @@
+﻿<Window x:Class="Client.Views.ConnectView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client.Views"
+        mc:Ignorable="d"
+        Width="600" Height="250"
+        Cursor="Arrow"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Height="30" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="0,0,0,1" MouseDown="BorderMouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Width="20" Height="20" Source="pack://application:,,,/Images/Connect.png" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+                    <TextBlock Text="Connect" Grid.Column="1" Foreground="{DynamicResource TextColor}" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <Button
+                        x:Name="ConnectCloseButton"
+                        ToolTip="Close"
+                        Grid.Column="4"
+                        Width="45"
+                        Style="{DynamicResource CloseButtonStyle}"
+                        Tag="pack://application:,,,/Images/Close.png"
+                        Click="CloseButtonClick">
+                    </Button>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="300" BorderBrush="{DynamicResource BlueBorder}" BorderThickness="0,0,1,0" Margin="0,10,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="ServerIP:Port:" Foreground="{DynamicResource TextColor}" Margin="10,0,0,1"/>
+                            <TextBox
+                                Name="ServerIPPortTextBox"
+                                Grid.Row="1"
+                                Width="280" Height="24"
+                                FontFamily="Consolas" FontWeight="Light" FontSize="12"
+                                TextAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                Background="{DynamicResource GrayBackgroundLight}"
+                                BorderBrush="{DynamicResource BlueBorder}"
+                                BorderThickness="1"
+                                Margin="0,0,0,5"
+                                Foreground="{DynamicResource TextColor}"
+                                Style="{DynamicResource TextBoxStyle}"
+                                TextChanged="RequiredTextChanged"/>
+                            <TextBlock Grid.Row="2" Text="Password:" Foreground="{DynamicResource TextColor}" Margin="10,0,0,1"/>
+                            <PasswordBox
+                                Name="PasswordTextBox"
+                                Grid.Row="3"
+                                Width="280" Height="24"
+                                FontFamily="Consolas" FontWeight="Light" FontSize="12"
+                                HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                Background="{DynamicResource GrayBackgroundLight}"
+                                BorderBrush="{DynamicResource BlueBorder}"
+                                BorderThickness="1"
+                                Margin="0,0,0,5"
+                                Foreground="{DynamicResource TextColor}"
+                                Style="{DynamicResource PasswordBoxStyle}"
+                                PasswordChanged="PasswordTextChanged"/>
+                            <TextBlock Grid.Row="4" Text="Callsign:" Foreground="{DynamicResource TextColor}" Margin="10,0,0,1"/>
+                            <TextBox
+                                Name="CallsignTextBox"
+                                Grid.Row="5"
+                                Width="280" Height="24"
+                                FontFamily="Consolas" FontWeight="Light" FontSize="12"
+                                TextAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                Background="{DynamicResource GrayBackgroundLight}"
+                                BorderBrush="{DynamicResource BlueBorder}"
+                                BorderThickness="1"
+                                Margin="0,0,0,5"
+                                Foreground="{DynamicResource TextColor}"
+                                Style="{DynamicResource TextBoxStyle}"
+                                TextChanged="RequiredTextChanged"/>
+                            <Border Grid.Row="6">
+                                <Grid>
+                                    <Button
+                                        Name="CancelButton"
+                                        Content="Cancel"
+                                        Width="75" Height="25"
+                                        Background="{DynamicResource GrayBackgroundLight}"
+                                        BorderBrush="{DynamicResource GrayBorder}"
+                                        Foreground="{DynamicResource TextColor}"
+                                        Margin="0,0,10,0"
+                                        VerticalAlignment="Center" HorizontalAlignment="Right"
+                                        Template="{DynamicResource MainButtonTemplate}"
+                                        Click="CloseButtonClick">
+                                    </Button>
+                                    <Button
+                                        IsEnabled="False"
+                                        Name="ConnectButton"
+                                        Content="Connect"
+                                        Width="100" Height="25"
+                                        Background="{DynamicResource GrayBackground}"
+                                        BorderBrush="{DynamicResource BlueBorder}"
+                                        Foreground="{DynamicResource TextColor}"
+                                        Margin="20,0,0,0"
+                                        Click="ConnectButtonClick"
+                                        Template="{DynamicResource MainButtonTemplate}">
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1" Width="300" BorderBrush="{DynamicResource BlueBorder}" BorderThickness="0,0,1,0" Margin="0,10,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Text="Name:"
+                                Grid.Row="0"
+                                Margin="10,0,0,1"
+                                Foreground="{DynamicResource TextColor}">
+                            </TextBlock>
+                            <TextBox
+                                  Name="SavedServerNameTextBox"
+                                  Grid.Row="1"
+                                  Width="280" Height="24"
+                                  FontFamily="Consolas" FontWeight="Light" FontSize="12"
+                                  TextAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                  Background="{DynamicResource GrayBackgroundLight}"
+                                  BorderBrush="{DynamicResource BlueBorder}"
+                                  BorderThickness="1"
+                                  Margin="0,0,0,5"
+                                  Foreground="{DynamicResource TextColor}"
+                                  Style="{DynamicResource TextBoxStyle}"/>
+                            <TextBlock
+                                Text="Servers:"
+                                Grid.Row="2"
+                                Margin="10,0,0,1"
+                                Foreground="{DynamicResource TextColor}">
+                            </TextBlock>
+                            <ComboBox
+                                Name="SavedServersComboBox"
+                                Grid.Row="3"
+                                Width="280" Height="24"
+                                HorizontalAlignment="Left"
+                                Margin="10,0,0,5"
+                                Style="{StaticResource ComboBoxStyle}">
+                            </ComboBox>
+                            <Border Grid.Row="4">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,9,10">
+                                    <Button
+                                        IsEnabled="False"
+                                        Name="SaveButton"
+                                        Content="Save"
+                                        Width="100" Height="25"
+                                        Background="{DynamicResource GrayBackground}"
+                                        BorderBrush="{DynamicResource BlueBorder}"
+                                        Foreground="{DynamicResource TextColor}"
+                                        Margin="0,0,2.5,0"
+                                        VerticalAlignment="Top"
+                                        Template="{DynamicResource MainButtonTemplate}">
+                                    </Button>
+                                    <Button
+                                        Name="DeleteButton"
+                                        Content="Delete"
+                                        Width="75" Height="25"
+                                        Background="{DynamicResource GrayBackgroundLight}"
+                                        BorderBrush="{DynamicResource GrayBorder}"
+                                        Foreground="{DynamicResource TextColor}"
+                                        Margin="2.5,0,0,0"
+                                        VerticalAlignment="Top"
+                                        Template="{DynamicResource MainButtonTemplate}">
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

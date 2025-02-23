@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="Client.Views.MainControlButtonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Client.Views"
+             Width="1280" Height="80">
+    <Grid>
+        <StackPanel>
+            <Border Background="Black">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ToggleButton x:Name="RangeButton" Grid.Column="0"
+                                  Style="{DynamicResource MainControlButtonStyle}"
+                                  IsChecked="False"
+                                  Command="{Binding ClipCommand}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="RANGE"/>
+                            <LineBreak/>
+                            <Run Text="{Binding ZoomRange}"/>
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="PlaceCenterButton" Grid.Column="1" Height="40" VerticalAlignment="Top" Style="{DynamicResource MainControlButtonStyle}">
+                        <TextBlock TextAlignment="Center">
+                            PLACE
+                            <LineBreak/>
+                            CNTR
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="OffCenterButton" Grid.Column="1" Height="40" VerticalAlignment="Bottom" Style="{DynamicResource MainControlButtonStyle}">
+                        <TextBlock TextAlignment="Center">
+                            OFF
+                            <LineBreak/>
+                            CNTR
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton
+                        Name="RangeRingButton"
+                        Grid.Column="2"
+                        Style="{DynamicResource MainControlButtonStyle}"
+                        Command="{Binding ClipCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBlock TextAlignment="Center">
+                            RR
+                            <LineBreak/>
+                            10
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="PlaceRangeRingButton" Grid.Column="3" Height="40" VerticalAlignment="Top" Style="{DynamicResource MainControlButtonStyle}">
+                        <TextBlock TextAlignment="Center">
+                            PLACE
+                            <LineBreak/>
+                            RR
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="RangeRingCenterButton" Grid.Column="3" Height="40" VerticalAlignment="Bottom" Style="{DynamicResource MainControlButtonStyle}">
+                        <TextBlock TextAlignment="Center">
+                            RR
+                            <LineBreak/>
+                            CNTR
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="MapsButton" Content="MAPS" Grid.Column="4" Style="{DynamicResource MainControlButtonStyle}"/>
+                    <ToggleButton Name="BriteButton" Content="BRITE" Grid.Column="5" Style="{DynamicResource MainControlButtonStyle}"/>
+                    <ToggleButton Name="CharacterSizeButton" Grid.Column="6" Style="{DynamicResource MainControlButtonStyle}">
+                        <TextBlock TextAlignment="Center">
+                            CHAR
+                            <LineBreak/>
+                            SIZE
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton Name="FilterButton" Content="FILTER" Grid.Column="7" Style="{DynamicResource MainControlButtonStyle}"/>
+                    <ToggleButton Name="ShiftButton" Content="SHIFT" Grid.Column="8" Style="{DynamicResource MainControlButtonStyle}"/>
+                    <ToggleButton
+                        Name="LeaderDirectionButton"
+                        Grid.Column="9"
+                        Height="40"
+                        VerticalAlignment="Top"
+                        Style="{DynamicResource MainControlButtonStyle}"
+                        Command="{Binding ClipCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBlock TextAlignment="Center">
+                            LDR DIR
+                            <LineBreak/>
+                            N
+                        </TextBlock>
+                    </ToggleButton>
+                    <ToggleButton
+                             Name="LeaderLengthButton"
+                             Grid.Column="9"
+                             Height="40"
+                             VerticalAlignment="Bottom"
+                             Style="{DynamicResource MainControlButtonStyle}"
+                             Command="{Binding ClipCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBlock TextAlignment="Center">
+                            LDR
+                            <LineBreak/>
+                            2
+                        </TextBlock>
+                    </ToggleButton>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
