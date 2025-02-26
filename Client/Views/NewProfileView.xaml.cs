@@ -1,70 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Client.ViewModels;
 using Client.Models;
 
-namespace Client.Views
+namespace Client.Views;
+
+/// <summary>
+///   Interaction logic for NewProfileView.xaml
+/// </summary>
+public partial class NewProfileView : Window
 {
-    /// <summary>
-    /// Interaction logic for NewProfileView.xaml
-    /// </summary>
-    public partial class NewProfileView : Window
-    {
-        public NewProfileView()
-        {
-            InitializeComponent();
-            ProfileNameTextBox.Focus();
-        }
+	public NewProfileView()
+	{
+		InitializeComponent();
+		ProfileNameTextBox.Focus();
+	}
 
-        private void BorderMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
+	private void BorderMouseDown(object sender, MouseButtonEventArgs e)
+	{
+		if (e.ChangedButton == MouseButton.Left) DragMove();
+	}
 
-        private void CloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+	private void CloseButtonClick(object sender, RoutedEventArgs e)
+	{
+		Close();
+	}
 
-        private void ProfileNameTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (ProfileNameTextBox.Text == string.Empty)
-            {
-                CreateProfileButton.IsEnabled = false;
-                CreateProfileButton.Background = (Brush)Application.Current.Resources["GrayBackgroundDark"];
-                return;
-            }
-            CreateProfileButton.IsEnabled = true;
-            CreateProfileButton.Background = (Brush)Application.Current.Resources["GrayBackgroundLight"];
-        }
+	private void ProfileNameTextBoxTextChanged(object sender, TextChangedEventArgs e)
+	{
+		if (ProfileNameTextBox.Text == string.Empty)
+		{
+			CreateProfileButton.IsEnabled = false;
+			CreateProfileButton.Background = (Brush)Application.Current.Resources["GrayBackgroundDark"];
+			return;
+		}
 
-        private void ProfileNameTextBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                CreateProfileButtonClick(sender, e);
-            }
-        }
+		CreateProfileButton.IsEnabled = true;
+		CreateProfileButton.Background = (Brush)Application.Current.Resources["GrayBackgroundLight"];
+	}
 
-        private async void CreateProfileButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (ProfileNameTextBox.Text == string.Empty) return;
-            await Profile.New(ProfileNameTextBox.Text, this.Owner);
-            this.Close();
-        }
-    }
+	private void ProfileNameTextBoxKeyDown(object sender, KeyEventArgs e)
+	{
+		if (e.Key == Key.Enter) CreateProfileButtonClick(sender, e);
+	}
+
+	private async void CreateProfileButtonClick(object sender, RoutedEventArgs e)
+	{
+		if (ProfileNameTextBox.Text == string.Empty) return;
+		await Profile.New(ProfileNameTextBox.Text, Owner);
+		Close();
+	}
 }

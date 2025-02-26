@@ -1,133 +1,136 @@
-﻿using SkiaSharp.Views.Desktop;
-using System.Drawing;
+﻿using System.Windows;
 using System.Windows.Input;
-using SkiaSharp;
-using System.Windows.Navigation;
 using Client.Views;
+using SkiaSharp;
+using SkiaSharp.Views.Desktop;
+using Size = System.Drawing.Size;
 
-namespace Client.Models
+namespace Client.Models;
+
+public class Radar
 {
-    public class Radar
-    {
-        private MainWindowView mainWindowView;
-        private VideoMap videoMap = new VideoMap();
-        public static Dictionary<string, Contact> Contacts = new Dictionary<string, Contact>();
-        private SKPoint panStartPoint;
-        public SKPoint panOffset;
-        private bool isPanning = false;
+	public static Dictionary<string, Contact> Contacts = new();
 
-        public readonly Dictionary<double, string> zoomLevels = new Dictionary<double, string>();
+	private readonly double centerLat = 32.231733;
+	private readonly double centerLon = 35.796267;
+	private readonly string finalDisplayValue = "100";
+	private readonly double finalZoom = 10;
+	private readonly string initialDisplayValue = "1";
+	private readonly double initialZoom = 0.001;
+	private readonly int numIntermediateLevels = 99;
+	private readonly VideoMap videoMap = new();
 
-        public double scale = 0.0025;
-        private double initialZoom = 0.001;
-        private string initialDisplayValue = "1";
-        private double finalZoom = 10;
-        private string finalDisplayValue = "100";
-        public int currentZoomIndex = 9;
-        private int numIntermediateLevels = 99;
+	public readonly Dictionary<double, string> zoomLevels = new();
+	private double curLat;
+	private double curLon;
+	public int currentZoomIndex = 9;
+	private int Height;
+	private bool isPanning;
+	private MainWindowView mainWindowView;
+	private double offCenterLat;
+	private double offCenterLon;
+	public SKPoint panOffset;
+	private SKPoint panStartPoint;
 
-        private double centerLat = 32.231733;
-        private double centerLon = 35.796267;
-        private double offCenterLat;
-        private double offCenterLon;
-        private double curLat;
-        private double curLon;
+	public double scale = 0.0025;
 
-        private int Width;
-        private int Height;
+	private int Width;
 
-        public Radar(MainWindowView mainWindowView)
-        {
-            this.mainWindowView = mainWindowView;
-            videoMap.Load(LoadFile.Load("VideoMaps/Regions", "Caucasus.geojson"));
-            InterpolateZoomLevels();
-            curLat = centerLat;
-            curLon = centerLon;
-            VideoMap.CenterAtCoordinates(Width, Height, scale, ref panOffset, curLat, curLon);
-        }
+	public Radar(MainWindowView mainWindowView)
+	{
+		this.mainWindowView = mainWindowView;
+		videoMap.Load(LoadFile.Load("VideoMaps/Regions", "Caucasus.geojson"));
+		InterpolateZoomLevels();
+		curLat = centerLat;
+		curLon = centerLon;
+		VideoMap.CenterAtCoordinates(Width, Height, scale, ref panOffset, curLat, curLon);
+	}
 
-        private void InterpolateZoomLevels()
-        {
-            for (int i = 0; i <= numIntermediateLevels; i++)
-            {
-                double t = (double)i / numIntermediateLevels;
-                double interpolatedZoom = initialZoom * Math.Pow(finalZoom / initialZoom, t);
-                int interpolatedValue = (int)Math.Round(double.Parse(initialDisplayValue) + t * (double.Parse(finalDisplayValue) - double.Parse(initialDisplayValue)));
-                string interpolatedDisplayValue = interpolatedValue.ToString();
-                zoomLevels.Add(interpolatedZoom, interpolatedDisplayValue);
-            }
-            zoomLevels[finalZoom] = finalDisplayValue;
-        }
+	private void InterpolateZoomLevels()
+	{
+		for (var i = 0; i <= numIntermediateLevels; i++)
+		{
+			var t = (double)i / numIntermediateLevels;
+			var interpolatedZoom = initialZoom * Math.Pow(finalZoom / initialZoom, t);
+			var interpolatedValue = (int)Math.Round(double.Parse(initialDisplayValue) +
+													t * (double.Parse(finalDisplayValue) -
+														double.Parse(initialDisplayValue)));
+			var interpolatedDisplayValue = interpolatedValue.ToString();
+			zoomLevels.Add(interpolatedZoom, interpolatedDisplayValue);
+		}
 
-        public SKPoint GetCenter()
-        {
-            return new SKPoint(Width / 2, Height / 2);
-        }
+		zoomLevels[finalZoom] = finalDisplayValue;
+	}
 
-        public void MouseDown(System.Windows.Point mousePos)
-        {
-            isPanning = true;
-            panStartPoint = new SKPoint((float)mousePos.X, (float)mousePos.Y);
-        }
+	public SKPoint GetCenter()
+	{
+		return new SKPoint(Width / 2, Height / 2);
+	}
 
-        public void MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            isPanning = false;
-            SKPoint latlon = ScreenMap.ScreenToCoordinate(new Size(Width, Height), scale, panOffset, GetCenter());
-            curLat = latlon.X;
-            curLon = latlon.Y;
-        }
+	public void MouseDown(Point mousePos)
+	{
+		isPanning = true;
+		panStartPoint = new SKPoint((float)mousePos.X, (float)mousePos.Y);
+	}
 
-        public void MouseMove(System.Windows.Point mousePos)
-        {
-            if (isPanning)
-            {
-                double dx = mousePos.X - panStartPoint.X;
-                double dy = mousePos.Y - panStartPoint.Y;
-                panOffset.X += (float)dx;
-                panOffset.Y += (float)dy;
-                panStartPoint = new SKPoint((float)mousePos.X, (float)mousePos.Y);
-                SKPoint latlon = ScreenMap.ScreenToCoordinate(new Size(Width, Height), scale, panOffset, GetCenter());
-                curLat = latlon.X;
-                curLon = latlon.Y;
-            }
-        }
+	public void MouseUp(object sender, MouseButtonEventArgs e)
+	{
+		isPanning = false;
+		var latlon = ScreenMap.ScreenToCoordinate(new Size(Width, Height), scale, panOffset, GetCenter());
+		curLat = latlon.X;
+		curLon = latlon.Y;
+	}
 
-        public double MouseWheel(int delta, bool invert)
-        {
-            int centerXBeforeZoom = Width / 2;
-            int centerYBeforeZoom = Height / 2;
-            bool zoomIn = delta > 0;
+	public void MouseMove(Point mousePos)
+	{
+		if (isPanning)
+		{
+			var dx = mousePos.X - panStartPoint.X;
+			var dy = mousePos.Y - panStartPoint.Y;
+			panOffset.X += (float)dx;
+			panOffset.Y += (float)dy;
+			panStartPoint = new SKPoint((float)mousePos.X, (float)mousePos.Y);
+			var latlon = ScreenMap.ScreenToCoordinate(new Size(Width, Height), scale, panOffset, GetCenter());
+			curLat = latlon.X;
+			curLon = latlon.Y;
+		}
+	}
 
-            int indexIncrement = zoomIn ? 1 : -1;
-            int nextZoomIndex = currentZoomIndex + indexIncrement;
-            if (nextZoomIndex >= 0 && nextZoomIndex < zoomLevels.Count)
-            {
-                double newScale = zoomLevels.Keys.ElementAt(nextZoomIndex);
-                double scaleFactor = newScale / scale;
-                int shiftX = (int)((centerXBeforeZoom - panOffset.X) * (1 - (1 / scaleFactor)));
-                int shiftY = (int)((centerYBeforeZoom - panOffset.Y) * (1 - (1 / scaleFactor)));
-                panOffset.X += shiftX;
-                panOffset.Y += shiftY;
-                scale = newScale;
-                currentZoomIndex = nextZoomIndex;
-                VideoMap.CenterAtCoordinates(Width, Height, scale, ref panOffset, curLat, curLon);
-            }
-            return double.Parse(zoomLevels[scale]);
-        }
+	public double MouseWheel(int delta, bool invert)
+	{
+		var centerXBeforeZoom = Width / 2;
+		var centerYBeforeZoom = Height / 2;
+		var zoomIn = delta > 0;
 
-        public void Invalidate(SKPaintSurfaceEventArgs e)
-        {
-            Width = e.Info.Width;
-            Height = e.Info.Height;
-            var canvas = e.Surface.Canvas;
-            videoMap.Render(canvas, new Size(Width, Height), scale, panOffset);
-            var contactsPairs = Contacts.ToArray();
-            foreach (var (name, contact) in contactsPairs)
-            {
-                Logger.Debug("Radar.Invalidate", $"Updating {name}");
-                contact.Render(canvas, new Size(Width, Height), scale, panOffset);
-            }
-        }
-    }
+		var indexIncrement = zoomIn ? 1 : -1;
+		var nextZoomIndex = currentZoomIndex + indexIncrement;
+		if (nextZoomIndex >= 0 && nextZoomIndex < zoomLevels.Count)
+		{
+			var newScale = zoomLevels.Keys.ElementAt(nextZoomIndex);
+			var scaleFactor = newScale / scale;
+			var shiftX = (int)((centerXBeforeZoom - panOffset.X) * (1 - 1 / scaleFactor));
+			var shiftY = (int)((centerYBeforeZoom - panOffset.Y) * (1 - 1 / scaleFactor));
+			panOffset.X += shiftX;
+			panOffset.Y += shiftY;
+			scale = newScale;
+			currentZoomIndex = nextZoomIndex;
+			VideoMap.CenterAtCoordinates(Width, Height, scale, ref panOffset, curLat, curLon);
+		}
+
+		return double.Parse(zoomLevels[scale]);
+	}
+
+	public void Invalidate(SKPaintSurfaceEventArgs e)
+	{
+		Width = e.Info.Width;
+		Height = e.Info.Height;
+		var canvas = e.Surface.Canvas;
+		videoMap.Render(canvas, new Size(Width, Height), scale, panOffset);
+		var contactsPairs = Contacts.ToArray();
+		foreach (var (name, contact) in contactsPairs)
+		{
+			Logger.Debug("Radar.Invalidate", $"Updating {name}");
+			contact.Render(canvas, new Size(Width, Height), scale, panOffset);
+		}
+	}
 }

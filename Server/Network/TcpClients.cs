@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Server.Models;
+﻿using System.Net.Sockets;
 
-namespace Server.Network
+namespace Server.Network;
+
+public class TcpClients
 {
-    public class TcpClients
-    {
-        public static Dictionary<string, NetworkStream> clientStreams = new Dictionary<string, NetworkStream>();
-    }
+	public static Dictionary<string, NetworkStream> clientStreams = new();
 }

@@ -1,68 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>CRC.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>CRC.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Cursors\Cross1.cur" />
-    <None Remove="Images\Close.png" />
-    <None Remove="Images\Connect.png" />
-    <None Remove="Images\Copy.png" />
-    <None Remove="Images\Delete.png" />
-    <None Remove="Images\DisplaySettings.png" />
-    <None Remove="Images\Edit.png" />
-    <None Remove="Images\Export.png" />
-    <None Remove="Images\Help.png" />
-    <None Remove="Images\LoadProfile.png" />
-    <None Remove="Images\Maximize.png" />
-    <None Remove="Images\MaximizeMinimize.png" />
-    <None Remove="Images\Menu.png" />
-    <None Remove="Images\Minimize.png" />
-    <None Remove="Images\NewProfile.png" />
-    <None Remove="Images\QuestionBlue.png" />
-    <None Remove="Images\QuestionRed.png" />
-    <None Remove="Images\Rename.png" />
-    <None Remove="Images\SaveProfileAs.png" />
-    <None Remove="Images\Settings.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Cursors\Cross1.cur"/>
+		<None Remove="Images\Close.png"/>
+		<None Remove="Images\Connect.png"/>
+		<None Remove="Images\Copy.png"/>
+		<None Remove="Images\Delete.png"/>
+		<None Remove="Images\DisplaySettings.png"/>
+		<None Remove="Images\Edit.png"/>
+		<None Remove="Images\Export.png"/>
+		<None Remove="Images\Help.png"/>
+		<None Remove="Images\LoadProfile.png"/>
+		<None Remove="Images\Maximize.png"/>
+		<None Remove="Images\MaximizeMinimize.png"/>
+		<None Remove="Images\Menu.png"/>
+		<None Remove="Images\Minimize.png"/>
+		<None Remove="Images\NewProfile.png"/>
+		<None Remove="Images\QuestionBlue.png"/>
+		<None Remove="Images\QuestionRed.png"/>
+		<None Remove="Images\Rename.png"/>
+		<None Remove="Images\SaveProfileAs.png"/>
+		<None Remove="Images\Settings.png"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="CRC.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="CRC.ico"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Cursors\Cross1.cur" />
-    <Resource Include="Images\Close.png" />
-    <Resource Include="Images\Connect.png" />
-    <Resource Include="Images\Copy.png" />
-    <Resource Include="Images\Delete.png" />
-    <Resource Include="Images\DisplaySettings.png" />
-    <Resource Include="Images\Edit.png" />
-    <Resource Include="Images\Export.png" />
-    <Resource Include="Images\Help.png" />
-    <Resource Include="Images\LoadProfile.png" />
-    <Resource Include="Images\Maximize.png" />
-    <Resource Include="Images\MaximizeMinimize.png" />
-    <Resource Include="Images\Menu.png" />
-    <Resource Include="Images\Minimize.png" />
-    <Resource Include="Images\NewProfile.png" />
-    <Resource Include="Images\QuestionBlue.png" />
-    <Resource Include="Images\QuestionRed.png" />
-    <Resource Include="Images\Rename.png" />
-    <Resource Include="Images\SaveProfileAs.png" />
-    <Resource Include="Images\Settings.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Cursors\Cross1.cur"/>
+		<Resource Include="Images\Close.png"/>
+		<Resource Include="Images\Connect.png"/>
+		<Resource Include="Images\Copy.png"/>
+		<Resource Include="Images\Delete.png"/>
+		<Resource Include="Images\DisplaySettings.png"/>
+		<Resource Include="Images\Edit.png"/>
+		<Resource Include="Images\Export.png"/>
+		<Resource Include="Images\Help.png"/>
+		<Resource Include="Images\LoadProfile.png"/>
+		<Resource Include="Images\Maximize.png"/>
+		<Resource Include="Images\MaximizeMinimize.png"/>
+		<Resource Include="Images\Menu.png"/>
+		<Resource Include="Images\Minimize.png"/>
+		<Resource Include="Images\NewProfile.png"/>
+		<Resource Include="Images\QuestionBlue.png"/>
+		<Resource Include="Images\QuestionRed.png"/>
+		<Resource Include="Images\Rename.png"/>
+		<Resource Include="Images\SaveProfileAs.png"/>
+		<Resource Include="Images\Settings.png"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GeoJSON.Net" Version="1.4.1" />
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="SkiaSharp" Version="3.116.1" />
-    <PackageReference Include="SkiaSharp.Views.WPF" Version="3.116.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GeoJSON.Net" Version="1.4.1"/>
+		<PackageReference Include="NAudio" Version="2.2.1"/>
+		<PackageReference Include="SkiaSharp" Version="3.116.1"/>
+		<PackageReference Include="SkiaSharp.Views.WPF" Version="3.116.1"/>
+	</ItemGroup>
 
 </Project>

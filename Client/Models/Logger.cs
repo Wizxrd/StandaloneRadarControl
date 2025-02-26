@@ -1,112 +1,101 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
-namespace Client.Models
+namespace Client.Models;
+
+public class Logger
 {
-    public class Logger
-    {
-        public static void Wipe()
-        {
-            File.WriteAllText(LoadFile.Load("Logs", "log.txt"), string.Empty);
-        }
+	public static void Wipe()
+	{
+		File.WriteAllText(LoadFile.Load("Logs", "log.txt"), string.Empty);
+	}
 
-        public static void Alert(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | ALERT | {function} | {message}");
-                }
-            }
-            catch
-            {
+	public static void Alert(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | ALERT | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 
-            }
-        }
+	public static void Error(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | ERROR | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 
-        public static void Error(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | ERROR | {function} | {message}");
-                }
-            }
-            catch
-            {
+	public static void Warning(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | WARNING | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 
-            }
-        }
+	public static void Info(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | INFO | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 
-        public static void Warning(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | WARNING | {function} | {message}");
-                }
-            }
-            catch
-            {
+	public static void Debug(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | DEBUG | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 
-            }
-        }
-
-        public static void Info(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | INFO | {function} | {message}");
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        public static void Debug(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | DEBUG | {function} | {message}");
-                }
-            }
-            catch
-            {
-
-            }
-        }
-        public static void Trace(string function, string message)
-        {
-            try
-            {
-                string path = LoadFile.Load("Logs", "log.txt");
-                using (StreamWriter writer = new StreamWriter(path, true))
-                {
-                    writer.WriteLine($"{DateTime.Now} | TRACE | {function} | {message}");
-                }
-            }
-            catch
-            {
-
-            }
-        }
-    }
+	public static void Trace(string function, string message)
+	{
+		try
+		{
+			var path = LoadFile.Load("Logs", "log.txt");
+			using (var writer = new StreamWriter(path, true))
+			{
+				writer.WriteLine($"{DateTime.Now} | TRACE | {function} | {message}");
+			}
+		}
+		catch
+		{
+		}
+	}
 }

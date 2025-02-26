@@ -3,166 +3,161 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client.Views"
         mc:Ignorable="d"
         MinWidth="300" Width="350" MinHeight="500" Height="500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <WindowChrome.WindowChrome>
-        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome>
-    <Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0" Height="30" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="0,0,0,1" MouseDown="BorderMouseDown">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Width="20" Height="20" Source="pack://application:,,,/Images/LoadProfile.png" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
-                    <TextBlock Text="Load Profile" Grid.Column="1" Foreground="{DynamicResource TextColor}" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    <Button
-                        x:Name="LoadProfileCloseButton"
-                        ToolTip="Close"
-                        Grid.Column="4"
-                        Width="45"
-                        Style="{StaticResource CloseButtonStyle}"
-                        Tag="pack://application:,,,/Images/Close.png"
-                        Click="CloseButtonClick">
-                    </Button>
-                </Grid>
-            </Border>
-            <Border Grid.Row="1" Height="32">
-                <Grid>
-                    <TextBox
-                        x:Name="SearchBox"
-                        Height="24"
-                        HorizontalAlignment="Stretch"
-                        Margin="5,0,5,0"
-                        Style="{DynamicResource TextBoxStyle}"
-                        Background="{DynamicResource GrayBackgroundLight}"
-                        Foreground="{DynamicResource TextColor}"
-                        VerticalContentAlignment="Center"
-                        GotFocus="SearchBoxGotFocus"
-                        LostFocus="SearchBoxLostFocus"
-                        Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
-                    </TextBox>
-                    <TextBlock
-                        x:Name="PlaceholderText"
-                        Text="Search..."
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Margin="10,0,0,0"
-                        Foreground="{DynamicResource GreyText}"
-                        IsHitTestVisible="False"
-                        Visibility="Visible"/>
-                </Grid>
-            </Border>
-            <Border Name="ProfilesBorder" Grid.Row="2" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ProfileScrollBar" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch">
-                        <ItemsControl Name="ProfileControl" ItemsSource="{Binding FilteredProfiles}" HorizontalAlignment="Stretch">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ToggleButton
-                                        FontFamily="Consolas" FontWeight="Light" FontSize="12"
-                                        Margin="5,0,5,0"
-                                        Background="{DynamicResource GrayBackgroundLight}"
-                                        Foreground="{DynamicResource TextColor}"
-                                        Height="32"
-                                        HorizontalAlignment="Stretch"
-                                        Style="{DynamicResource ProfileButton}"
-                                        Command="{Binding DataContext.ProfileSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
-                                        <ToggleButton.Content>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <ContentControl DataContext="{Binding}" Grid.Column="0" Style="{DynamicResource RenameButtonControl}"/>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1">
-                                                    <Button
-                                                        ToolTip="Rename"
-                                                        Style="{DynamicResource ProfileSubButton}"
-                                                        Command="{Binding DataContext.RenameProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Tag="pack://application:,,,/Images/Rename.png">
-                                                    </Button>
-                                                    <Button
-                                                        ToolTip="Copy"
-                                                        Style="{DynamicResource ProfileSubButton}"
-                                                        Command="{Binding DataContext.CopyProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Tag="pack://application:,,,/Images/Copy.png">
-                                                    </Button>
-                                                    <Button
-                                                        ToolTip="Export"
-                                                        Style="{DynamicResource ProfileSubButton}"
-                                                        Command="{Binding DataContext.ExportProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Tag="pack://application:,,,/Images/Export.png">
-                                                    </Button>
-                                                    <Button
-                                                        ToolTip="Delete"
-                                                        Style="{DynamicResource ProfileSubButton}"
-                                                        Command="{Binding DataContext.DeleteProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Tag="pack://application:,,,/Images/Delete.png">
-                                                    </Button>
-                                                </StackPanel>
-                                            </Grid>
-                                        </ToggleButton.Content>
-                                    </ToggleButton>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl> 
-                    </ScrollViewer>
-                </Grid>
-            </Border>
-            <Border Grid.Row="3" Height="48" VerticalAlignment="Bottom">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Name="NewProfileButton" Grid.Column="0"
-                        FontFamily="Consolas" FontWeight="Light" FontSize="12"
-                        Content="New Profile"
-                        Margin="5,0,2.5,0"
-                        Padding="5,0"
-                        Background="{DynamicResource GrayBackgroundLight}"
-                        BorderBrush="{DynamicResource BlueBorder}"
-                        Foreground="{DynamicResource TextColor}"
-                        Height="32"
-                        Template="{DynamicResource MainButtonTemplate}">
-                    </Button>
-                    <Button Name="ImportPropfileButton" Grid.Column="1"
-                        FontFamily="Consolas" FontWeight="Light" FontSize="12"
-                        Content="Import Profile"
-                        Margin="2.5,0,5,0"
-                        Padding="5,0"
-                        Background="{DynamicResource GrayBackgroundLight}"
-                        BorderBrush="{DynamicResource BlueBorder}"
-                        Foreground="{DynamicResource TextColor}"
-                        Height="32"
-                        Template="{DynamicResource MainButtonTemplate}"
-                        Command="{Binding DataContext.ImportProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}">
-                    </Button>
-                </Grid>
-            </Border>
-        </Grid>
-    </Border>
+	<WindowChrome.WindowChrome>
+		<WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0" />
+	</WindowChrome.WindowChrome>
+	<Border Background="{DynamicResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Border Grid.Row="0" Height="30" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="0,0,0,1"
+			        MouseDown="BorderMouseDown">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Image Grid.Column="0" Width="20" Height="20" Source="pack://application:,,,/Images/LoadProfile.png"
+					       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0" />
+					<TextBlock Text="Load Profile" Grid.Column="1" Foreground="{DynamicResource TextColor}" FontFamily="Consolas"
+					           FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" />
+					<Button
+						x:Name="LoadProfileCloseButton"
+						ToolTip="Close"
+						Grid.Column="4"
+						Width="45"
+						Style="{StaticResource CloseButtonStyle}"
+						Tag="pack://application:,,,/Images/Close.png"
+						Click="CloseButtonClick" />
+				</Grid>
+			</Border>
+			<Border Grid.Row="1" Height="32">
+				<Grid>
+					<TextBox
+						x:Name="SearchBox"
+						Height="24"
+						HorizontalAlignment="Stretch"
+						Margin="5,0,5,0"
+						Style="{DynamicResource TextBoxStyle}"
+						Background="{DynamicResource GrayBackgroundLight}"
+						Foreground="{DynamicResource TextColor}"
+						VerticalContentAlignment="Center"
+						GotFocus="SearchBoxGotFocus"
+						LostFocus="SearchBoxLostFocus"
+						Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock
+						x:Name="PlaceholderText"
+						Text="Search..."
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0"
+						Foreground="{DynamicResource GreyText}"
+						IsHitTestVisible="False"
+						Visibility="Visible" />
+				</Grid>
+			</Border>
+			<Border Name="ProfilesBorder" Grid.Row="2" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<ScrollViewer Name="ProfileScrollBar" Grid.Column="1" VerticalScrollBarVisibility="Auto"
+					              HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch">
+						<ItemsControl Name="ProfileControl" ItemsSource="{Binding FilteredProfiles}" HorizontalAlignment="Stretch">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<ToggleButton
+										FontFamily="Consolas" FontWeight="Light" FontSize="12"
+										Margin="5,0,5,0"
+										Background="{DynamicResource GrayBackgroundLight}"
+										Foreground="{DynamicResource TextColor}"
+										Height="32"
+										HorizontalAlignment="Stretch"
+										Style="{DynamicResource ProfileButton}"
+										Command="{Binding DataContext.ProfileSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+										CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+										<ToggleButton.Content>
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+												<ContentControl DataContext="{Binding}" Grid.Column="0" Style="{DynamicResource RenameButtonControl}" />
+												<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1">
+													<Button
+														ToolTip="Rename"
+														Style="{DynamicResource ProfileSubButton}"
+														Command="{Binding DataContext.RenameProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+														CommandParameter="{Binding}"
+														Tag="pack://application:,,,/Images/Rename.png" />
+													<Button
+														ToolTip="Copy"
+														Style="{DynamicResource ProfileSubButton}"
+														Command="{Binding DataContext.CopyProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+														CommandParameter="{Binding}"
+														Tag="pack://application:,,,/Images/Copy.png" />
+													<Button
+														ToolTip="Export"
+														Style="{DynamicResource ProfileSubButton}"
+														Command="{Binding DataContext.ExportProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+														CommandParameter="{Binding}"
+														Tag="pack://application:,,,/Images/Export.png" />
+													<Button
+														ToolTip="Delete"
+														Style="{DynamicResource ProfileSubButton}"
+														Command="{Binding DataContext.DeleteProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+														CommandParameter="{Binding}"
+														Tag="pack://application:,,,/Images/Delete.png" />
+												</StackPanel>
+											</Grid>
+										</ToggleButton.Content>
+									</ToggleButton>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</Grid>
+			</Border>
+			<Border Grid.Row="3" Height="48" VerticalAlignment="Bottom">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Button Name="NewProfileButton" Grid.Column="0"
+					        FontFamily="Consolas" FontWeight="Light" FontSize="12"
+					        Content="New Profile"
+					        Margin="5,0,2.5,0"
+					        Padding="5,0"
+					        Background="{DynamicResource GrayBackgroundLight}"
+					        BorderBrush="{DynamicResource BlueBorder}"
+					        Foreground="{DynamicResource TextColor}"
+					        Height="32"
+					        Template="{DynamicResource MainButtonTemplate}" />
+					<Button Name="ImportPropfileButton" Grid.Column="1"
+					        FontFamily="Consolas" FontWeight="Light" FontSize="12"
+					        Content="Import Profile"
+					        Margin="2.5,0,5,0"
+					        Padding="5,0"
+					        Background="{DynamicResource GrayBackgroundLight}"
+					        BorderBrush="{DynamicResource BlueBorder}"
+					        Foreground="{DynamicResource TextColor}"
+					        Height="32"
+					        Template="{DynamicResource MainButtonTemplate}"
+					        Command="{Binding DataContext.ImportProfileCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+				</Grid>
+			</Border>
+		</Grid>
+	</Border>
 </Window>

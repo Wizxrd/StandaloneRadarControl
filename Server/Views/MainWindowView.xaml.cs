@@ -1,69 +1,67 @@
-﻿using Server.Models;
-using Server.Network;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using Server.Models;
+using Server.Network;
 
-namespace Server.Views
+namespace Server.Views;
+
+/// <summary>
+///   Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindowView : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindowView : Window
-    {
-        private TcpServerHandler tcpServerHandler;
-        private UdpServerHandler udpServerHandler;
-        public MainWindowView()
-        {
-            InitializeComponent();
-            Logger.Wipe();
-            tcpServerHandler = new(this);
-            udpServerHandler = new(this);
-        }
+	private readonly TcpServerHandler tcpServerHandler;
+	private readonly UdpServerHandler udpServerHandler;
 
-        public void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
+	public MainWindowView()
+	{
+		InitializeComponent();
+		Logger.Wipe();
+		tcpServerHandler = new TcpServerHandler(this);
+		udpServerHandler = new UdpServerHandler(this);
+	}
 
-        private void MinimizeButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-        private async void CloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            await tcpServerHandler.StopAsync();
-            udpServerHandler.Stop();
-            Application.Current.Shutdown();
-        }
+	public void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
+	{
+		if (e.ChangedButton == MouseButton.Left) DragMove();
+	}
 
-        private async void StartServerButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (StartServerButton.Tag.ToString() == "-1")
-            {
-                bool tcpServerStarted = tcpServerHandler.Start();
-                bool udpServerStarted = udpServerHandler.Start();
-                if(tcpServerStarted && udpServerStarted)
-                {
-                    StartServerButton.Tag = "1";
-                    StartServerButton.Content = "STOP";
-                }
-            }
-            else
-            {
-                StartServerButton.Tag = "-1";
-                StartServerButton.Content = "START";
-                await tcpServerHandler.StopAsync();
-                udpServerHandler.Stop();
-                UpdateClientPortTextBox(string.Empty);
-            }
-        }
+	private void MinimizeButtonClick(object sender, RoutedEventArgs e)
+	{
+		WindowState = WindowState.Minimized;
+	}
 
-        public void UpdateClientPortTextBox(string port)
-        {
-            PortTextBlock.Text = $"Port: {port}";
-        }
-    }
+	private async void CloseButtonClick(object sender, RoutedEventArgs e)
+	{
+		await tcpServerHandler.StopAsync();
+		udpServerHandler.Stop();
+		Application.Current.Shutdown();
+	}
+
+	private async void StartServerButtonClick(object sender, RoutedEventArgs e)
+	{
+		if (StartServerButton.Tag.ToString() == "-1")
+		{
+			var tcpServerStarted = tcpServerHandler.Start();
+			var udpServerStarted = udpServerHandler.Start();
+			if (tcpServerStarted && udpServerStarted)
+			{
+				StartServerButton.Tag = "1";
+				StartServerButton.Content = "STOP";
+			}
+		}
+		else
+		{
+			StartServerButton.Tag = "-1";
+			StartServerButton.Content = "START";
+			await tcpServerHandler.StopAsync();
+			udpServerHandler.Stop();
+			UpdateClientPortTextBox(string.Empty);
+		}
+	}
+
+	public void UpdateClientPortTextBox(string port)
+	{
+		PortTextBlock.Text = $"Port: {port}";
+	}
 }

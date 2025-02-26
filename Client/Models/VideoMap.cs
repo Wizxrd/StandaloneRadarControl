@@ -1,173 +1,161 @@
-﻿using GeoJSON.Net.Feature;
+﻿using System.Drawing;
+using System.IO;
+using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using SkiaSharp;
-using System.Drawing;
-using System.Windows;
-using System.IO;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using SkiaSharp;
 
-namespace Client.Models
+namespace Client.Models;
+
+public class VideoMap
 {
-    public class VideoMap
-    {
+	private readonly List<List<Coordinate>> lineStrings = new();
+	public List<string> activeMaps = new();
+	private Dictionary<Coordinate, PointF> projectedPointCache = new();
 
-        private JObject theatreJson;
-        private Dictionary<Coordinate, PointF> projectedPointCache = new();
-        private List<List<Coordinate>> lineStrings = new();
-        public List<String> activeMaps = new();
+	private JObject theatreJson;
 
-        public VideoMap()
-        {
-        }
+	public static void CenterAtCoordinates(int Width, int Height, double scale, ref SKPoint panOffset, double lat,
+		double lon)
+	{
+		var screenPoint = ScreenMap.CoordinateToScreen(Width, Height, scale, panOffset, lat, lon);
+		var centerX = Width / 2;
+		var centerY = Height / 2;
+		var shiftX = centerX - screenPoint.X;
+		var shiftY = centerY - screenPoint.Y;
+		panOffset.X += shiftX;
+		panOffset.Y += shiftY;
+	}
 
-        public static void CenterAtCoordinates(int Width, int Height, double scale, ref SKPoint panOffset, double lat, double lon)
-        {
-            SKPoint screenPoint = ScreenMap.CoordinateToScreen(Width, Height, scale, panOffset, lat, lon);
-            int centerX = Width / 2;
-            int centerY = Height / 2;
-            float shiftX = centerX - screenPoint.X;
-            float shiftY = centerY - screenPoint.Y;
-            panOffset.X += shiftX;
-            panOffset.Y += shiftY;
-        }
+	public void Unload(string file)
+	{
+		var jsonText = File.ReadAllText(file);
+		var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(jsonText);
+		if (featureCollection == null) return;
+		foreach (var feature in featureCollection.Features)
+			if (feature.Geometry is LineString lineString)
+				foreach (var coordinates in lineStrings.ToList())
+					if (coordinates.Count == lineString.Coordinates.Count &&
+						!coordinates.Where((coord, i) =>
+							coord.Latitude != lineString.Coordinates[i].Latitude ||
+							coord.Longitude != lineString.Coordinates[i].Longitude).Any())
+					{
+						lineStrings.Remove(coordinates);
+						break;
+					}
 
-        public void Unload(string file)
-        {
-            string jsonText = File.ReadAllText(file);
-            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(jsonText);
-            if (featureCollection == null) return;
-            foreach (var feature in featureCollection.Features)
-            {
-                if (feature.Geometry is GeoJSON.Net.Geometry.LineString lineString)
-                {
-                    foreach (var coordinates in lineStrings.ToList())
-                    {
-                        if (coordinates.Count == lineString.Coordinates.Count &&
-                            !coordinates.Where((coord, i) => coord.Latitude != lineString.Coordinates[i].Latitude || coord.Longitude != lineString.Coordinates[i].Longitude).Any())
-                        {
-                            lineStrings.Remove(coordinates);
-                            break;
-                        }
-                    }
-                }
-            }
-            activeMaps.Remove(System.IO.Path.GetFileName(file));
-        }
-        public void Load(string file)
-        {
-            try
-            {
-                // Read the JSON file content
-                string jsonText = File.ReadAllText(file);
+		activeMaps.Remove(Path.GetFileName(file));
+	}
 
-                // Parse the JSON
-                var featureCollection = JObject.Parse(jsonText);
+	public void Load(string file)
+	{
+		try
+		{
+			// Read the JSON file content
+			var jsonText = File.ReadAllText(file);
 
-                // Loop through features in the parsed JSON
-                foreach (var feature in featureCollection["features"])
-                {
-                    // Check if the geometry type is "MultiPolygon"
-                    if (feature["geometry"]?["type"]?.ToString() == "MultiPolygon")
-                    {
-                        var multiPolygonCoordinates = feature["geometry"]["coordinates"];
+			// Parse the JSON
+			var featureCollection = JObject.Parse(jsonText);
 
-                        foreach (var polygon in multiPolygonCoordinates)
-                        {
-                            var coordinates = new List<Coordinate>();
+			// Loop through features in the parsed JSON
+			foreach (var feature in featureCollection["features"])
+				// Check if the geometry type is "MultiPolygon"
+				if (feature["geometry"]?["type"]?.ToString() == "MultiPolygon")
+				{
+					var multiPolygonCoordinates = feature["geometry"]["coordinates"];
 
-                            // Iterate through each position in the polygon (each position is a pair of [longitude, latitude])
-                            foreach (var position in polygon)
-                            {
-                                // Convert the current position to a List<double> (which should be the coordinate pair)
-                                var coordArray = position.ToObject<List<List<double>>>();
+					foreach (var polygon in multiPolygonCoordinates)
+					{
+						var coordinates = new List<Coordinate>();
 
-                                foreach (var coord in coordArray)
-                                {
-                                    if (coord.Count >= 2)
-                                    {
-                                        coordinates.Add(new Coordinate(coord[1], coord[0])); // Assuming [latitude, longitude]
-                                    }
-                                }
-                            }
+						// Iterate through each position in the polygon (each position is a pair of [longitude, latitude])
+						foreach (var position in polygon)
+						{
+							// Convert the current position to a List<double> (which should be the coordinate pair)
+							var coordArray = position.ToObject<List<List<double>>>();
 
-                            // Add the processed polygon coordinates to lineStrings
-                            lineStrings.Add(coordinates);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("VideoMap.Load", ex.ToString());
-            }
-        }
+							foreach (var coord in coordArray)
+								if (coord.Count >= 2)
+									coordinates.Add(new Coordinate(coord[1],
+										coord[0])); // Assuming [latitude, longitude]
+						}
 
-        public void Render(SKCanvas canvas, System.Drawing.Size clientSize, double scale, SKPoint panOffset)
-        {
-            try
-            {
-                int centerX = clientSize.Width / 2;
-                int centerY = clientSize.Height / 2;
+						// Add the processed polygon coordinates to lineStrings
+						lineStrings.Add(coordinates);
+					}
+				}
+		}
+		catch (Exception ex)
+		{
+			Logger.Error("VideoMap.Load", ex.ToString());
+		}
+	}
 
-                using var paint = new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke,
-                    Color = SKColors.White,
-                    StrokeWidth = 1,
-                    IsAntialias = true
-                };
+	public void Render(SKCanvas canvas, Size clientSize, double scale, SKPoint panOffset)
+	{
+		try
+		{
+			var centerX = clientSize.Width / 2;
+			var centerY = clientSize.Height / 2;
 
-                var drawnSegments = new HashSet<(double, double, double, double)>();
+			using var paint = new SKPaint
+			{
+				Style = SKPaintStyle.Stroke,
+				Color = SKColors.White,
+				StrokeWidth = 1,
+				IsAntialias = true
+			};
 
-                foreach (var lineString in lineStrings)
-                {
-                    if (lineString.Count < 2)
-                        continue;
+			var drawnSegments = new HashSet<(double, double, double, double)>();
 
-                    List<SKPoint> skPoints = new List<SKPoint>();
+			foreach (var lineString in lineStrings)
+			{
+				if (lineString.Count < 2)
+					continue;
 
-                    for (int i = 0; i < lineString.Count - 1; i++)
-                    {
-                        var coord1 = lineString[i];
-                        var coord2 = lineString[i + 1];
+				var skPoints = new List<SKPoint>();
 
-                        var segment = (Math.Min(coord1.Latitude, coord2.Latitude),
-                                       Math.Min(coord1.Longitude, coord2.Longitude),
-                                       Math.Max(coord1.Latitude, coord2.Latitude),
-                                       Math.Max(coord1.Longitude, coord2.Longitude));
+				for (var i = 0; i < lineString.Count - 1; i++)
+				{
+					var coord1 = lineString[i];
+					var coord2 = lineString[i + 1];
 
-                        if (drawnSegments.Contains(segment))
-                            continue;
+					var segment = (Math.Min(coord1.Latitude, coord2.Latitude),
+						Math.Min(coord1.Longitude, coord2.Longitude),
+						Math.Max(coord1.Latitude, coord2.Latitude),
+						Math.Max(coord1.Longitude, coord2.Longitude));
 
-                        drawnSegments.Add(segment);
+					if (drawnSegments.Contains(segment))
+						continue;
 
-                        SKPoint screenPoint1 = ScreenMap.CoordinateToScreen(clientSize.Width, clientSize.Height, scale, panOffset, coord1.Latitude, coord1.Longitude);
-                        SKPoint screenPoint2 = ScreenMap.CoordinateToScreen(clientSize.Width, clientSize.Height, scale, panOffset, coord2.Latitude, coord2.Longitude);
+					drawnSegments.Add(segment);
 
-                        float offsetX1 = screenPoint1.X - centerX;
-                        float offsetY1 = screenPoint1.Y - centerY;
-                        screenPoint1 = new SKPoint(centerX + offsetX1, centerY + offsetY1);
+					var screenPoint1 = ScreenMap.CoordinateToScreen(clientSize.Width, clientSize.Height, scale,
+						panOffset,
+						coord1.Latitude, coord1.Longitude);
+					var screenPoint2 = ScreenMap.CoordinateToScreen(clientSize.Width, clientSize.Height, scale,
+						panOffset,
+						coord2.Latitude, coord2.Longitude);
 
-                        float offsetX2 = screenPoint2.X - centerX;
-                        float offsetY2 = screenPoint2.Y - centerY;
-                        screenPoint2 = new SKPoint(centerX + offsetX2, centerY + offsetY2);
+					var offsetX1 = screenPoint1.X - centerX;
+					var offsetY1 = screenPoint1.Y - centerY;
+					screenPoint1 = new SKPoint(centerX + offsetX1, centerY + offsetY1);
 
-                        skPoints.Add(screenPoint1);
-                        skPoints.Add(screenPoint2);
-                    }
+					var offsetX2 = screenPoint2.X - centerX;
+					var offsetY2 = screenPoint2.Y - centerY;
+					screenPoint2 = new SKPoint(centerX + offsetX2, centerY + offsetY2);
 
-                    if (skPoints.Count > 1)
-                    {
-                        canvas.DrawPoints(SKPointMode.Lines, skPoints.ToArray(), paint);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("VideoMap.Render", ex.ToString());
-            }
-        }
-    }
+					skPoints.Add(screenPoint1);
+					skPoints.Add(screenPoint2);
+				}
+
+				if (skPoints.Count > 1) canvas.DrawPoints(SKPointMode.Lines, skPoints.ToArray(), paint);
+			}
+		}
+		catch (Exception ex)
+		{
+			Logger.Error("VideoMap.Render", ex.ToString());
+		}
+	}
 }

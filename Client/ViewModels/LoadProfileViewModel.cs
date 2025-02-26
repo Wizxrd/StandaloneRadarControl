@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -10,230 +9,226 @@ using System.Windows.Input;
 using Client.Commands;
 using Client.Models;
 using Client.Views;
-using Client.Controls;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 
-namespace Client.ViewModels
+namespace Client.ViewModels;
+
+public class LoadProfileViewModel : ViewModelBase
 {
-    public class LoadProfileViewModel : ViewModelBase
-    {
-        private Navigate navigate;
-        private ToggleButton? selectedProfile = null;
+	private readonly TimeSpan doubleClickTimeSpan = TimeSpan.FromMilliseconds(500);
+	private readonly Navigate navigate;
 
-        private DateTime lastClickTime = DateTime.MinValue;
-        private readonly TimeSpan doubleClickTimeSpan = TimeSpan.FromMilliseconds(500);
+	private string _searchQuery = string.Empty;
 
-        private string _searchQuery = string.Empty;
-        private Window? loadProfileView;
+	private DateTime lastClickTime = DateTime.MinValue;
+	private Window? loadProfileView;
+	private ToggleButton? selectedProfile;
 
-        public ObservableCollection<Profile> Profiles { get; set; } = new();
-        public ICollectionView FilteredProfiles { get; }
-        public ICommand ProfileSelectedCommand { get; set; }
-        public ICommand RenameProfileCommand { get; set; }
-        public ICommand StopRenamingCommand { get; set; }
-        public ICommand CopyProfileCommand { get; set; }
-        public ICommand ExportProfileCommand { get; set; }
-        public ICommand DeleteProfileCommand { get; set; }
-        public ICommand ImportProfileCommand { get; set; }
+	public LoadProfileViewModel(Navigate navigate)
+	{
+		this.navigate = navigate;
+		LoadProfiles();
+		ProfileSelectedCommand = new RelayCommand(ProfileSelected);
+		RenameProfileCommand = new RelayCommand(RenameProfile);
+		StopRenamingCommand = new RelayCommand(StopRenaming);
+		CopyProfileCommand = new RelayCommand(CopyProfile);
+		ExportProfileCommand = new RelayCommand(ExportProfile);
+		DeleteProfileCommand = new RelayCommand(DeleteProfile);
+		ImportProfileCommand = new RelayCommand(ImportProfile);
 
-        public string SearchQuery
-        {
-            get => _searchQuery;
-            set
-            {
-                if (_searchQuery != value)
-                {
-                    _searchQuery = value;
-                    OnPropertyChanged(nameof(SearchQuery));
-                    FilteredProfiles.Refresh(); // Refresh the filter
-                }
-            }
-        }
+		FilteredProfiles = CollectionViewSource.GetDefaultView(Profiles);
+		FilteredProfiles.Filter = FilterProfiles;
+		loadProfileView = Navigate.GetOpenDialog();
+	}
 
-        public LoadProfileViewModel(Navigate navigate)
-        {
-            this.navigate = navigate;
-            LoadProfiles();
-            ProfileSelectedCommand = new RelayCommand(ProfileSelected);
-            RenameProfileCommand = new RelayCommand(RenameProfile);
-            StopRenamingCommand = new RelayCommand(StopRenaming);
-            CopyProfileCommand = new RelayCommand(CopyProfile);
-            ExportProfileCommand = new RelayCommand(ExportProfile);
-            DeleteProfileCommand = new RelayCommand(DeleteProfile);
-            ImportProfileCommand = new RelayCommand(ImportProfile);
+	public ObservableCollection<Profile> Profiles { get; set; } = new();
+	public ICollectionView FilteredProfiles { get; }
+	public ICommand ProfileSelectedCommand { get; set; }
+	public ICommand RenameProfileCommand { get; set; }
+	public ICommand StopRenamingCommand { get; set; }
+	public ICommand CopyProfileCommand { get; set; }
+	public ICommand ExportProfileCommand { get; set; }
+	public ICommand DeleteProfileCommand { get; set; }
+	public ICommand ImportProfileCommand { get; set; }
 
-            FilteredProfiles = CollectionViewSource.GetDefaultView(Profiles);
-            FilteredProfiles.Filter = FilterProfiles;
-            loadProfileView = Navigate.GetOpenDialog();
-        }
+	public string SearchQuery
+	{
+		get => _searchQuery;
+		set
+		{
+			if (_searchQuery != value)
+			{
+				_searchQuery = value;
+				OnPropertyChanged();
+				FilteredProfiles.Refresh(); // Refresh the filter
+			}
+		}
+	}
 
-        private bool FilterProfiles(object obj)
-        {
-            if (obj is Profile profile)
-            {
-                return string.IsNullOrEmpty(SearchQuery) || profile.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase);
-            }
-            return false;
-        }
+	private bool FilterProfiles(object obj)
+	{
+		if (obj is Profile profile)
+			return string.IsNullOrEmpty(SearchQuery) ||
+					profile.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase);
+		return false;
+	}
 
-        private void LoadProfiles()
-        {
-            try
-            {
-                Profiles.Clear();
-                string folderPath = LoadFile.LoadFolder("Profiles");
-                string[] files = Directory.GetFiles(folderPath, "*.json");
+	private void LoadProfiles()
+	{
+		try
+		{
+			Profiles.Clear();
+			var folderPath = LoadFile.LoadFolder("Profiles");
+			string[] files = Directory.GetFiles(folderPath, "*.json");
 
-                var loadedProfiles = new List<Profile>();
+			var loadedProfiles = new List<Profile>();
 
-                foreach (string file in files)
-                {
-                    try
-                    {
-                        string fileContent = File.ReadAllText(file);
-                        JObject profile = JObject.Parse(fileContent);
-                        string name = profile["Name"]?.ToString() ?? string.Empty;
+			foreach (var file in files)
+				try
+				{
+					var fileContent = File.ReadAllText(file);
+					var profile = JObject.Parse(fileContent);
+					var name = profile["Name"]?.ToString() ?? string.Empty;
 
-                        if (!string.IsNullOrEmpty(name))
-                        {
-                            loadedProfiles.Add(new Profile { Name = name, IsRenaming = false });
-                        }
-                    }
-                    catch (Exception fileEx)
-                    {
-                        Logger.Error("LoadProfileViewModel.LoadProfiles", $"Failed to load profile from {file}: {fileEx.Message}");
-                    }
-                }
-                var sortedProfiles = loadedProfiles.OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase).ToList();
-                foreach (var profile in sortedProfiles)
-                {
-                    Profiles.Add(profile);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("LoadProfileViewModel.LoadProfiles", ex.ToString());
-            }
-        }
+					if (!string.IsNullOrEmpty(name))
+						loadedProfiles.Add(new Profile { Name = name, IsRenaming = false });
+				}
+				catch (Exception fileEx)
+				{
+					Logger.Error("LoadProfileViewModel.LoadProfiles",
+						$"Failed to load profile from {file}: {fileEx.Message}");
+				}
 
-        private async void ProfileSelected(object parameter)
-        {
-            if (parameter is not ToggleButton toggleButton) return;
-            DateTime now = DateTime.Now;
-            if (selectedProfile == toggleButton && (now - lastClickTime) <= doubleClickTimeSpan)
-            {
-                if (toggleButton.DataContext is not Profile profile) return;
-                lastClickTime = DateTime.MinValue;
-                await Profile.Load(profile.Name, navigate.mainWindowView);
-                Navigate.GetOpenDialog()?.Close();
-                navigate.mainWindowView.CurrentProfile = profile;
-                navigate.mainWindowView.SetTitle(profile.Name);
-                navigate.mainWindowView.Show();
-                return;
-            }
-            if (selectedProfile == null)
-            {
-                selectedProfile = toggleButton;
-            }
-            else if (toggleButton == selectedProfile)
-            {
-                selectedProfile.IsChecked = false;
-                selectedProfile = null;
-            }
-            else
-            {
-                selectedProfile.IsChecked = false;
-                selectedProfile = toggleButton;
-            }
+			var sortedProfiles = loadedProfiles.OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase).ToList();
+			foreach (var profile in sortedProfiles) Profiles.Add(profile);
+		}
+		catch (Exception ex)
+		{
+			Logger.Error("LoadProfileViewModel.LoadProfiles", ex.ToString());
+		}
+	}
 
-            lastClickTime = now;
-        }
+	private async void ProfileSelected(object parameter)
+	{
+		if (parameter is not ToggleButton toggleButton) return;
+		var now = DateTime.Now;
+		if (selectedProfile == toggleButton && now - lastClickTime <= doubleClickTimeSpan)
+		{
+			if (toggleButton.DataContext is not Profile profile) return;
+			lastClickTime = DateTime.MinValue;
+			await Profile.Load(profile.Name, navigate.mainWindowView);
+			Navigate.GetOpenDialog()?.Close();
+			navigate.mainWindowView.CurrentProfile = profile;
+			navigate.mainWindowView.SetTitle(profile.Name);
+			navigate.mainWindowView.Show();
+			return;
+		}
+
+		if (selectedProfile == null)
+		{
+			selectedProfile = toggleButton;
+		}
+		else if (toggleButton == selectedProfile)
+		{
+			selectedProfile.IsChecked = false;
+			selectedProfile = null;
+		}
+		else
+		{
+			selectedProfile.IsChecked = false;
+			selectedProfile = toggleButton;
+		}
+
+		lastClickTime = now;
+	}
 
 
-        private async void RenameProfile(object parameter)
-        {
-            if (parameter is not Profile profile) return;
-            if (!profile.IsRenaming)
-            {
-                profile.IsRenaming = true;
-                profile.OldName = profile.Name;
-                return;
-            }
-            profile.IsRenaming = false;
-            if (profile.Name != profile.OldName)
-            {
-                await profile.RenameAsync();
-                LoadProfiles();
-            }
-        }
+	private async void RenameProfile(object parameter)
+	{
+		if (parameter is not Profile profile) return;
+		if (!profile.IsRenaming)
+		{
+			profile.IsRenaming = true;
+			profile.OldName = profile.Name;
+			return;
+		}
 
-        private void StopRenaming(object parameter)
-        {
-            if (parameter is not TextBox textBox) return;
-            var profile = Profiles.FirstOrDefault(p => p.IsRenaming);
-            if (profile != null)
-            {
-                profile.Name = textBox.Text;
-                RenameProfile(profile);
-            }
-        }
+		profile.IsRenaming = false;
+		if (profile.Name != profile.OldName)
+		{
+			await profile.RenameAsync();
+			LoadProfiles();
+		}
+	}
 
-        private async void CopyProfile(object parameter)
-        {
-            if (parameter is not Profile profile) return;
-            await profile.CopyAsync();
-            LoadProfiles();
-        }
+	private void StopRenaming(object parameter)
+	{
+		if (parameter is not TextBox textBox) return;
+		var profile = Profiles.FirstOrDefault(p => p.IsRenaming);
+		if (profile != null)
+		{
+			profile.Name = textBox.Text;
+			RenameProfile(profile);
+		}
+	}
 
-        private void ExportProfile(object parameter)
-        {
-            if (parameter is not Profile profile) return;
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Title = "Export Profile",
-                Filter = "JSON File (*.json)|*.json",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string path = saveFileDialog.FileName;
-                profile.Export(path);
-            }
-        }
+	private async void CopyProfile(object parameter)
+	{
+		if (parameter is not Profile profile) return;
+		await profile.CopyAsync();
+		LoadProfiles();
+	}
 
-        private async void DeleteProfile(object parameter)
-        {
-            if (parameter is not Profile profile) return;
+	private void ExportProfile(object parameter)
+	{
+		if (parameter is not Profile profile) return;
+		var saveFileDialog = new SaveFileDialog
+		{
+			Title = "Export Profile",
+			Filter = "JSON File (*.json)|*.json",
+			InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+		};
+		if (saveFileDialog.ShowDialog() == true)
+		{
+			var path = saveFileDialog.FileName;
+			profile.Export(path);
+		}
+	}
 
-            DeleteProfileView deleteProfileView = new DeleteProfileView()
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-            };
-            deleteProfileView.SetMessageTextBlock("Are you sure you want to delete profile:", profile.Name);
-            deleteProfileView.ShowDialog();
-            if (deleteProfileView.DeletionConfirmed)
-            {
-                await profile.DeleteAsync();
-                LoadProfiles();
-            }
-        }
+	private async void DeleteProfile(object parameter)
+	{
+		if (parameter is not Profile profile) return;
 
-        private async void ImportProfile(object parameter)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Title = "Import Profile",
-                Filter = "JSON File (*.json)|*.json",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string file = openFileDialog.FileName;
-                if (file.Contains(".json"))
-                {
-                    await Profile.Import(file);
-                    LoadProfiles();
-                }
-            }
-        }
-    }
+		var deleteProfileView = new DeleteProfileView
+		{
+			WindowStartupLocation = WindowStartupLocation.CenterScreen
+		};
+		deleteProfileView.SetMessageTextBlock("Are you sure you want to delete profile:", profile.Name);
+		deleteProfileView.ShowDialog();
+		if (deleteProfileView.DeletionConfirmed)
+		{
+			await profile.DeleteAsync();
+			LoadProfiles();
+		}
+	}
+
+	private async void ImportProfile(object parameter)
+	{
+		var openFileDialog = new OpenFileDialog
+		{
+			Title = "Import Profile",
+			Filter = "JSON File (*.json)|*.json",
+			InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+		};
+		if (openFileDialog.ShowDialog() == true)
+		{
+			var file = openFileDialog.FileName;
+			if (file.Contains(".json"))
+			{
+				await Profile.Import(file);
+				LoadProfiles();
+			}
+		}
+	}
 }

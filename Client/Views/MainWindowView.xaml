@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client"
         xmlns:views="clr-namespace:Client.Views"
         mc:Ignorable="d"
         Background="Black"
@@ -13,32 +12,34 @@
         WindowStartupLocation="CenterScreen"
         Cursor="{Binding CustomCursor}"
         KeyDown="MainWindowViewKeyDown">
-    <WindowChrome.WindowChrome>
-        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome>
-    <Grid x:Name="MainWindowGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <views:TitleBarView x:Name="TitleBar" TitleText="Client" Grid.Row="0" Width="Auto"/>
-        <Popup x:Name="MenuPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=TitleBar}" StaysOpen="False" AllowsTransparency="True">
-            <views:MenuPopupView/>
-        </Popup>
-        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-            <views:MainControlButtonView x:Name="MainControlButtons" Width="Auto" DataContext="{Binding MainControlButtonViewModel}"/>
-        </ScrollViewer>
-        <Border
-            Grid.Row="2"
-            MouseDown="RadarMouseDown" MouseUp="RadarMouseUp" MouseMove="RadarMouseMove" MouseWheel="RadarMouseWheel">
-            <Grid>
-                <skia:SKElement x:Name="RadarCanvas" PaintSurface="OnPaintSurface" xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF">
-                </skia:SKElement>
-                <views:CommandAreaView x:Name="CommandArea" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <views:StatusAreaView x:Name="StatusArea" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <views:DateAreaView x:Name="DateArea" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            </Grid>
-        </Border>
-    </Grid>
+	<WindowChrome.WindowChrome>
+		<WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0" />
+	</WindowChrome.WindowChrome>
+	<Grid x:Name="MainWindowGrid">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<views:TitleBarView x:Name="TitleBar" TitleText="Client" Grid.Row="0" Width="Auto" />
+		<Popup x:Name="MenuPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=TitleBar}" StaysOpen="False"
+		       AllowsTransparency="True">
+			<views:MenuPopupView />
+		</Popup>
+		<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+			<views:MainControlButtonView x:Name="MainControlButtons" Width="Auto"
+			                             DataContext="{Binding MainControlButtonViewModel}" />
+		</ScrollViewer>
+		<Border
+			Grid.Row="2"
+			MouseDown="RadarMouseDown" MouseUp="RadarMouseUp" MouseMove="RadarMouseMove" MouseWheel="RadarMouseWheel">
+			<Grid>
+				<skia:SKElement x:Name="RadarCanvas" PaintSurface="OnPaintSurface"
+				                xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF" />
+				<views:CommandAreaView x:Name="CommandArea" HorizontalAlignment="Left" VerticalAlignment="Center" />
+				<views:StatusAreaView x:Name="StatusArea" HorizontalAlignment="Left" VerticalAlignment="Top" />
+				<views:DateAreaView x:Name="DateArea" HorizontalAlignment="Right" VerticalAlignment="Top" />
+			</Grid>
+		</Border>
+	</Grid>
 </Window>
