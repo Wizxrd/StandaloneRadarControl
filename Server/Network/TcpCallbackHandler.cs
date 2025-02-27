@@ -6,14 +6,14 @@ namespace Server.Network;
 
 public class TcpCallbackHandler
 {
-	public static readonly Dictionary<string, Func<TcpServerHandler, TcpClient, JObject, Task>> CommandMap = new()
+	public static readonly Dictionary<string, Func<JObject, TcpClient, JObject, Task>> CommandMap = new()
 	{
 		{ "OnAsyncTryConnect", OnAsyncTryConnect }
 	};
 
-	public static async Task OnAsyncTryConnect(TcpServerHandler tcpServerHandler, TcpClient client, JObject jObject)
+	public static async Task OnAsyncTryConnect(JObject config, TcpClient client, JObject jObject)
 	{
-		var passwords = tcpServerHandler.config["PASSWORDS"] as JObject;
+		JObject passwords = config["PASSWORDS"] as JObject;
 		if (passwords != null)
 		{
 			foreach (var data in passwords)
