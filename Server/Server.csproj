@@ -17,6 +17,9 @@
 
 	<ItemGroup>
 		<Content Include="Server.ico"/>
+		<Content Include="config\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
