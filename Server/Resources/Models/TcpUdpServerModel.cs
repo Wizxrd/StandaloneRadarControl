@@ -4,7 +4,7 @@ using Server.ViewModels;
 
 namespace Server.Resources.Models;
 
-public class TcpUdpServerModel : AModelBase, IServerModel
+public class TcpUdpServerModel : ModelBase, IServerModel
 {
 	MainWindowViewModel ViewModel;
 	
