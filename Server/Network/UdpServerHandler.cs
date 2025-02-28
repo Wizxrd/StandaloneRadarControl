@@ -3,13 +3,14 @@ using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Server.Models;
+using Server.Resources.Interfaces;
 using Server.Resources.Models;
 using Server.ViewModels;
 using Server.Views;
 
 namespace Server.Network;
 
-public class UdpServerHandler(IServerHandler serverHandler, Config config)
+public class UdpServerHandler(IServerModel serverModel, Config config)
 {
 	private CancellationTokenSource? cancellationTokenSource;
 	private UdpClient? udpClient;

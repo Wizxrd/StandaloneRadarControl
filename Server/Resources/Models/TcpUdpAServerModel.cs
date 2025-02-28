@@ -1,30 +1,59 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Server.Network;
+﻿using Server.Network;
+using Server.Resources.Interfaces;
 using Server.ViewModels;
 
 namespace Server.Resources.Models;
 
-public class TcpUdpServerHandler : IServerHandler
+public class TcpUdpServerModel : AModelBase, IServerModel
 {
 	MainWindowViewModel ViewModel;
 	
 	private int clientCount;
-	public int ClientCount { get; set; }
+	public int ClientCount
+	{
+		get => clientCount;
+		set
+		{
+			clientCount = value; 
+			OnPropertyChanged();
+		}
+	}
 	
 	private float pingInterval;
-	public float PingInterval { get; set; }
+	public float PingInterval	{
+		get => pingInterval;
+		set
+		{
+			pingInterval = value; 
+			OnPropertyChanged();
+		}
+	}
 	
 	private int updatesPerSecond;
-	public int UpdatesPerSecond { get; set; }
+	public int UpdatesPerSecond	{
+		get => updatesPerSecond;
+		set
+		{
+			updatesPerSecond = value; 
+			OnPropertyChanged();
+		}
+	}
 	
 	private int activePort;
-	public int ActivePort { get; set; }
+	public int ActivePort	{
+		get => activePort;
+		set
+		{
+			activePort = value; 
+			OnPropertyChanged();
+		}
+	}
 	
-	public TcpServerHandler TcpServerHandler { get; set; }
-	public UdpServerHandler UdpServerHandler { get; set; }
+	private TcpServerHandler TcpServerHandler { get; init; }
 
-	public TcpUdpServerHandler(MainWindowViewModel viewModel)
+	private UdpServerHandler UdpServerHandler { get; init; }
+	
+	public TcpUdpServerModel(MainWindowViewModel viewModel)
 	{
 		ViewModel = viewModel;
 		

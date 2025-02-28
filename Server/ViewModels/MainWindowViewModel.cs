@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
+using Server.Resources.Interfaces;
 using Server.Resources.Models;
 
 namespace Server.ViewModels;
@@ -8,20 +9,20 @@ namespace Server.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
 	public readonly Config Config;
-	
-	private IServerHandler serverHandler;
-	public IServerHandler ServerHandler
+
+	private IServerModel serverModel;
+	public IServerModel ServerModel
 	{
-		get => serverHandler;
+		get => serverModel;
 		set
 		{
-			serverHandler = value;
+			serverModel = value; 
 			OnPropertyChanged();
 		}
 	}
 
 	private bool serverRunning;
-	public bool ServerRunning	{
+	public bool ServerRunning{
 		get => serverRunning;
 		set
 		{
@@ -32,7 +33,7 @@ public class MainWindowViewModel : ViewModelBase
 
 	public MainWindowViewModel()
 	{
-		//File.WriteAllTextAsync(path:"./Config/Config.json", JsonConvert.SerializeObject(new Config(), Formatting.Indented,
+		//File.WriteAllTextAsync(path:"./Config/Config.json", JsonConvert.SerializeObject(new Config.ConfigDefaults(), Formatting.Indented,
 		//	new Newtonsoft.Json.Converters.StringEnumConverter()));
 
 		Config =  JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join("Config", "Config.json")),
@@ -40,7 +41,7 @@ public class MainWindowViewModel : ViewModelBase
 		
 		Console.WriteLine(JsonConvert.SerializeObject(Config, Formatting.Indented));
 		
-		ServerHandler = new TcpUdpServerHandler(this);
+		ServerModel = new TcpUdpServerModel(this);
 	}
 
 	public bool StartServer()
@@ -51,14 +52,17 @@ public class MainWindowViewModel : ViewModelBase
 			return ServerRunning;
 		}
 		
-		ServerRunning = serverHandler.StartServer();
+		ServerRunning = ServerModel.StartServer();
+		
+		Console.WriteLine(ServerModel.ActivePort);
 		return ServerRunning;
 	}
 
 	public void StopServer()
 	{
-		serverHandler.StopServer();
+		ServerModel.StopServer();
 		ServerRunning = false;
+		Console.WriteLine(ServerModel.ActivePort);
 	}
 
 	public void ExitApplication()

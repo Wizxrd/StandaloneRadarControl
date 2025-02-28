@@ -4,11 +4,12 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Server.Models;
+using Server.Resources.Interfaces;
 using Server.Resources.Models;
 
 namespace Server.Network;
 
-public class TcpServerHandler(IServerHandler serverHandler, Config config)
+public class TcpServerHandler(IServerModel ServerModel, Config config)
 {
 	private CancellationTokenSource? cancellationTokenSource;
 	private TcpListener? connectionListener;
@@ -25,7 +26,7 @@ public class TcpServerHandler(IServerHandler serverHandler, Config config)
 			connectionListener.Start();
 			connectionTask = Task.Run(() => ClientConnectionListener(cancellationTokenSource.Token));
 			Logger.Info("TcpServerHandler.Start", "Server started");
-			serverHandler.ActivePort = port;
+			ServerModel.ActivePort = port;
 			return true;
 		}
 		catch (Exception ex)

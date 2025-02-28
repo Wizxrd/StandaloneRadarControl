@@ -95,7 +95,7 @@
 					FontFamily="Consolas" FontWeight="Bold" FontSize="12"
 					VerticalAlignment="Center"
 					Margin="10,0,0,0">
-						Port: <TextBlock Text="{Binding ServerHandler.ActivePort, Mode=OneWay}" />
+						Port: <TextBlock Text="{Binding ServerModel.ActivePort, Mode=OneWay}" />
 				</TextBlock>
 			</Grid>
 		</Border>
@@ -146,10 +146,10 @@
 									<Style TargetType="Button">
 										<Setter Property="Content" Value="START"/>
 										<Style.Triggers>
-												<DataTrigger Binding="{Binding ServerRunning}">
+												<DataTrigger Binding="{Binding ServerRunning}" Value="true">
 													<Setter Property="Content" Value="START" />
 												</DataTrigger>
-												<DataTrigger Binding="{Binding ServerRunning}">
+												<DataTrigger Binding="{Binding ServerRunning}" Value="true">
 													<Setter Property="Content" Value="STOP" />
 												</DataTrigger>
 											</Style.Triggers>
