@@ -1,58 +1,69 @@
 ﻿using System.IO;
 using System.Windows;
-using Newtonsoft.Json.Linq;
-using Server.Models;
-using Server.Network;
+using Newtonsoft.Json;
+using Server.Resources.Models;
 
 namespace Server.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-	public JObject Config;
+	public readonly Config Config;
 	
-	public TcpServerHandler TcpServerHandler { get; set; }
-	public UdpServerHandler UdpServerHandler { get; set; }
-
-	private int clientPort = 0;
-	public int ClientPort
+	private IServerHandler serverHandler;
+	public IServerHandler ServerHandler
 	{
-		get => clientPort;
+		get => serverHandler;
 		set
 		{
-			clientPort = value;
+			serverHandler = value;
+			OnPropertyChanged();
+		}
+	}
+
+	private bool serverRunning;
+	public bool ServerRunning	{
+		get => serverRunning;
+		set
+		{
+			serverRunning = value;
 			OnPropertyChanged();
 		}
 	}
 
 	public MainWindowViewModel()
 	{
-		TcpServerHandler = new TcpServerHandler(this);
-		UdpServerHandler = new UdpServerHandler(this);
-		Config = JObject.Parse(File.ReadAllText(LoadFile.Load("Config", "Config.json")));
-	}
+		//File.WriteAllTextAsync(path:"./Config/Config.json", JsonConvert.SerializeObject(new Config(), Formatting.Indented,
+		//	new Newtonsoft.Json.Converters.StringEnumConverter()));
 
-	public (bool, bool) StartServer()
-	{
-		bool tcpActive = TcpServerHandler.Start(); 
-		bool udpActive = UdpServerHandler.Start(); 
+		Config =  JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join("Config", "Config.json")),
+			new Newtonsoft.Json.Converters.StringEnumConverter());
 		
-		Console.WriteLine($"Server started: {ClientPort}");
+		Console.WriteLine(JsonConvert.SerializeObject(Config, Formatting.Indented));
 		
-		return (tcpActive, udpActive);
+		ServerHandler = new TcpUdpServerHandler(this);
 	}
 
-	public async Task StopServer()
+	public bool StartServer()
 	{
-		await TcpServerHandler.StopAsync();
-		UdpServerHandler.Stop();
-		ClientPort = 0;
-		Console.WriteLine($"Server stopped {ClientPort}");
+		if (ServerRunning)
+		{
+			Console.WriteLine("Server is already running.");
+			return ServerRunning;
+		}
+		
+		ServerRunning = serverHandler.StartServer();
+		return ServerRunning;
 	}
 
-	public async Task ExitApplication()
+	public void StopServer()
 	{
-		await TcpServerHandler.StopAsync();
-		UdpServerHandler.Stop();
+		serverHandler.StopServer();
+		ServerRunning = false;
+	}
+
+	public void ExitApplication()
+	{
+		StopServer();
 		Application.Current.Shutdown();
 	}
 }

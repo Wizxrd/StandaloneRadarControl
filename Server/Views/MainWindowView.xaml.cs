@@ -31,7 +31,7 @@ public partial class MainWindowView : Window
 	{
 		try
 		{
-			await viewModel.ExitApplication();
+			viewModel.ExitApplication();
 		}
 		catch (Exception exception)
 		{
@@ -39,20 +39,15 @@ public partial class MainWindowView : Window
 		}
 	}
 
-	private async void StartServerButtonClick(object sender, RoutedEventArgs e)
+	private void StartServerButtonClick(object sender, RoutedEventArgs e)
 	{
-		if (StartServerButton.Tag.ToString() == "-1")
+		if (viewModel.ServerRunning)
 		{
-			var (tcpStarted, udpStarted) = viewModel.StartServer();
-			if (!tcpStarted || !udpStarted) return;
-			StartServerButton.Tag = "1";
-			StartServerButton.Content = "STOP";
+			viewModel.StopServer();
 		}
 		else
-		{			
-			await viewModel.StopServer();
-			StartServerButton.Tag = "-1";
-			StartServerButton.Content = "START";
-		}
+		{
+			viewModel.StartServer();
+		}	
 	}
 }

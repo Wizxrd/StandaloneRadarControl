@@ -4,35 +4,28 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Server.Models;
-using Server.ViewModels;
+using Server.Resources.Models;
 
 namespace Server.Network;
 
-public class TcpServerHandler
+public class TcpServerHandler(IServerHandler serverHandler, Config config)
 {
-	private readonly MainWindowViewModel mainWindowViewModel;
 	private CancellationTokenSource? cancellationTokenSource;
 	private TcpListener? connectionListener;
 	private Task? connectionTask;
-	public object config;
-
-	public TcpServerHandler(MainWindowViewModel mainWindowViewModel)
-	{
-		this.mainWindowViewModel = mainWindowViewModel;
-	}
 
 	public bool Start()
 	{
 		try
 		{
-			var port = mainWindowViewModel.Config["SERVER_CLIENT_PORT"]?.Value<int>() ?? -1;
+			var port = config.ServerToClientPort;
 			if (port == -1) throw new Exception("Could not get config SERVER_CLIENT_PORT");
 			cancellationTokenSource = new CancellationTokenSource();
 			connectionListener = new TcpListener(IPAddress.Any, port);
 			connectionListener.Start();
 			connectionTask = Task.Run(() => ClientConnectionListener(cancellationTokenSource.Token));
 			Logger.Info("TcpServerHandler.Start", "Server started");
-			mainWindowViewModel.ClientPort = port;
+			serverHandler.ActivePort = port;
 			return true;
 		}
 		catch (Exception ex)
@@ -121,7 +114,7 @@ public class TcpServerHandler
 						TcpCallbackHandler.CommandMap.TryGetValue(callback, out var f))
 					{
 						Logger.Debug("TcpServerHandler.ListenToServerAsync", jsonObject.ToString());
-						await f(mainWindowViewModel.Config, client, jsonObject);
+						await f(config, client, jsonObject);
 					}
 				}
 				else

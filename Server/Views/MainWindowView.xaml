@@ -95,7 +95,7 @@
 					FontFamily="Consolas" FontWeight="Bold" FontSize="12"
 					VerticalAlignment="Center"
 					Margin="10,0,0,0">
-						Port: <TextBlock Text="{Binding ClientPort}" />
+						Port: <TextBlock Text="{Binding ServerHandler.ActivePort, Mode=OneWay}" />
 				</TextBlock>
 			</Grid>
 		</Border>
@@ -133,7 +133,6 @@
 						<Button
 							Name="StartServerButton" Grid.Row="0"
 							FontFamily="Consolas" FontWeight="Bold" FontSize="12"
-							Content="Start"
 							Width="125" Height="25"
 							Margin="0,5,0,5"
 							Tag="-1"
@@ -142,7 +141,21 @@
 							Foreground="{DynamicResource TextColor}"
 							HorizontalAlignment="Center"
 							Click="StartServerButtonClick"
-							Template="{DynamicResource MainButtonTemplate}" />
+							Template="{DynamicResource MainButtonTemplate}">
+								<Button.Style>
+									<Style TargetType="Button">
+										<Setter Property="Content" Value="START"/>
+										<Style.Triggers>
+												<DataTrigger Binding="{Binding ServerRunning}">
+													<Setter Property="Content" Value="START" />
+												</DataTrigger>
+												<DataTrigger Binding="{Binding ServerRunning}">
+													<Setter Property="Content" Value="STOP" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+								</Button.Style>
+							</Button>
 						<Button
 							Grid.Row="0"
 							FontFamily="Consolas" FontWeight="Bold" FontSize="12"

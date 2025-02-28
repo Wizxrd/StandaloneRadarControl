@@ -3,28 +3,23 @@ using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Server.Models;
+using Server.Resources.Models;
 using Server.ViewModels;
 using Server.Views;
 
 namespace Server.Network;
 
-public class UdpServerHandler
+public class UdpServerHandler(IServerHandler serverHandler, Config config)
 {
-	private readonly MainWindowViewModel MainWindowViewModel;
 	private CancellationTokenSource? cancellationTokenSource;
 	private UdpClient? udpClient;
 	private Task? udpTask;
-
-	public UdpServerHandler(MainWindowViewModel MainWindowViewModel)
-	{
-		this.MainWindowViewModel = MainWindowViewModel;
-	}
 
 	public bool Start()
 	{
 		try
 		{
-			var port = MainWindowViewModel.Config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
+			var port = config.ServerToClientPort;
 			if (port == -1) throw new Exception("Could not get config DCS_TO_SERVER_PORT");
 
 			cancellationTokenSource = new CancellationTokenSource();
