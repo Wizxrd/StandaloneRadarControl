@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Server.Resources.Models;
 
-public abstract class AModelBase : INotifyPropertyChanged
+public abstract class ModelBase : INotifyPropertyChanged
 {
 	public event PropertyChangedEventHandler PropertyChanged;
 
