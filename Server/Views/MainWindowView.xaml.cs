@@ -14,9 +14,10 @@ public partial class MainWindowView : Window
 	public MainWindowView()
 	{
 		InitializeComponent();
+		this.DataContext = viewModel;
 	}
 
-	public void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
+	private void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		if (e.ChangedButton == MouseButton.Left) DragMove();
 	}
@@ -43,23 +44,15 @@ public partial class MainWindowView : Window
 		if (StartServerButton.Tag.ToString() == "-1")
 		{
 			var (tcpStarted, udpStarted) = viewModel.StartServer();
-			if (tcpStarted && udpStarted)
-			{
-				StartServerButton.Tag = "1";
-				StartServerButton.Content = "STOP";
-			}
+			if (!tcpStarted || !udpStarted) return;
+			StartServerButton.Tag = "1";
+			StartServerButton.Content = "STOP";
 		}
 		else
-		{
+		{			
+			await viewModel.StopServer();
 			StartServerButton.Tag = "-1";
 			StartServerButton.Content = "START";
-			await viewModel.StopServer();
-			UpdateClientPortTextBox(string.Empty);
 		}
-	}
-
-	public void UpdateClientPortTextBox(string port)
-	{
-		PortTextBlock.Text = $"Port: {port}";
 	}
 }

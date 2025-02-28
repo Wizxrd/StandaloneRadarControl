@@ -10,11 +10,20 @@ public class MainWindowViewModel : ViewModelBase
 {
 	public JObject Config;
 	
-	public TcpServerHandler TcpServerHandler;
-	public UdpServerHandler UdpServerHandler;
+	public TcpServerHandler TcpServerHandler { get; set; }
+	public UdpServerHandler UdpServerHandler { get; set; }
 
-	public int ClientPort;
-	
+	private int clientPort = 0;
+	public int ClientPort
+	{
+		get => clientPort;
+		set
+		{
+			clientPort = value;
+			OnPropertyChanged();
+		}
+	}
+
 	public MainWindowViewModel()
 	{
 		TcpServerHandler = new TcpServerHandler(this);
@@ -26,6 +35,9 @@ public class MainWindowViewModel : ViewModelBase
 	{
 		bool tcpActive = TcpServerHandler.Start(); 
 		bool udpActive = UdpServerHandler.Start(); 
+		
+		Console.WriteLine($"Server started: {ClientPort}");
+		
 		return (tcpActive, udpActive);
 	}
 
@@ -33,6 +45,8 @@ public class MainWindowViewModel : ViewModelBase
 	{
 		await TcpServerHandler.StopAsync();
 		UdpServerHandler.Stop();
+		ClientPort = 0;
+		Console.WriteLine($"Server stopped {ClientPort}");
 	}
 
 	public async Task ExitApplication()

@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Server.ViewModels"
         mc:Ignorable="d"
         Background="Black"
         Title="MainWindow"
         Width="425" SizeToContent="Height"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
+	
 	<WindowChrome.WindowChrome>
 		<WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0" />
 	</WindowChrome.WindowChrome>
@@ -46,7 +49,7 @@
 				<Button
 					x:Name="CloseButton"
 					ToolTip="Close"
-					Grid.Column="4"
+					Grid.Column="3"
 					Width="37"
 					Style="{DynamicResource CloseButtonStyle}"
 					Tag="pack://application:,,,/Images/Close.png"
@@ -87,12 +90,13 @@
 					Margin="10,0,0,0" />
 				<TextBlock
 					Name="PortTextBlock"
-					Text="Port:"
 					Grid.Column="3"
 					Foreground="{DynamicResource YellowText}"
 					FontFamily="Consolas" FontWeight="Bold" FontSize="12"
 					VerticalAlignment="Center"
-					Margin="10,0,0,0" />
+					Margin="10,0,0,0">
+						Port: <TextBlock Text="{Binding ClientPort}" />
+				</TextBlock>
 			</Grid>
 		</Border>
 		<Border Grid.Row="2" Background="{StaticResource GrayBackground}" BorderBrush="{DynamicResource GrayBorder}"
