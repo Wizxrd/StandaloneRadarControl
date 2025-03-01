@@ -9,8 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Server.Models;
 using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Server.ViewModels.Utils;
 
-namespace Server.Network
+namespace Server.ViewModels.Network
 {
     public class TcpClientSender
     {

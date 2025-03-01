@@ -7,9 +7,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Server.Models;
+using Server.ViewModels.Utils;
+using Server.Views;
 
-namespace Server.Network
+namespace Server.ViewModels.Network
 {
     public class UdpServerHandler
     {
@@ -22,7 +23,7 @@ namespace Server.Network
         public UdpServerHandler(MainWindowView mainWindowView)
         {
             this.mainWindowView = mainWindowView;
-            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Config", "Config.json")));
+            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
         }
 
         public bool Start()

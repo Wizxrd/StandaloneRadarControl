@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Server.Models;
 
-namespace Server.Network
+namespace Server.ViewModels.Network
 {
     public class TcpClients
     {

@@ -1,7 +1,8 @@
-﻿using Server.Models;
-using Server.Network;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using Server.ViewModels;
+using Server.ViewModels.Network;
+using Server.ViewModels.Utils;
 
 namespace Server.Views
 {

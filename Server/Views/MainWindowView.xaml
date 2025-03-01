@@ -41,17 +41,15 @@
                     ToolTip="Minimize"
                     Grid.Column="2"
                     Width="37"
-                    Style="{DynamicResource WindowsButtonStyle}"
-                    Tag="pack://application:,,,/Images/Minimize.png"
+                    Style="{DynamicResource MinimizeButtonStyle}"
                     Click="MinimizeButtonClick">
                 </Button>
                 <Button
                     x:Name="CloseButton"
                     ToolTip="Close"
-                    Grid.Column="4"
+                    Grid.Column="3"
                     Width="37"
                     Style="{DynamicResource CloseButtonStyle}"
-                    Tag="pack://application:,,,/Images/Close.png"
                     Click="CloseButtonClick">
                 </Button>
             </Grid>

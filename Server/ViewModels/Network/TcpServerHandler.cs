@@ -11,10 +11,11 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Windows;
+using Server.ViewModels.Utils;
 using Server.Views;
 using Server.Models;
 
-namespace Server.Network
+namespace Server.ViewModels.Network
 {
     public class TcpServerHandler
     {
@@ -28,7 +29,7 @@ namespace Server.Network
         public TcpServerHandler(MainWindowView mainWindowView)
         {
             this.mainWindowView = mainWindowView;
-            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Config", "Config.json")));
+            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
         }
 
         public bool Start()

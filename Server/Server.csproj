@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\Close.png" />
-    <Resource Include="Images\Minimize.png" />
-    <Resource Include="Images\ShowPassword.png" />
+    <Resource Include="Resources\Images\Close.png" />
+    <Resource Include="Resources\Images\Minimize.png" />
+    <Resource Include="Resources\Images\ShowPassword.png" />
   </ItemGroup>
 
 </Project>

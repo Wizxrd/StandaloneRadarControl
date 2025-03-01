@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Server.Models;
 using System.Windows;
+using Server.ViewModels.Utils;
 
-namespace Server.Network
+namespace Server.ViewModels.Network
 {
     public class TcpCallbackHandler
     {
