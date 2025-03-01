@@ -12,29 +12,45 @@ using Server.Views;
 
 namespace Server.ViewModels.Network
 {
-    public class UdpServerHandler
+    public class UdpImportHandler : IDataImporterHandler
     {
+        public bool HandlerActive { get; private set; }
+        public float UpdatesPerSecond { get; } //Unimplimented
+        public string DcsHostName { get; init; } //Unimplimented
+        public int SrcToDcsPort { get; init; } //Undeclared
+        public int DcsToSrcPort { get; init; }
+
+        public IDataExporterHandler ExporterHandler { get; init; }
+
         private CancellationTokenSource? cancellationTokenSource;
         private UdpClient? udpClient;
         private Task? udpTask;
         private readonly MainWindowView mainWindowView;
         public JObject config;
 
-        public UdpServerHandler(MainWindowView mainWindowView)
+        public UdpImportHandler(MainWindowView mainWindowView)
         {
             this.mainWindowView = mainWindowView;
             config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
+
+            UpdatesPerSecond = 0;
+            DcsHostName = "localhost";
+            
+            int port = config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
+            if (port == -1)
+            {
+                throw new Exception("Could not get config DCS_TO_SERVER_PORT");
+            }
+
+            DcsToSrcPort = port;
         }
 
-        public bool Start()
+        public bool StartDataImportHandler()
         {
             try
             {
-                int port = config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
-                if (port == -1) { throw new Exception("Could not get config DCS_TO_SERVER_PORT"); }
-
                 cancellationTokenSource = new CancellationTokenSource();
-                udpClient = new UdpClient(port);
+                udpClient = new UdpClient(DcsToSrcPort);
 
                 udpTask = Task.Run(() => DCSListener(cancellationTokenSource.Token));
 
@@ -47,7 +63,7 @@ namespace Server.ViewModels.Network
             }
         }
 
-        public void Stop()
+        public bool StopDataImportHandler()
         {
             try
             {
@@ -58,7 +74,10 @@ namespace Server.ViewModels.Network
             catch (Exception ex)
             {
                 Logger.Error("UdpServerHandler.Stop", ex.ToString());
+                return false;
             }
+
+            return true;
         }
 
         private async Task DCSListener(CancellationToken token)
@@ -85,7 +104,7 @@ namespace Server.ViewModels.Network
                             string callback = callbackToken.ToString();
                             if (callback == "OnGlobalContactExport")
                             {
-                                await TcpClientSender.SendToClients(receivedJson);
+                                await ExporterHandler.SendData(receivedJson);
                             }
                         }
                     }

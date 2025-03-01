@@ -15,14 +15,14 @@ namespace Server.ViewModels.Network
 {
     public class TcpCallbackHandler
     {
-        public static readonly Dictionary<string, Func<TcpServerHandler, TcpClient, JObject, Task>> CommandMap = new()
+        public static readonly Dictionary<string, Func<TcpExportHandler, TcpClient, JObject, Task>> CommandMap = new()
         {
             { "OnAsyncTryConnect", OnAsyncTryConnect }
         };
 
-        public static async Task OnAsyncTryConnect(TcpServerHandler tcpServerHandler, TcpClient client, JObject jObject)
+        public static async Task OnAsyncTryConnect(TcpExportHandler tcpExportHandler, TcpClient client, JObject jObject)
         {
-            var passwords = tcpServerHandler.config["PASSWORDS"] as JObject;
+            var passwords = tcpExportHandler.config["PASSWORDS"] as JObject;
             if (passwords != null)
             {
                 foreach (var data in passwords)

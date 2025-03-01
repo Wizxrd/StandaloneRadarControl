@@ -11,14 +11,14 @@ namespace Server.Views
     /// </summary>
     public partial class MainWindowView : Window
     {
-        private TcpServerHandler tcpServerHandler;
-        private UdpServerHandler udpServerHandler;
+        private IDataExporterHandler tcpExportHandler;
+        private IDataImporterHandler udpImportHandler;
         public MainWindowView()
         {
             InitializeComponent();
             Logger.Wipe();
-            tcpServerHandler = new(this);
-            udpServerHandler = new(this);
+            tcpExportHandler = new TcpExportHandler(this);
+            udpImportHandler = new UdpImportHandler(this);
         }
 
         public void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
@@ -35,8 +35,8 @@ namespace Server.Views
         }
         private async void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            await tcpServerHandler.StopAsync();
-            udpServerHandler.Stop();
+            tcpExportHandler.StopDataExportHandler();
+            udpImportHandler.StopDataImportHandler();
             Application.Current.Shutdown();
         }
 
@@ -44,8 +44,8 @@ namespace Server.Views
         {
             if (StartServerButton.Tag.ToString() == "-1")
             {
-                bool tcpServerStarted = tcpServerHandler.Start();
-                bool udpServerStarted = udpServerHandler.Start();
+                bool tcpServerStarted = tcpExportHandler.StartDataExportHandler();
+                bool udpServerStarted = udpImportHandler.StartDataImportHandler();
                 if(tcpServerStarted && udpServerStarted)
                 {
                     StartServerButton.Tag = "1";
@@ -56,8 +56,8 @@ namespace Server.Views
             {
                 StartServerButton.Tag = "-1";
                 StartServerButton.Content = "START";
-                await tcpServerHandler.StopAsync();
-                udpServerHandler.Stop();
+                tcpExportHandler.StopDataExportHandler();
+                udpImportHandler.StopDataImportHandler();
                 UpdateClientPortTextBox(string.Empty);
             }
         }
