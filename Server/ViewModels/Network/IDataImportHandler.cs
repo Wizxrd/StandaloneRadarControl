@@ -3,7 +3,7 @@
 /// <summary>
 /// Handler for bringing Data in from a Digital Combat Simulator Server.
 /// </summary>
-public interface IDataImporterHandler
+public interface IDataImportHandler
 {
 	bool HandlerActive { get; }
 	float UpdatesPerSecond { get; }
@@ -14,6 +14,6 @@ public interface IDataImporterHandler
 	
 	IDataExporterHandler ExporterHandler { get; init; }
 	
-	public bool StartDataImportHandler();
-	public bool StopDataImportHandler();
+	public bool StartHandler();
+	public bool StopHandler();
 }

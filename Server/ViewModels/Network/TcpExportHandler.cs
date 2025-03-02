@@ -28,12 +28,12 @@ public class TcpExportHandler : IDataExporterHandler
     private TcpListener? connectionListener;
     private Task? connectionTask;
 
-    private MainWindowView mainWindowView;
+    private MainWindowViewModel ViewModel;
     public JObject config;
 
-    public TcpExportHandler(MainWindowView mainWindowView)
+    public TcpExportHandler(MainWindowViewModel mainWindowViewModel)
     {
-        this.mainWindowView = mainWindowView;
+        this.ViewModel = mainWindowViewModel;
         config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
         
         int port = config["SERVER_CLIENT_PORT"]?.Value<int>() ?? -1;
@@ -45,7 +45,7 @@ public class TcpExportHandler : IDataExporterHandler
         SrcExternalPort = port;
     }
 
-    public bool StartDataExportHandler()
+    public bool StartHandler()
     {
         try
         {
@@ -54,7 +54,6 @@ public class TcpExportHandler : IDataExporterHandler
             connectionListener.Start();
             connectionTask = Task.Run(() => ClientConnectionListener(cancellationTokenSource.Token));
             Logger.Info("TcpServerHandler.Start", "Server started");
-            mainWindowView.UpdateClientPortTextBox(SrcExternalPort.ToString());
             HandlerActive = true;
             return HandlerActive;
         }
@@ -66,7 +65,7 @@ public class TcpExportHandler : IDataExporterHandler
         }
     }
 
-    public bool StopDataExportHandler()
+    public bool StopHandler()
     {
         _ = StopAsync();
         HandlerActive = false;
@@ -186,7 +185,7 @@ public class TcpExportHandler : IDataExporterHandler
         }
     }
     
-    public Task SendData(JObject data)
+    public Task SendDataToAllClients(JObject data)
     {
         return TcpClientSender.SendToClients(data);
     }

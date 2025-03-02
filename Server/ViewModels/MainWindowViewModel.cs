@@ -1,6 +1,78 @@
-﻿namespace Server.ViewModels;
+﻿using System.Windows;
+using Server.ViewModels.Network;
+
+namespace Server.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+	private IDataImportHandler dataImportHandler; // Field is proxied with a Property to Enable WPF Data Binding
+	public IDataImportHandler DataImportHandler
+	{
+		get => dataImportHandler;
+		set
+		{
+			dataImportHandler = value; 
+			OnPropertyChanged();
+		}
+	}
+	private IDataExporterHandler dataExportHandler; // Field is proxied with a Property to Enable WPF Data Binding
+	public IDataExporterHandler DataExportHandler
+	{
+		get => dataExportHandler;
+		set
+		{
+			dataExportHandler = value; 
+			OnPropertyChanged();
+		}
+	}
 	
+	private bool serverRunning; // Field is proxied with a Property to Enable WPF Data Binding
+	public bool ServerRunning{
+		get => serverRunning;
+		set
+		{
+			serverRunning = value;
+			OnPropertyChanged();
+		}
+	}
+	
+	public MainWindowViewModel()
+	{
+		DataExportHandler = new TcpExportHandler(this);
+		DataImportHandler = new UdpImportHandler(this);
+	}
+
+	public bool StartServer()
+	{
+		if (ServerRunning)
+		{
+			Console.WriteLine("Server is already running.");
+			return ServerRunning;
+		}
+
+		bool importHandler = DataImportHandler.StartHandler();
+		bool exportHandler = DataExportHandler.StartHandler();
+
+		// If one of the other fails to start, stop the other one and return a failure to start.
+		if (importHandler && !exportHandler) { DataImportHandler.StopHandler(); }
+		if (exportHandler && !importHandler) { DataExportHandler.StopHandler(); }
+		
+		ServerRunning = importHandler && exportHandler;
+		return ServerRunning;
+	}
+
+	public bool StopServer()
+	{
+		bool importHandler = DataImportHandler.StopHandler();
+		bool exportHandler = DataExportHandler.StopHandler();
+
+		ServerRunning = importHandler && exportHandler;
+		return ServerRunning;
+	}
+
+	public void ExitApplicaiton()
+	{
+		StopServer();
+		Application.Current.Shutdown();
+	}
 }

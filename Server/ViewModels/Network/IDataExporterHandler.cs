@@ -12,8 +12,8 @@ public interface IDataExporterHandler
 	string SrcHostName { get; init; }
 	int SrcExternalPort { get; init; }
 	
-	public bool StartDataExportHandler();
-	public bool StopDataExportHandler();
+	public bool StartHandler();
+	public bool StopHandler();
 
-	public Task SendData(JObject data);
+	public Task SendDataToAllClients(JObject data);
 }

@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Server.ViewModels"
         mc:Ignorable="d"
         Background="Black"
         Title="MainWindow"
         Width="425" SizeToContent="Height"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
+    
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
@@ -90,12 +93,12 @@
                 </TextBlock>
                 <TextBlock
                     Name="PortTextBlock"
-                    Text="Port:"
                     Grid.Column="3"
                     Foreground="{DynamicResource YellowText}"
                     FontFamily="Consolas" FontWeight="Bold" FontSize="12"
                     VerticalAlignment="Center"
                     Margin="10,0,0,0">
+                    Port: <TextBlock Text="{Binding DataExportHandler.SrcExternalPort, Mode=OneWay}" />
                 </TextBlock>
             </Grid>
         </Border>
@@ -133,7 +136,6 @@
                         <Button
                             Name="StartServerButton" Grid.Row="0"
                             FontFamily="Consolas" FontWeight="Bold" FontSize="12"
-                            Content="Start"
                             Width="125" Height="25"
                             Margin="0,5,0,5"
                             Tag="-1"
@@ -143,6 +145,19 @@
                             HorizontalAlignment="Center"
                             Click="StartServerButtonClick"
                             Template="{DynamicResource MainButtonTemplate}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Content" Value="START"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerRunning}" Value="True">
+                                            <Setter Property="Content" Value="STOP" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerRunning}" Value="False">
+                                            <Setter Property="Content" Value="START" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                         </Button>
                         <Button
                             Grid.Row="0"

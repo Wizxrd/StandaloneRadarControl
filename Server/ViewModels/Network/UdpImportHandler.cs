@@ -12,7 +12,7 @@ using Server.Views;
 
 namespace Server.ViewModels.Network
 {
-    public class UdpImportHandler : IDataImporterHandler
+    public class UdpImportHandler : IDataImportHandler
     {
         public bool HandlerActive { get; private set; }
         public float UpdatesPerSecond { get; } //Unimplimented
@@ -25,14 +25,16 @@ namespace Server.ViewModels.Network
         private CancellationTokenSource? cancellationTokenSource;
         private UdpClient? udpClient;
         private Task? udpTask;
-        private readonly MainWindowView mainWindowView;
+        private readonly MainWindowViewModel ViewModel;
         public JObject config;
 
-        public UdpImportHandler(MainWindowView mainWindowView)
+        public UdpImportHandler(MainWindowViewModel mainWindowViewModel)
         {
-            this.mainWindowView = mainWindowView;
+            this.ViewModel = mainWindowViewModel;
             config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
 
+            ExporterHandler = ViewModel.DataExportHandler;
+            
             UpdatesPerSecond = 0;
             DcsHostName = "localhost";
             
@@ -45,7 +47,7 @@ namespace Server.ViewModels.Network
             DcsToSrcPort = port;
         }
 
-        public bool StartDataImportHandler()
+        public bool StartHandler()
         {
             try
             {
@@ -63,7 +65,7 @@ namespace Server.ViewModels.Network
             }
         }
 
-        public bool StopDataImportHandler()
+        public bool StopHandler()
         {
             try
             {
@@ -104,7 +106,7 @@ namespace Server.ViewModels.Network
                             string callback = callbackToken.ToString();
                             if (callback == "OnGlobalContactExport")
                             {
-                                await ExporterHandler.SendData(receivedJson);
+                                await ExporterHandler.SendDataToAllClients(receivedJson);
                             }
                         }
                     }
