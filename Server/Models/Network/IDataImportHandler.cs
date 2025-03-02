@@ -1,4 +1,4 @@
-﻿namespace Server.ViewModels.Network;
+﻿namespace Server.Models.Network;
 
 /// <summary>
 /// Handler for bringing Data in from a Digital Combat Simulator Server.

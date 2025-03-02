@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Server.ViewModels.Network;
+namespace Server.Models.Network;
 
 /// <summary>
 /// Handler for Data being sent to Standalone Radar Control Clients.

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Server.Models.Utils;
 using Server.ViewModels;
-using Server.ViewModels.Utils;
 
 namespace Server.Views
 {

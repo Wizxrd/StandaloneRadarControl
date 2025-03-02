@@ -1,17 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Server.Models;
-using System.Windows;
-using Server.ViewModels.Utils;
+﻿using System.Net.Sockets;
+using Newtonsoft.Json.Linq;
+using Server.Models.Utils;
 
-namespace Server.ViewModels.Network
+namespace Server.Models.Network
 {
     public class TcpCallbackHandler
     {

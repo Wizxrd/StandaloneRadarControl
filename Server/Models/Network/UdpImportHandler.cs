@@ -1,16 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using Server.Views;
-using System;
-using System.IO;
-using System.Net;
+﻿using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Server.ViewModels.Utils;
-using Server.Views;
+using Newtonsoft.Json.Linq;
+using Server.Models.Utils;
+using Server.ViewModels;
 
-namespace Server.ViewModels.Network
+namespace Server.Models.Network
 {
     public class UdpImportHandler : IDataImportHandler
     {

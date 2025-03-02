@@ -1,21 +1,13 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Sockets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using System.Net.Http;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Windows;
-using Server.ViewModels.Utils;
-using Server.Views;
-using Server.Models;
+using Server.Models.Utils;
+using Server.ViewModels;
 
-namespace Server.ViewModels.Network;
+namespace Server.Models.Network;
 
 public class TcpExportHandler : IDataExporterHandler
 {

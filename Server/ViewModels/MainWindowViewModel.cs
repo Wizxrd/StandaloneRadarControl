@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Server.ViewModels.Network;
+using Server.Models.Network;
 
 namespace Server.ViewModels;
 

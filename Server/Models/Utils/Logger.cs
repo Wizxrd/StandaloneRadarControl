@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Server.ViewModels.Utils
+namespace Server.Models.Utils
 {
     public class Logger
     {
