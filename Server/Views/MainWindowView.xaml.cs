@@ -1,7 +1,7 @@
-﻿using Server.Models;
-using Server.Network;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using Server.Models.Utils;
+using Server.ViewModels;
 
 namespace Server.Views
 {
@@ -10,14 +10,14 @@ namespace Server.Views
     /// </summary>
     public partial class MainWindowView : Window
     {
-        private TcpServerHandler tcpServerHandler;
-        private UdpServerHandler udpServerHandler;
+        private readonly MainWindowViewModel viewModel = new();
+        
         public MainWindowView()
         {
             InitializeComponent();
+            this.DataContext = viewModel;
+            
             Logger.Wipe();
-            tcpServerHandler = new(this);
-            udpServerHandler = new(this);
         }
 
         public void TitleBarMouseDown(object sender, MouseButtonEventArgs e)
@@ -32,38 +32,28 @@ namespace Server.Views
         {
             this.WindowState = WindowState.Minimized;
         }
-        private async void CloseButtonClick(object sender, RoutedEventArgs e)
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            await tcpServerHandler.StopAsync();
-            udpServerHandler.Stop();
-            Application.Current.Shutdown();
-        }
-
-        private async void StartServerButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (StartServerButton.Tag.ToString() == "-1")
+            try
             {
-                bool tcpServerStarted = tcpServerHandler.Start();
-                bool udpServerStarted = udpServerHandler.Start();
-                if(tcpServerStarted && udpServerStarted)
-                {
-                    StartServerButton.Tag = "1";
-                    StartServerButton.Content = "STOP";
-                }
+                viewModel.ExitApplicaiton();
             }
-            else
+            catch (Exception exception)
             {
-                StartServerButton.Tag = "-1";
-                StartServerButton.Content = "START";
-                await tcpServerHandler.StopAsync();
-                udpServerHandler.Stop();
-                UpdateClientPortTextBox(string.Empty);
+                throw;
             }
         }
 
-        public void UpdateClientPortTextBox(string port)
+        private void StartServerButtonClick(object sender, RoutedEventArgs e)
         {
-            PortTextBlock.Text = $"Port: {port}";
+            if (!viewModel.ServerRunning)
+            {
+                viewModel.StartServer(); 
+                Console.WriteLine("Starting server...");
+                return;
+            }
+            viewModel.StopServer();
+            Console.WriteLine("Stopping server...");
         }
     }
 }

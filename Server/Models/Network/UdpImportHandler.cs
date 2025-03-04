@@ -1,39 +1,53 @@
-﻿using Newtonsoft.Json.Linq;
-using Server.Views;
-using System;
-using System.IO;
-using System.Net;
+﻿using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Server.Models;
+using Newtonsoft.Json.Linq;
+using Server.Models.Utils;
+using Server.ViewModels;
 
-namespace Server.Network
+namespace Server.Models.Network
 {
-    public class UdpServerHandler
+    public class UdpImportHandler : IDataImportHandler
     {
+        public bool HandlerActive { get; private set; }
+        public float UpdatesPerSecond { get; } //Unimplimented
+        public string DcsHostName { get; init; } //Unimplimented
+        public int SrcToDcsPort { get; init; } //Undeclared
+        public int DcsToSrcPort { get; init; }
+
+        public IDataExporterHandler ExporterHandler { get; init; }
+
         private CancellationTokenSource? cancellationTokenSource;
         private UdpClient? udpClient;
         private Task? udpTask;
-        private readonly MainWindowView mainWindowView;
+        private readonly MainWindowViewModel ViewModel;
         public JObject config;
 
-        public UdpServerHandler(MainWindowView mainWindowView)
+        public UdpImportHandler(MainWindowViewModel mainWindowViewModel)
         {
-            this.mainWindowView = mainWindowView;
-            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Config", "Config.json")));
+            this.ViewModel = mainWindowViewModel;
+            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
+
+            ExporterHandler = ViewModel.DataExportHandler;
+            
+            UpdatesPerSecond = 0;
+            DcsHostName = "localhost";
+            
+            int port = config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
+            if (port == -1)
+            {
+                throw new Exception("Could not get config DCS_TO_SERVER_PORT");
+            }
+
+            DcsToSrcPort = port;
         }
 
-        public bool Start()
+        public bool StartHandler()
         {
             try
             {
-                int port = config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
-                if (port == -1) { throw new Exception("Could not get config DCS_TO_SERVER_PORT"); }
-
                 cancellationTokenSource = new CancellationTokenSource();
-                udpClient = new UdpClient(port);
+                udpClient = new UdpClient(DcsToSrcPort);
 
                 udpTask = Task.Run(() => DCSListener(cancellationTokenSource.Token));
 
@@ -46,7 +60,7 @@ namespace Server.Network
             }
         }
 
-        public void Stop()
+        public bool StopHandler()
         {
             try
             {
@@ -57,7 +71,10 @@ namespace Server.Network
             catch (Exception ex)
             {
                 Logger.Error("UdpServerHandler.Stop", ex.ToString());
+                return false;
             }
+
+            return true;
         }
 
         private async Task DCSListener(CancellationToken token)
@@ -84,7 +101,7 @@ namespace Server.Network
                             string callback = callbackToken.ToString();
                             if (callback == "OnGlobalContactExport")
                             {
-                                await TcpClientSender.SendToClients(receivedJson);
+                                await ExporterHandler.SendDataToAllClients(receivedJson);
                             }
                         }
                     }

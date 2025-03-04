@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Server.Models;
+﻿using System.IO;
 
-namespace Server.Models
+namespace Server.Models.Utils
 {
     public class LoadFile
     {

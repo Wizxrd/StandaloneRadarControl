@@ -6,9 +6,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/Dark.xaml"/>
-                <ResourceDictionary Source="/Controls/Styles.xaml"/>
-                <ResourceDictionary Source="/Controls/Templates.xaml"/>
+                <ResourceDictionary Source="Resources/Themes/Dark.xaml"/>
+                <ResourceDictionary Source="Resources/Controls/Styles.xaml"/>
+                <ResourceDictionary Source="Resources/Controls/Templates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
