@@ -2,6 +2,14 @@
 
 public class Config
 {
+	public string DCS_SAVED_GAMES { get; set; } = string.Empty;
+	public string DISCORD_PRESENCE_SERVER_NAME { get; set; } = string.Empty;
+	public int SERVER_CLIENT_PORT { get; set; } = 7500;
+	public bool SIMULTANEOUS_CONNECTIONS_ALLOWED { get; set; } = true;
+	public DcsServerSettings DCS_SERVER_SETTINGS { get; set; } = new DcsServerSettings();
+	public ExportMethods EXPORT_METHODS { get; set; } = new ExportMethods();
+	public List<CoalitionDetail> COALITION_DETAILS { get; set; } = new List<CoalitionDetail>();
+	
 	// The Enum misbehaves, so here is how you would get a "new with Defaults" Config file.
 	public Config ConfigDefaults()
 	{
@@ -18,15 +26,6 @@ public class Config
 			}
 		};
 	}
-	
-	public string DCS_SAVED_GAMES { get; set; } = string.Empty;
-	public string DISCORD_PRESENCE_SERVER_NAME { get; set; } = string.Empty;
-	public int SERVER_CLIENT_PORT { get; set; } = 7500;
-	public bool SIMULTANEOUS_CONNECTIONS_ALLOWED { get; set; } = true;
-	public DcsServerSettings DCS_SERVER_SETTINGS { get; set; } = new DcsServerSettings();
-	public ExportMethods EXPORT_METHODS { get; set; } = new ExportMethods();
-
-	public List<CoalitionDetail> COALITION_DETAILS { get; set; } = new List<CoalitionDetail>();
 }
 
 public class DcsServerSettings
