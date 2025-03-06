@@ -9,37 +9,31 @@ namespace Server.Models.Network
 {
     public class UdpImportHandler : IDataImportHandler
     {
+        // External Stuff (Always a Property.)
+        private MainWindowViewModel ViewModel { get; init; }
+        public IDataExporterHandler ExporterHandler { get; init; }
+        
+        // Internal Stuff
         public bool HandlerActive { get; private set; }
         public float UpdatesPerSecond { get; } //Unimplimented
         public string DcsHostName { get; init; } //Unimplimented
         public int SrcToDcsPort { get; init; } //Undeclared
         public int DcsToSrcPort { get; init; }
-
-        public IDataExporterHandler ExporterHandler { get; init; }
-
+        
         private CancellationTokenSource? cancellationTokenSource;
         private UdpClient? udpClient;
         private Task? udpTask;
-        private readonly MainWindowViewModel ViewModel;
-        public JObject config;
-
+        
         public UdpImportHandler(MainWindowViewModel mainWindowViewModel)
         {
             this.ViewModel = mainWindowViewModel;
-            config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
 
             ExporterHandler = ViewModel.DataExportHandler;
             
             UpdatesPerSecond = 0;
             DcsHostName = "localhost";
             
-            int port = config["DCS_TO_SERVER_PORT"]?.Value<int>() ?? -1;
-            if (port == -1)
-            {
-                throw new Exception("Could not get config DCS_TO_SERVER_PORT");
-            }
-
-            DcsToSrcPort = port;
+            DcsToSrcPort = ViewModel.Config.DCS_SERVER_SETTINGS.DCS_TO_SRC_PORT;
         }
 
         public bool StartHandler()

@@ -11,6 +11,10 @@ namespace Server.Models.Network;
 
 public class TcpExportHandler : IDataExporterHandler
 {
+    // External Stuff (Always a Property.)
+    private MainWindowViewModel ViewModel { get; init; }
+    
+    // Internal Stuff
     public bool HandlerActive { get; private set; }
 
     public string SrcHostName { get; init; } = "localhost"; // Unimplemented
@@ -20,21 +24,12 @@ public class TcpExportHandler : IDataExporterHandler
     private TcpListener? connectionListener;
     private Task? connectionTask;
 
-    private MainWindowViewModel ViewModel;
-    public JObject config;
+
 
     public TcpExportHandler(MainWindowViewModel mainWindowViewModel)
     {
         this.ViewModel = mainWindowViewModel;
-        config = JObject.Parse(File.ReadAllText(LoadFile.Load("Resources/Config", "Config.json")));
-        
-        int port = config["SERVER_CLIENT_PORT"]?.Value<int>() ?? -1;
-        if (port == -1)
-        {
-            throw new Exception("Could not get config SERVER_CLIENT_PORT");
-        }
-        
-        SrcExternalPort = port;
+        SrcExternalPort = ViewModel.Config.SERVER_CLIENT_PORT;
     }
 
     public bool StartHandler()
