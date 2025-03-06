@@ -24,8 +24,6 @@ public class TcpExportHandler : IDataExporterHandler
     private TcpListener? connectionListener;
     private Task? connectionTask;
 
-
-
     public TcpExportHandler(MainWindowViewModel mainWindowViewModel)
     {
         this.ViewModel = mainWindowViewModel;
@@ -147,7 +145,7 @@ public class TcpExportHandler : IDataExporterHandler
                         TcpCallbackHandler.CommandMap.TryGetValue(callback, out var f))
                     {
                         Logger.Debug("TcpServerHandler.ListenToServerAsync", jsonObject.ToString());
-                        await f(this, client, jsonObject);
+                        await f(ViewModel.Config.COALITION_DETAILS, client, jsonObject);
                     }
                 }
                 else
