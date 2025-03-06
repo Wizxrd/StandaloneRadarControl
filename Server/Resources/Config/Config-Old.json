@@ -1,0 +1,25 @@
+{
+  "DCS_SAVED_GAMES": "",
+  "DISCORD_PRESENCE_SERVER_NAME": "",
+  "SERVER_CLIENT_PORT": 7500,
+  "SERVER_TO_DCS_PORT": 7600,
+  "DCS_TO_SERVER_PORT": 7700,
+  "EXPORT_METHODS": {
+    "GLOBAL": false,
+    "SEMI_REAL": false,
+    "REALISTIC": false,
+    "LAND_UNITS": false,
+    "NAVAL_UNITS": false
+  },
+  "SIMUL_CONNECT": true,
+  "PASSWORDS": {
+    "ADMIN": "admin",
+    "RED": "red",
+    "BLUE": "blue"
+  },
+  "MAX_CLIENTS": {
+    "RED": -1,
+    "BLUE": -1
+  },
+  "BANNED": {}
+}
