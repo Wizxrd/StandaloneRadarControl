@@ -1,10 +1,15 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using Newtonsoft.Json;
+using Server.Models;
 using Server.Models.Network;
 
 namespace Server.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+	public readonly Config Config;
+	
 	private IDataImportHandler dataImportHandler; // Field is proxied with a Property to Enable WPF Data Binding
 	public IDataImportHandler DataImportHandler
 	{
@@ -40,6 +45,25 @@ public class MainWindowViewModel : ViewModelBase
 	{
 		DataExportHandler = new TcpExportHandler(this);
 		DataImportHandler = new UdpImportHandler(this);
+		
+		// Possible Null Reference. If we don't find it, make it.
+		string _config_path = Path.Join("Resources/Config", "Config.json");
+		try
+		{
+			Config =  JsonConvert.DeserializeObject<Config>(File.ReadAllText(_config_path),
+				new Newtonsoft.Json.Converters.StringEnumConverter());
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Could not find Config.json. Making a new one. Error Message: {e.Message}");
+			
+			Config = new Config().ConfigDefaults();
+
+			// indent the Json and flatten Enums to their Text values.
+			string _serialized_json = JsonConvert.SerializeObject(Config, 
+				Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+			File.WriteAllTextAsync(_config_path, _serialized_json);
+		}
 	}
 
 	public bool StartServer()
