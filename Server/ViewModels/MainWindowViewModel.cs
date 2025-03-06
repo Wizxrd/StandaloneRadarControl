@@ -43,27 +43,10 @@ public class MainWindowViewModel : ViewModelBase
 	
 	public MainWindowViewModel()
 	{
+		InitilizeConfig(ref Config);
+		
 		DataExportHandler = new TcpExportHandler(this);
 		DataImportHandler = new UdpImportHandler(this);
-		
-		// Possible Null Reference. If we don't find it, make it.
-		string _config_path = Path.Join("Resources/Config", "Config.json");
-		try
-		{
-			Config =  JsonConvert.DeserializeObject<Config>(File.ReadAllText(_config_path),
-				new Newtonsoft.Json.Converters.StringEnumConverter());
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine($"Could not find Config.json. Making a new one. Error Message: {e.Message}");
-			
-			Config = new Config().ConfigDefaults();
-
-			// indent the Json and flatten Enums to their Text values.
-			string _serialized_json = JsonConvert.SerializeObject(Config, 
-				Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
-			File.WriteAllTextAsync(_config_path, _serialized_json);
-		}
 	}
 
 	public bool StartServer()
@@ -98,5 +81,27 @@ public class MainWindowViewModel : ViewModelBase
 	{
 		StopServer();
 		Application.Current.Shutdown();
+	}
+
+	private void InitilizeConfig(ref Config config) // Re: ref Config, contructor gives refernce so we stay in "init" stage.
+	{
+		// Possible Null Reference. If we don't find it, make it.
+		string _config_path = Path.Join("Resources/Config", "Config.json");
+		try
+		{
+			config =  JsonConvert.DeserializeObject<Config>(File.ReadAllText(_config_path),
+				new Newtonsoft.Json.Converters.StringEnumConverter());
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Could not find Config.json. Making a new one. Error Message: {e.Message}");
+			
+			config = new Config().ConfigDefaults();
+
+			// indent the Json and flatten Enums to their Text values.
+			string _serialized_json = JsonConvert.SerializeObject(config, 
+				Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+			File.WriteAllTextAsync(_config_path, _serialized_json);
+		}
 	}
 }
