@@ -8,6 +8,7 @@ local logger = SRCLogger:new("SRCMissionExport.lua")
 logger:info("Mission Export Done", "Loading...")
 
 local udpSendSocket = socket.udp()
+udpSendSocket:settimeout(0)
 
 local function sideEnumToString(side)
     if side == 0 then
