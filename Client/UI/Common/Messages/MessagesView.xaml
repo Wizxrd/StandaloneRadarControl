@@ -1,0 +1,91 @@
+﻿<adonisControls:AdonisWindow
+    x:Class="Client.UI.Common.Messages.MessagesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Client.UI.Common.Messages"
+    xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+    xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+    mc:Ignorable="d"
+    Title="Messages"
+    IconVisibility="Collapsed"
+    Background="Black"
+    WindowStyle="ToolWindow"
+    TitleBarBackground="#151515"
+    Width="600" Height="300"
+    WindowButtonHighlightBrush="{StaticResource BorderBrush}"
+    BorderThickness="1"
+    FontFamily="Consolas"
+    FontSize="13">
+
+    <adonisControls:AdonisWindow.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}"/>
+    </adonisControls:AdonisWindow.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tabs -->
+        <Border>
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton
+                    Margin="0"
+                    Width="50"
+                    Height="24"
+                    BorderThickness="1,1,1,0"
+                    Style="{StaticResource DefaultMessageTab}"
+                    Content="ALL"
+                    IsChecked="{Binding IsAllSelected}"
+                    Command="{Binding ShowAllCommand}"/>
+
+                <ToggleButton
+                    Margin="0"
+                    Width="50"
+                    Height="24"
+                    BorderThickness="0,1,1,0"
+                    Style="{StaticResource DefaultMessageTab}"
+                    Content="ALLIES"
+                    IsChecked="{Binding IsAlliesSelected}"
+                    Command="{Binding ShowAlliesCommand}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Messages list -->
+        <Border Grid.Row="1"
+                BorderBrush="{StaticResource FieldBorderBrush}"
+                BorderThickness="1,1,1,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding FilteredMessages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding DisplayText}"
+                                Foreground="{Binding Foreground}"
+                                Margin="4,2"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Message input -->
+        <Border Grid.Row="2"
+                BorderBrush="{StaticResource FieldBorderBrush}"
+                BorderThickness="1">
+            <TextBox
+                Background="Black"
+                Foreground="#F5F5F5"
+                BorderThickness="0"
+                Padding="5"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                adonisExtensions:CursorSpotlightExtension.BackgroundBrush="Black"
+                Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged}"/>
+        </Border>
+    </Grid>
+</adonisControls:AdonisWindow>

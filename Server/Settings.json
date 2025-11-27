@@ -1,0 +1,43 @@
+{
+  "WindowSettings": {
+    "Bounds": "1830,501,900,600",
+    "IsOpen": true,
+    "IsMaximized": false,
+    "ShowTitleBar": true
+  },
+  "GeneralSettings": {
+    "SimultaneousConnect": true,
+    "ExportMethod": {
+      "Basic": true,
+      "Advanced": false,
+      "Realistic": false,
+      "Hardcore": false,
+      "Custom": false
+    },
+    "MaxControllers": {
+      "Red": 10,
+      "Blue": 10
+    },
+    "Passwords": {
+      "Admin": "admin",
+      "Red": "red",
+      "Blue": "blue"
+    },
+    "Ports": {
+      "SignalRServer": 7500,
+      "ServerUdpRecieve": 7600,
+      "DCSServerUdpRecieve": 7700
+    }
+  },
+  "BasicExportSettings": {
+    "UpdateRate": 1,
+    "MaxTargets": 500,
+    "Airplanes": true,
+    "Helicopters": true,
+    "GroundVehicles": true,
+    "Ships": true,
+    "AAMissiles": true
+  },
+  "AdvancedExportSettings": {},
+  "RealisticExportSettings": {}
+}

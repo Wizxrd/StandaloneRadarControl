@@ -1,0 +1,27 @@
+﻿<Application 
+    x:Class="Client.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Client"
+    xmlns:videoMapToggleState="clr-namespace:Client.UI.Displays.Tactical.MasterToolbar.VideoMaps"
+    xmlns:toolbarControlToggleState="clr-namespace:Client.UI.Displays.Tactical.ToolbarControl"
+    xmlns:masterToolbar="clr-namespace:Client.UI.Displays.Tactical.MasterToolbar"
+    xmlns:commandComposition="clr-namespace:Client.UI.Displays.Tactical.CommandComposition"
+    StartupUri="UI/Common/LoadProfile/LoadProfileView.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AdonisUI;component/ColorSchemes/Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Resources.xaml"/>
+                <ResourceDictionary Source="/Resources/Dictionaries/Colors.xaml"/>
+                <ResourceDictionary Source="/Resources/Dictionaries/Controls.xaml"/>
+                <ResourceDictionary Source="/Resources/Dictionaries/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <videoMapToggleState:VideoMapToggleState x:Key="VideoMapToggleState" />
+            <toolbarControlToggleState:ToolbarControlToggleState x:Key="ToolbarControlToggleState"/>
+            <masterToolbar:MasterToolbarViewModel x:Key="MasterToolbarViewModel" />
+            <commandComposition:CommandCompositionViewModel x:Key="CommandCompositionViewModel" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

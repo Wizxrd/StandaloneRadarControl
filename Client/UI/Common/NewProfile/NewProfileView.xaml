@@ -1,0 +1,128 @@
+﻿<adonisControls:AdonisWindow 
+    x:Class="Client.UI.Common.NewProfile.NewProfileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Client.UI.Common.NewProfile"
+    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+    xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+    xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+    Title="New Profile"
+    Height="Auto" Width="300"
+    SizeToContent="Height"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterOwner"
+    FontFamily="Consolas" FontSize="13"
+    TitleBarBackground="{StaticResource PanelBackground}"
+    Background="{StaticResource BackgroundBrush}"
+    Foreground="{StaticResource Foreground}"
+    BorderBrush="{StaticResource BorderBrush}"
+    WindowButtonHighlightBrush="{StaticResource BorderBrush}"
+    BorderThickness="1">
+    <Border Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="10">
+        <Border 
+            CornerRadius="3"
+            Background="{StaticResource PanelBackground}"
+            BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
+            Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock
+                        Margin="10,5,10,0"
+                        FontWeight="Bold"
+                        Text="Display Type"
+                        Foreground="{StaticResource White}"/>
+                    <ComboBox
+                        Margin="10,5,10,5"
+                        Height="26"
+                        Background="{StaticResource BackgroundBrush}"
+                        Foreground="{StaticResource White}"
+                        BorderBrush="{StaticResource FieldBorderBrush}"
+                        BorderThickness="1"
+                        HorizontalContentAlignment="Left"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="3"
+                        adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"
+                        SelectedValuePath="Content"
+                        SelectedValue="{Binding SelectedDisplayType, Mode=TwoWay}">
+                        <ComboBoxItem
+                            Content="Tactical"
+                            Background="{StaticResource BackgroundBrush}"/>
+                        <ComboBoxItem
+                            Content="Terminal"
+                            Background="{StaticResource BackgroundBrush}"/>
+                        <ComboBoxItem
+                            Content="Tower"
+                            Background="{StaticResource BackgroundBrush}"/>
+                    </ComboBox>
+                    <StackPanel IsEnabled="{Binding PositionEnabled}">
+                        <TextBlock
+                            Margin="10,5,10,0"
+                            FontWeight="Bold"
+                            Text="Initial Position"
+                            Foreground="{StaticResource White}"/>
+                        <ComboBox
+                            Margin="10,5,10,5"
+                            Height="26"
+                            Background="{StaticResource BackgroundBrush}"
+                            Foreground="{StaticResource White}"
+                            BorderBrush="{StaticResource FieldBorderBrush}"
+                            BorderThickness="1"
+                            HorizontalContentAlignment="Left"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="3"
+                            adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"
+                            SelectedValue="{Binding SelectedPosition}"
+                            ItemsSource="{Binding InitialPositions}">
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel IsEnabled="{Binding ProfileNameEnabled}">
+                        <TextBlock
+                            Margin="10,5,10,0"
+                            FontWeight="Bold"
+                            Text="Profile Name"
+                            Foreground="{StaticResource White}"/>
+                        <TextBox
+                            Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="10,5,10,0"
+                            Background="{StaticResource BackgroundBrush}"
+                            Foreground="#F5F5F5"
+                            BorderBrush="{StaticResource FieldBorderBrush}"
+                            BorderThickness="1"
+                            Padding="6"
+                            HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="3"
+                            adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button
+                        IsEnabled="{Binding SaveEnabled}"
+                        Width="100" Height="26"
+                        Margin="0,0,10,0"
+                        Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="3"
+                        adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"
+                        adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}"
+                        Content="Create"
+                        Command="{Binding CreateProfileCommand}"/>
+                    <Button
+                        Height="26"
+                        Margin="0,0,10,0"
+                        Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource FieldBorderBrush}"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="3"
+                        adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"
+                        adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Border>
+</adonisControls:AdonisWindow>

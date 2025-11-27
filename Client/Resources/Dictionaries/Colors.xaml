@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Green" Color="#26FF6A"/>
+    <SolidColorBrush x:Key="Blue" Color="#1e78ff"/>
+    <SolidColorBrush x:Key="MouseOverBlue" Color="#1e8bff"/>
+    <SolidColorBrush x:Key="MouseDownBlue" Color="#1663ff"/>
+    <SolidColorBrush x:Key="Red" Color="#FF4B4B"/>
+    <SolidColorBrush x:Key="PanelBackground" Color="#181B21"/>
+    <SolidColorBrush x:Key="PanelBorder" Color="#262B31"/>
+    <SolidColorBrush x:Key="FieldBrush" Color="#22262E"/>
+    <SolidColorBrush x:Key="FieldBorderBrush" Color="#333A45"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#111317"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#2C3136"/>
+    <SolidColorBrush x:Key="Foreground" Color="#5f6973"/>
+    <SolidColorBrush x:Key="White" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="WindowButtonHighlightBrush" Color="#353535"/>
+
+    <SolidColorBrush x:Key="TearoffBackgroundBrush"              Color="#D4B327" />
+    <SolidColorBrush x:Key="TearoffHoverBackgroundBrush"         Color="#C19F1E" />
+    <SolidColorBrush x:Key="TearoffBorderBrush"                  Color="#8C7415" />
+
+    <SolidColorBrush x:Key="MenuButtonClosed"                    Color="#112555" />
+    <SolidColorBrush x:Key="MenuButtonOpen"                      Color="#b65751" />
+    <SolidColorBrush x:Key="MenuButtonHoverBackgroundBrush"      Color="#16346D" />
+
+    <SolidColorBrush x:Key="DeleteButtonBackgroundBrush"         Color="#20B2AA" />
+
+    <SolidColorBrush x:Key="DeleteButtonHoverBackgroundBrush"    Color="#1A8F88" />
+    <SolidColorBrush x:Key="DeleteButtonCheckedBackgroundBrush"  Color="#b65751" />
+
+    <SolidColorBrush x:Key="DeleteButtonBorderBrush"             Color="#137C75" />
+
+    <SolidColorBrush x:Key="ToggleButtonBackgroundBrush"         Color="#151515" />
+    <SolidColorBrush x:Key="ToggleButtonCheckedBackgroundBrush"  Color="#454545" />
+    <SolidColorBrush x:Key="ToggleButtonBorderBrush"             Color="#2E343D" />
+</ResourceDictionary>

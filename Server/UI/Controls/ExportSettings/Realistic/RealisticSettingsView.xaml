@@ -1,0 +1,136 @@
+﻿<UserControl 
+    x:Class="Server.UI.Controls.ExportSettings.Realistic.RealisticSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Server.UI.Controls.ExportSettings.Realistic"
+    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+    xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+    Background="{StaticResource BackgroundBrush}"
+    Foreground="{StaticResource Foreground}"
+    BorderBrush="{StaticResource BorderBrush}"
+    FontFamily="Consolas"
+    FontSize="13"
+    Width="Auto" Height="Auto">
+    <Border 
+        CornerRadius="3"
+        Background="{StaticResource PanelBackground}"
+        BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
+        Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0" Grid.ColumnSpan="2"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Text="REALISTIC SETTINGS"/>
+            <TextBlock
+                Grid.Row="1" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Style="{StaticResource TextBlock}"
+                Text="UPDATE RATE"/>
+            <TextBox
+                Grid.Row="1" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"
+                Margin="0,0,0,5"
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="1"/>
+
+            <TextBlock
+                Grid.Row="2" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Style="{StaticResource TextBlock}"
+                Text="MAX TARGETS"/>
+            <TextBox
+                Grid.Row="2" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"
+                Margin="0,0,0,5"
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="500"/>
+
+            <TextBlock 
+                Grid.Row="3" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Style="{StaticResource TextBlock}"
+                Text="LINE OF SIGHT" Margin="0,0,0,5"/>
+            <ToggleButton 
+                Grid.Row="3" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Style="{StaticResource ToggleButtonStyle}"
+                IsChecked="True"
+                Content="ON" Margin="0,0,0,5"/>
+
+            <TextBlock 
+                Grid.Row="4" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Style="{StaticResource TextBlock}"
+                Text="TARGET EXTRAPOLATION" Margin="0,0,0,5"/>
+            <ToggleButton 
+                Grid.Row="4" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Style="{StaticResource ToggleButtonStyle}"
+                IsChecked="True"
+                Content="ON" Margin="0,0,0,5"/>
+
+            <TextBlock
+                Grid.Row="5" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Style="{StaticResource TextBlock}"
+                Text="EXTRAPOLATION TIME"/>
+            <TextBox
+                Grid.Row="5" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"
+                Margin="0,0,0,5"
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="3"/>
+
+            <TextBlock
+                Grid.Row="6" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Style="{StaticResource TextBlock}"
+                Text="POSITION NOISE"/>
+            <TextBox
+                Grid.Row="6" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"
+                Margin="0,0,0,5"
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="20"/>
+
+            <TextBlock
+                Grid.Row="7" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="0,0,0,5"
+                Style="{StaticResource TextBlock}"
+                Text="HEADING NOISE"/>
+            <TextBox
+                Grid.Row="7" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"
+                Margin="0,0,0,5"
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="2"/>
+        </Grid>
+    </Border>
+</UserControl>
