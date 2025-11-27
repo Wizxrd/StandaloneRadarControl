@@ -1,5 +1,6 @@
 ﻿using Client.Managers;
 using Common.Mvvm;
+using SignalR.Client;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,7 +10,6 @@ using System.Windows.Media;
 
 namespace Client.UI.Common.Messages;
 
-// Which "chat" a message belongs to
 public enum MessageChannel
 {
     All,
@@ -62,6 +62,16 @@ public class MessagesViewModel : ViewModelBase
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsAllSelected));
             OnPropertyChanged(nameof(IsAlliesSelected));
+            switch (selectedChannel)
+            {
+                case MessageChannel.All:
+                    HasUnreadAll = false;
+                    break;
+                case MessageChannel.Allies:
+                    HasUnreadAllies = false;
+                    break;
+            }
+
             FilteredMessages.Refresh();
         }
     }
@@ -83,6 +93,30 @@ public class MessagesViewModel : ViewModelBase
         {
             if (value)
                 SelectedChannel = MessageChannel.Allies;
+        }
+    }
+
+    private bool hasUnreadAll;
+    public bool HasUnreadAll
+    {
+        get => hasUnreadAll;
+        set
+        {
+            if (hasUnreadAll == value) return;
+            hasUnreadAll = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool hasUnreadAllies;
+    public bool HasUnreadAllies
+    {
+        get => hasUnreadAllies;
+        set
+        {
+            if (hasUnreadAllies == value) return;
+            hasUnreadAllies = value;
+            OnPropertyChanged();
         }
     }
 
@@ -114,8 +148,8 @@ public class MessagesViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(MessageText))
             return;
-        AddMessage(MessageText, SelectedChannel, Brushes.Cyan);
 
+        AddMessage(MessageText, SelectedChannel, Brushes.Cyan);
         MessageText = string.Empty;
     }
 
@@ -134,30 +168,42 @@ public class MessagesViewModel : ViewModelBase
 
     public void AddMessage(string text, MessageChannel channel, Brush foreground)
     {
+        if (SignalRClient.Connection == null || SignalRClient.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
+        {
+            text = "[ERROR] Not connected to server";
+            messages.Add(new ChatMessage(MessageChannel.All, text, Brushes.Red));
+            if (SelectedChannel != MessageChannel.All)
+                HasUnreadAll = true;
+            return;
+        }
+
         messages.Add(new ChatMessage(channel, text, foreground));
+
+        if (channel == MessageChannel.All && SelectedChannel != MessageChannel.All)
+            HasUnreadAll = true;
+
+        if (channel == MessageChannel.Allies && SelectedChannel != MessageChannel.Allies)
+            HasUnreadAllies = true;
     }
 
     public void AddInfoMessage(string text)
     {
-        text = $"{text}";
         AddMessage(text, MessageChannel.All, Brushes.Yellow);
     }
 
     public void AddMessageFromATC(string text, MessageChannel channel)
     {
-        text = $"[ATC] {text}";
-        AddMessage(text, channel, Brushes.LimeGreen);
+        AddMessage($"[ATC] {text}", channel, Brushes.LimeGreen);
     }
 
     public void AddMessageFromServer(string text)
     {
-        text = $"[SERVER] {text}";
-        AddMessage(text, MessageChannel.All, Brushes.LightSalmon);
+        AddMessage($"[SERVER] {text}", MessageChannel.All, Brushes.LightSalmon);
     }
 
     public void AddErrorMessage(string text)
     {
-        text = $"[ERROR] {text}";
-        AddMessage(text, MessageChannel.All, Brushes.Red);
+        AddMessage($"[ERROR] {text}", MessageChannel.All, Brushes.Red);
     }
 }
+

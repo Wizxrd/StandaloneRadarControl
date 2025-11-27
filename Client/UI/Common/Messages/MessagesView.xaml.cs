@@ -13,12 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 namespace Client.UI.Common.Messages;
 
-/// <summary>
-/// Interaction logic for MessagesView.xaml
-/// </summary>
 public partial class MessagesView : AdonisWindow
 {
     public MessagesView()

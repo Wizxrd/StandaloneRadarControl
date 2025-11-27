@@ -18,6 +18,7 @@
     FontFamily="Consolas" FontSize="13"
     TitleBarBackground="#151515"
     Background="Black"
+        BorderThickness="0"
     Foreground="{StaticResource Foreground}"
     WindowButtonHighlightBrush="#303030">
     <adonisControls:AdonisWindow.InputBindings>

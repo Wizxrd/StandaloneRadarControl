@@ -27,6 +27,7 @@
     <Folder Include="UI\Displays\Terminal\" />
     <Folder Include="UI\Displays\Tower\" />
     <Folder Include="Updaters\" />
+    <Folder Include="VideoMaps\Caucasus\" />
   </ItemGroup>
 
   <ItemGroup>

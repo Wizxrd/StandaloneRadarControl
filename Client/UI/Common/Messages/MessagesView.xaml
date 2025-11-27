@@ -14,70 +14,90 @@
     WindowStyle="ToolWindow"
     TitleBarBackground="#151515"
     Width="600" Height="300"
-    WindowButtonHighlightBrush="{StaticResource BorderBrush}"
-    BorderThickness="1"
-    FontFamily="Consolas"
-    FontSize="13">
-
+    BorderBrush="{StaticResource FieldBorderBrush}" BorderThickness="1"
+    FontFamily="Consolas" FontSize="13"
+    FocusManager.FocusedElement="{Binding ElementName=MessageTextBox}">
     <adonisControls:AdonisWindow.InputBindings>
-        <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}"/>
+        <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}" />
+        <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding CloseMessagesCommand}" />
+        <KeyBinding Key="F12" Modifiers="Ctrl" Command="{Binding OpenConnectCommand}" />
     </adonisControls:AdonisWindow.InputBindings>
-
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0"
+                      CornerRadius="0"
+                      CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <!-- Tabs -->
         <Border>
             <StackPanel Orientation="Horizontal">
                 <ToggleButton
-                    Margin="0"
                     Width="50"
                     Height="24"
-                    BorderThickness="1,1,1,0"
-                    Style="{StaticResource DefaultMessageTab}"
-                    Content="ALL"
-                    IsChecked="{Binding IsAllSelected}"
-                    Command="{Binding ShowAllCommand}"/>
-
-                <ToggleButton
                     Margin="0"
-                    Width="50"
-                    Height="24"
                     BorderThickness="0,1,1,0"
-                    Style="{StaticResource DefaultMessageTab}"
+                    Content="ALL"
+                    IsChecked="{Binding IsAllSelected}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton"
+                               BasedOn="{StaticResource DefaultMessageTab}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasUnreadAll}"
+                                             Value="True">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                <ToggleButton
+                    Width="50"
+                    Height="24"
+                    Margin="0"
+                    BorderThickness="0,1,1,0"
                     Content="ALLIES"
-                    IsChecked="{Binding IsAlliesSelected}"
-                    Command="{Binding ShowAlliesCommand}"/>
+                    IsChecked="{Binding IsAlliesSelected}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton"
+                               BasedOn="{StaticResource DefaultMessageTab}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasUnreadAllies}"
+                                             Value="True">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
             </StackPanel>
         </Border>
-
-        <!-- Messages list -->
-        <Border Grid.Row="1"
-                BorderBrush="{StaticResource FieldBorderBrush}"
-                BorderThickness="1,1,1,0">
+        <Border
+            Grid.Row="1"
+            BorderBrush="{StaticResource FieldBorderBrush}"
+            BorderThickness="0,1,0,0">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding FilteredMessages}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
+                                Margin="4,2"
                                 Text="{Binding DisplayText}"
-                                Foreground="{Binding Foreground}"
-                                Margin="4,2"/>
+                                Foreground="{Binding Foreground}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
         </Border>
-
-        <!-- Message input -->
-        <Border Grid.Row="2"
-                BorderBrush="{StaticResource FieldBorderBrush}"
-                BorderThickness="1">
+        <Border
+            Grid.Row="2"
+            BorderBrush="{StaticResource FieldBorderBrush}"
+            BorderThickness="0,1,0,0">
             <TextBox
+                x:Name="MessageTextBox"
                 Background="Black"
                 Foreground="#F5F5F5"
                 BorderThickness="0"
@@ -85,7 +105,7 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 adonisExtensions:CursorSpotlightExtension.BackgroundBrush="Black"
-                Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged}" />
         </Border>
     </Grid>
 </adonisControls:AdonisWindow>

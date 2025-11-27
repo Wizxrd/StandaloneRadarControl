@@ -10,7 +10,7 @@
     Background="Black"
     FontFamily="/Resources/Fonts/Retro.ttf#Retro Regular"
     FontSize="16"
-    BorderBrush="#757575"
+    BorderBrush="{StaticResource FieldBorderBrush}"
     BorderThickness="1"
     Visibility="{Binding CommandCompositionVisibility}"
     DataContext="{StaticResource CommandCompositionViewModel}">
@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
-                    BorderBrush="#757575"
+                    BorderBrush="{StaticResource FieldBorderBrush}"
                     BorderThickness="0,0,0,1">
                 <TextBlock
                     x:Name="CompositionTextBlock"
@@ -36,7 +36,7 @@
             </Border>
 
             <Border Grid.Row="1"
-                    BorderBrush="#757575"/>
+                    BorderBrush="{StaticResource FieldBorderBrush}"/>
 
             <TextBlock
                 Grid.Row="2"
