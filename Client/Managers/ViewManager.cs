@@ -4,7 +4,7 @@ using Client.UI.Common.LoadProfile;
 using Client.UI.Common.Messages;
 using Client.UI.Common.NewProfile;
 using Client.UI.Displays.Tactical;
-using SignalR.Client;
+using Client.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +52,12 @@ public static class ViewManager
 
     public static void OpenMessagesView()
     {
+        if (!Application.Current.Dispatcher.CheckAccess())
+        {
+            Application.Current.Dispatcher.Invoke(OpenMessagesView);
+            return;
+        }
+
         if (MessagesView != null)
         {
             MessagesView.Close();
@@ -66,22 +72,28 @@ public static class ViewManager
 
         MessagesView.Closed += (_, __) => MessagesView = null;
 
-        MessagesView.Show(); // modeless tool window
+        MessagesView.Show();
     }
 
     public static void InitLoadProfile(Profile profile)
     {
-        switch (profile.DisplayWindows[0].DisplaySettings.Type)
+        for (int i = 0; i < profile.DisplayWindows.Count; i++)
         {
-            case "Tactical":
-                {
-                    TacticalView tacticalView = new TacticalView();
-                    LoadProfileView loadProfileView = (LoadProfileView)Application.Current.MainWindow;
-                    Application.Current.MainWindow = tacticalView;
-                    loadProfileView.Close();
-                    tacticalView.ShowDialog();
-                    break;
-                }
+            DisplayWindow window = profile.DisplayWindows[i];
+            switch (window.DisplaySettings.Type)
+            {
+                case "Tactical":
+                    {
+                        TacticalView tacticalView = new TacticalView();
+                        LoadProfileView loadProfileView = (LoadProfileView)Application.Current.MainWindow;
+                        Application.Current.MainWindow = tacticalView;
+                        loadProfileView.Close();
+                        App.Profile = profile;
+                        tacticalView.Id = i;
+                        tacticalView.ShowDialog();
+                        break;
+                    }
+            }
         }
     }
 }

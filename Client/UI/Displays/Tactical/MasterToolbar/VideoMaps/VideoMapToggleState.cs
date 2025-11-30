@@ -3,18 +3,18 @@ namespace Client.UI.Displays.Tactical.MasterToolbar.VideoMaps;
 
 public class VideoMapToggleState : ViewModelBase
 {
-    private bool regions;
-    public bool Regions
+    private bool countries;
+    private bool airspace;
+
+    public bool Countries
     {
-        get => regions;
+        get => countries;
         set
         {
-            regions = value;
+            countries = value;
             OnPropertyChanged();
         }
     }
-
-    private bool airspace;
     public bool Airspace
     {
         get => airspace;

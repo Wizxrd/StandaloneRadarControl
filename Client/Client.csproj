@@ -21,13 +21,11 @@
   <ItemGroup>
     <Folder Include="Engines\" />
     <Folder Include="Profiles\" />
-    <Folder Include="SignalR\" />
     <Folder Include="UI\Common\LoadingScreen\" />
     <Folder Include="UI\Common\NewServerBookmark\" />
     <Folder Include="UI\Displays\Terminal\" />
     <Folder Include="UI\Displays\Tower\" />
     <Folder Include="Updaters\" />
-    <Folder Include="VideoMaps\Caucasus\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\SignalR\SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

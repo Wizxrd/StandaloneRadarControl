@@ -34,8 +34,8 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <toolbarButtons:ToggleButton
                         Margin="0,0,0,0"
-                        ToggleButtonLine1="REGIONS"
-                        IsChecked="{Binding Regions, Source={StaticResource VideoMapToggleState}, Mode=TwoWay}"/>
+                        ToggleButtonLine1="COUNTRIES"
+                        IsChecked="{Binding Countries, Source={StaticResource VideoMapToggleState}, Mode=TwoWay}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">

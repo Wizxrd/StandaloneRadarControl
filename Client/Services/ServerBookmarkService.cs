@@ -137,6 +137,8 @@ public class ServerBookmarkService : IServerBookmarkService
                     bm.Port = bookmark.Port;
                     bm.Password = bookmark.Password;
                     bm.Callsign = bookmark.Callsign;
+                    bm.Coalition = bookmark.Coalition;
+                    bm.LastUsedAt = DateTime.UtcNow;
                     string serialized = JsonConvert.SerializeObject(generalSettings, Formatting.Indented);
                     await File.WriteAllTextAsync(path, serialized);
                     Logger.Info("ServerBookmarkService.Save", $"Saved bookmark: \"{bookmark.Name}\"");

@@ -1,5 +1,5 @@
 ﻿using Client.Renderables.Interfaces;
-using Client.UI.Controls.Display;
+using Client.UI.Controls.RenderDisplay;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SkiaSharp.Views.WPF;
@@ -7,12 +7,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-namespace vFalcon.Engines;
+namespace Client.Engines;
 
 public class SkiaEngine
 {
 
-    private Border DisplayElementBorder;
+    private Border RenderDisplayBorder;
     private SKElement SkiaElement;
     private Cursor Cursor { get; set; } = Cursors.Arrow;
     public RenderEngine RenderEngine { get; set; }
@@ -30,10 +30,10 @@ public class SkiaEngine
     public int BackgroundValue { get; set; }
     public int BacklightValue { get; set; }
 
-    public SkiaEngine(RenderView renderView)
+    public SkiaEngine(RenderDisplayView renderView)
     {
-        DisplayElementBorder = renderView.DisplayElementBorder;
-        SkiaElement = renderView.DisplayElement;
+        RenderDisplayBorder = renderView.RenderDisplayBorder;
+        SkiaElement = renderView.SkiaElement;
         SkiaElement.SizeChanged += OnSizeChanged;
         SkiaElement.MouseDown += OnMouseDown;
         SkiaElement.MouseUp += OnMouseUp;
@@ -68,7 +68,7 @@ public class SkiaEngine
 
     public void SetBackgroundColor(SKColor color)
     {
-        DisplayElementBorder.Background = new SolidColorBrush(Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue));
+        RenderDisplayBorder.Background = new SolidColorBrush(Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue));
     }
 
     public void ScaleBackgroundByBacklight()
@@ -76,7 +76,7 @@ public class SkiaEngine
         double factor = 0.65 + 0.35 * (BacklightValue / 100.0);
         double baseBlue = ((BackgroundValue / 60.0) * 127) * factor;
         byte blue = (byte)Math.Max(Math.Min(baseBlue, 255), 0);
-        DisplayElementBorder.Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, blue));
+        RenderDisplayBorder.Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, blue));
     }
 
     public static SKColor ScaleColor(SKColor color, double percent)

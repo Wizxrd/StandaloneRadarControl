@@ -1,6 +1,6 @@
 {
   "WindowSettings": {
-    "Bounds": "1830,501,900,600",
+    "Bounds": "1904,409,900,600",
     "IsOpen": true,
     "IsMaximized": false,
     "ShowTitleBar": true
@@ -19,7 +19,6 @@
       "Blue": 10
     },
     "Passwords": {
-      "Admin": "admin",
       "Red": "red",
       "Blue": "blue"
     },

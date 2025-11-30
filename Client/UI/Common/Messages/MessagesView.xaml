@@ -67,7 +67,7 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HasUnreadAllies}"
                                              Value="True">
-                                    <Setter Property="Foreground" Value="Red" />
+                                    <Setter Property="Foreground" Value="Orange" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Common.Models;
 using Common.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ public class BookmarkViewModel : ViewModelBase
     private string originalName = string.Empty;
     private bool isSelected;
     private bool isRenaming;
+
     public string OriginalName => originalName;
 
     public string Name
@@ -28,6 +30,17 @@ public class BookmarkViewModel : ViewModelBase
             }
         }
     }
+
+    public Coalition Coalition
+    {
+        get => Model.Coalition;
+        set
+        {
+            Model.Coalition = value;
+            OnPropertyChanged();
+        }
+    }
+
     public bool IsSelected
     {
         get => isSelected;

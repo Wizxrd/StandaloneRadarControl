@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\SignalR\SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

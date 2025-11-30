@@ -2,7 +2,8 @@
 using Client.Renderables;
 using Client.Renderables.Interfaces;
 using Size = System.Drawing.Size;
-namespace vFalcon.Engines;
+using Common.Utils;
+namespace Client.Engines;
 
 public class RenderEngine
 {
@@ -52,6 +53,7 @@ public class RenderEngine
     {
         IRenderables = new List<IRenderable>();
     }
+
     public void UpdateRenderables(List<IRenderable> renderables)
     {
         IRenderables = renderables.OrderBy(r => r.ZIndex).ToList();
@@ -80,7 +82,14 @@ public class RenderEngine
 
     public void RenderCircle(Circle circle)
     {
-        Canvas.DrawCircle(circle.Center, circle.Radius, circle.Paint);
+        try
+        {
+            Canvas.DrawCircle(circle.Center, circle.Radius, circle.Paint);
+        }
+        catch( Exception ex)
+        {
+            Message.Error(ex.ToString());
+        }
     }
 
     private void RenderRect(Rect rect)

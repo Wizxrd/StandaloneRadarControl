@@ -12,13 +12,12 @@
     xmlns:masterToolbar="clr-namespace:Client.UI.Displays.Tactical.MasterToolbar"
     xmlns:toolbarControl="clr-namespace:Client.UI.Displays.Tactical.ToolbarControl"
     xmlns:commandCompositionView="clr-namespace:Client.UI.Displays.Tactical.CommandComposition"
-    xmlns:displayControl="clr-namespace:Client.UI.Controls.Display"
+    xmlns:renderDisplay="clr-namespace:Client.UI.Controls.RenderDisplay"
     IconVisibility="Collapsed"
     Width="1300" Height="900"
     FontFamily="Consolas" FontSize="13"
     TitleBarBackground="#151515"
-    Background="Black"
-        BorderThickness="0"
+    BorderThickness="0"
     Foreground="{StaticResource Foreground}"
     WindowButtonHighlightBrush="#303030">
     <adonisControls:AdonisWindow.InputBindings>
@@ -82,7 +81,7 @@
     </WindowChrome.WindowChrome>
     <Border>
         <Grid x:Name="RootGrid">
-            <displayControl:RenderView x:Name="RenderView"/>
+            <renderDisplay:RenderDisplayView x:Name="RenderDisplayView"/>
             <masterToolbar:MasterToolbarView HorizontalAlignment="Stretch" VerticalAlignment="Top" Panel.ZIndex="{Binding ZIndex, Source={StaticResource MasterToolbarViewModel}}"/>
             <commandCompositionView:CommandCompositionView
                 x:Name="CommandComposition"

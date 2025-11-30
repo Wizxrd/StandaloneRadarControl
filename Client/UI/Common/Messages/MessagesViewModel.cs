@@ -1,38 +1,17 @@
 ﻿using Client.Managers;
+using Client.SignalR;
 using Common.Mvvm;
-using SignalR.Client;
+using Common.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using Common.Utils;
+using System.Windows;
 namespace Client.UI.Common.Messages;
-
-public enum MessageChannel
-{
-    All,
-    Allies
-}
-
-public class ChatMessage
-{
-    public MessageChannel Channel { get; }
-    public DateTime Timestamp { get; }
-    public string Text { get; }
-    public Brush Foreground { get; }
-
-    public ChatMessage(MessageChannel channel, string text, Brush foreground)
-    {
-        Channel = channel;
-        Text = text;
-        Timestamp = DateTime.UtcNow;
-        Foreground = foreground;
-    }
-
-    public string DisplayText => $"[{Timestamp:HH:mm:ss}] {Text}";
-}
 
 public class MessagesViewModel : ViewModelBase
 {
@@ -128,7 +107,7 @@ public class MessagesViewModel : ViewModelBase
 
     public MessagesViewModel()
     {
-        messages = new();
+        messages = new ObservableCollection<ChatMessage>();
         FilteredMessages = CollectionViewSource.GetDefaultView(messages);
         FilteredMessages.Filter = FilterMessage;
 
@@ -144,13 +123,19 @@ public class MessagesViewModel : ViewModelBase
         return !string.IsNullOrWhiteSpace(MessageText);
     }
 
-    private void OnSendMessageCommand(object _)
+    private async void OnSendMessageCommand(object _)
     {
-        if (string.IsNullOrWhiteSpace(MessageText))
-            return;
-
-        AddMessage(MessageText, SelectedChannel, Brushes.Cyan);
-        MessageText = string.Empty;
+        try
+        {
+            if (string.IsNullOrWhiteSpace(MessageText))
+                return;
+            await SignalRClient.AsyncSendCommand("AtcChat", new ChatMessage(SelectedChannel, App.ServerBookmark.Callsign, MessageText, Brushes.LimeGreen));
+            MessageText = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("MessagesViewModel.OnSendMessageCommand", ex.ToString());
+        }
     }
 
     private bool FilterMessage(object obj)
@@ -168,22 +153,39 @@ public class MessagesViewModel : ViewModelBase
 
     public void AddMessage(string text, MessageChannel channel, Brush foreground)
     {
-        if (SignalRClient.Connection == null || SignalRClient.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
+        if (!Application.Current.Dispatcher.CheckAccess())
         {
-            text = "[ERROR] Not connected to server";
-            messages.Add(new ChatMessage(MessageChannel.All, text, Brushes.Red));
-            if (SelectedChannel != MessageChannel.All)
-                HasUnreadAll = true;
+            Application.Current.Dispatcher.Invoke(() => AddMessage(text, channel, foreground));
             return;
         }
 
-        messages.Add(new ChatMessage(channel, text, foreground));
+        if (SignalRClient.Connection == null ||
+            SignalRClient.Connection.State ==
+            Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
+        {
+            text = "[ERROR] Not connected to server";
+            messages.Add(new ChatMessage(
+                MessageChannel.All,
+                App.ServerBookmark?.Callsign ?? string.Empty,
+                text,
+                Brushes.Red));
+
+            if (SelectedChannel != MessageChannel.All)
+                HasUnreadAll = true;
+
+            FilteredMessages.Refresh();
+            return;
+        }
+
+        messages.Add(new ChatMessage(channel, string.Empty, text, foreground));
 
         if (channel == MessageChannel.All && SelectedChannel != MessageChannel.All)
             HasUnreadAll = true;
 
         if (channel == MessageChannel.Allies && SelectedChannel != MessageChannel.Allies)
             HasUnreadAllies = true;
+
+        FilteredMessages.Refresh();
     }
 
     public void AddInfoMessage(string text)
@@ -191,9 +193,11 @@ public class MessagesViewModel : ViewModelBase
         AddMessage(text, MessageChannel.All, Brushes.Yellow);
     }
 
-    public void AddMessageFromATC(string text, MessageChannel channel)
+    public void AddMessageFromATC(string sender, string text, MessageChannel channel)
     {
-        AddMessage($"[ATC] {text}", channel, Brushes.LimeGreen);
+        Brush foreground = Brushes.LimeGreen;
+        if (sender == App.ServerBookmark.Callsign) foreground = Brushes.Cyan;
+        AddMessage($"[ATC] [{sender}] {text}", channel, foreground);
     }
 
     public void AddMessageFromServer(string text)

@@ -1,28 +1,19 @@
 ﻿using AdonisUI.Controls;
+using Client.SignalR;
 using Client.UI.Displays.Tactical.CommandComposition;
-using SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 namespace Client.UI.Displays.Tactical;
 
 public partial class TacticalView : AdonisWindow
 {
     private CommandCompositionView commandCompositionView;
+
+    public int Id { get; set; }
+
     public TacticalView()
     {
         InitializeComponent();
-        DataContext = new TacticalViewModel(RenderView);
+        DataContext = new TacticalViewModel(RenderDisplayView);
         commandCompositionView = CommandComposition as CommandCompositionView;
         KeyDown += TacticalView_KeyDown;
     }
@@ -151,6 +142,4 @@ public partial class TacticalView : AdonisWindow
                 tb.Text += ch.Value;
         }
     }
-
-
 }

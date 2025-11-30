@@ -1,7 +1,9 @@
-﻿using Common.Models;
+﻿using AdonisUI.Controls;
+using Common.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.SignalR;
-
-namespace SignalR.Server;
+using Newtonsoft.Json;
+namespace Server.SignalR;
 
 public class CommandHub : Hub
 {
@@ -22,27 +24,18 @@ public class CommandHub : Hub
         ClientCountChanged?.Invoke();
         return base.OnDisconnectedAsync(exception);
     }
+
     public Task<bool> AuthenticatePassword(string password)
     {
         bool ok = false;
-        if ("admin" == password) ok = true;
-        if ("red" == password) ok = true;
-        if ("blue" == password) ok = true;
+        if (App.Settings.GeneralSettings.Passwords.Red == password) ok = true;
+        if (App.Settings.GeneralSettings.Passwords.Blue == password) ok = true;
         return Task.FromResult(ok);
     }
 
-    public Task RequestPing()
+    public async Task ReceiveEnvelope(string envelope)
     {
-        return Task.CompletedTask;
+        await Clients.All.SendAsync("ReceiveEnvelope", envelope);
     }
 
-    public async Task SendToAll(Message message)
-    {
-        await Clients.All.SendAsync(message.Callback, message);
-    }
-
-    public async Task SendToClient(string connectionId, Message message)
-    {
-        await Clients.Client(connectionId).SendAsync(message.Callback, message);
-    }
 }

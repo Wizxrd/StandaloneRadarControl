@@ -13,6 +13,8 @@ public partial class App : Application
     public static string Version { get; } = "0.0.1";
     public static GeneralSettings? GeneralSettings { get; set; }
     public static DisplayState? DisplayState { get; set; }
+    public static ServerBookmark ServerBookmark { get; set; }
+    public static Profile Profile { get; set; }
     public App()
     {
         Logger.DebugMode = true;

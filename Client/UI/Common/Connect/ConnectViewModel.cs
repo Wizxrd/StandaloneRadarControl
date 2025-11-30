@@ -2,13 +2,11 @@
 using Client.Models;
 using Client.Services;
 using Client.Services.Interfaces;
+using Client.SignalR;
+using Common.Models;
 using Common.Mvvm;
 using Common.Utils;
-using SignalR.Client;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -23,6 +21,9 @@ namespace Client.UI.Common.Connect
         private string port = string.Empty;
         private string password = string.Empty;
         private string callsign = string.Empty;
+        private bool redCoalitionChecked = false;
+        private bool blueCoalitionChecked = false;
+        private Coalition selectedCoalition;
 
         private bool connectEnabled;
         private ServerBookmark selectedBookmark;
@@ -93,6 +94,27 @@ namespace Client.UI.Common.Connect
             set
             {
                 callsign = value;
+                OnPropertyChanged();
+                UpdateConnectEnabled();
+            }
+        }
+
+        public bool RedCoalitionChecked
+        {
+            get => redCoalitionChecked;
+            set
+            {
+                redCoalitionChecked = value;
+                OnPropertyChanged();
+                UpdateConnectEnabled();
+            }
+        }
+        public bool BlueCoalitionChecked
+        {
+            get => blueCoalitionChecked;
+            set
+            {
+                blueCoalitionChecked = value;
                 OnPropertyChanged();
                 UpdateConnectEnabled();
             }
@@ -173,6 +195,9 @@ namespace Client.UI.Common.Connect
         public ICommand DeleteBookmarkCommand { get; set; }
         public ICommand SaveBookmarkCommand { get; set; }
 
+        public ICommand SelectRedSideCommand { get; set; }
+        public ICommand SelectBlueSideCommand { get; set; }
+
         public ICommand ConnectCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
@@ -185,6 +210,9 @@ namespace Client.UI.Common.Connect
             CopyBookmarkCommand = new RelayCommand(OnCopyBookmarkCommand);
             DeleteBookmarkCommand = new RelayCommand(OnDeleteBookmarkCommand);
             SaveBookmarkCommand = new RelayCommand(OnSaveBookmarkCommand);
+
+            SelectRedSideCommand = new RelayCommand(OnSelectRedSideCommand);
+            SelectBlueSideCommand = new RelayCommand(OnSelectBlueSideCommand);
 
             ConnectCommand = new RelayCommand(OnConnectCommand);
             CancelCommand = new RelayCommand(OnCancelCommand);
@@ -273,17 +301,32 @@ namespace Client.UI.Common.Connect
             SelectedBookmark.Port = Port;
             SelectedBookmark.Password = Password;
             SelectedBookmark.Callsign = Callsign;
-
+            SelectedBookmark.Coalition = selectedCoalition;
             await bookmarkService.Save(SelectedBookmark);
             LoadBookmarks();
         }
 
+        private async void OnSelectRedSideCommand()
+        {
+            selectedCoalition = Coalition.Red;
+            BlueCoalitionChecked = false;
+            RedCoalitionChecked = true;
+        }
+
+        private async void OnSelectBlueSideCommand()
+        {
+            selectedCoalition = Coalition.Blue;
+            BlueCoalitionChecked = true;
+            RedCoalitionChecked = false;
+        }
+
         private async void OnConnectCommand()
         {
-            ViewManager.MessagesViewModel.AddInfoMessage($"Connecting to http://{Address}:{Port}");
             bool connected = await SignalRClient.AsyncConnect(Address, Port, Password, Callsign);
+            ViewManager.MessagesViewModel.AddInfoMessage($"Connecting to http://{Address}:{Port}");
             if (connected)
             {
+                App.ServerBookmark = SelectedBookmark;
                 ViewManager.MessagesViewModel.AddInfoMessage($"Connection established");
                 ViewManager.ConnectView?.Close();
                 return;
@@ -298,11 +341,14 @@ namespace Client.UI.Common.Connect
 
         private void UpdateConnectEnabled()
         {
+            bool coalitionSelected = selectedCoalition == Coalition.Red || selectedCoalition == Coalition.Blue;
+
             bool allFilled =
                 !string.IsNullOrWhiteSpace(Address) &&
                 !string.IsNullOrWhiteSpace(Port) &&
                 !string.IsNullOrWhiteSpace(Password) &&
-                !string.IsNullOrWhiteSpace(Callsign);
+                !string.IsNullOrWhiteSpace(Callsign) &&
+                coalitionSelected;
 
             ConnectEnabled = allFilled;
             NewBookmarkEnabled = allFilled;
@@ -324,9 +370,11 @@ namespace Client.UI.Common.Connect
                 Port = string.Empty;
                 Password = string.Empty;
                 Callsign = string.Empty;
+                selectedCoalition = default;
+                RedCoalitionChecked = false;
+                BlueCoalitionChecked = false;
                 return;
             }
-
             foreach (ServerBookmark bookmark in bookmarks)
                 Bookmarks.Add(new BookmarkViewModel(bookmark));
 
@@ -376,16 +424,24 @@ namespace Client.UI.Common.Connect
             IsBookmarkSelected = true;
             SelectedBookmark = selected.Model;
             LastSelectedBookmarkVM = selected;
+
             Address = SelectedBookmark.Address;
             Port = SelectedBookmark.Port;
             Password = SelectedBookmark.Password;
             Callsign = SelectedBookmark.Callsign;
+
+            selectedCoalition = SelectedBookmark.Coalition;
+            RedCoalitionChecked = selectedCoalition == Coalition.Red;
+            BlueCoalitionChecked = selectedCoalition == Coalition.Blue;
+
             SaveBookmarkEnabled = false;
+
             if (userInitiated && (now - lastClickTime) <= doubleClickTimeSpan)
                 OnConnectCommand();
 
             lastClickTime = now;
         }
+
 
         private void FilterBookmarks()
         {

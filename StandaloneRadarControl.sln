@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{E72C707A-CDA4-4F5F-96F7-6170E2499B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR", "SignalR\SignalR.csproj", "{EED0FE8D-6D64-4405-BCF5-C4E8EE8BD167}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
@@ -35,10 +33,6 @@ Global
 		{E72C707A-CDA4-4F5F-96F7-6170E2499B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E72C707A-CDA4-4F5F-96F7-6170E2499B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E72C707A-CDA4-4F5F-96F7-6170E2499B7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EED0FE8D-6D64-4405-BCF5-C4E8EE8BD167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EED0FE8D-6D64-4405-BCF5-C4E8EE8BD167}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EED0FE8D-6D64-4405-BCF5-C4E8EE8BD167}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EED0FE8D-6D64-4405-BCF5-C4E8EE8BD167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

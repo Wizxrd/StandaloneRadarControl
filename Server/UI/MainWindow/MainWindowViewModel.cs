@@ -5,10 +5,10 @@ using Server.Models;
 using Server.UI.Controls.ExportSettings.Realistic;
 using Server.UI.Views.Controls;
 using Common.Utils;
-using SignalR.Server;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using Server.SignalR;
 namespace Server.UI.MainWindow;
 
 public class MainWindowViewModel : ViewModelBase
@@ -16,7 +16,6 @@ public class MainWindowViewModel : ViewModelBase
     public SignalRServer Server { get; set; } = new();
 
     private string startStopText = "START";
-    private string clients = "0";
     private string port = "-";
 
     private bool basicExport;
@@ -217,6 +216,7 @@ public class MainWindowViewModel : ViewModelBase
         }
         else
         {
+            StartStopText = "STARTING";
             await Server.Start(App.Settings.GeneralSettings.Ports.SignalRServer);
             StartStopText = "STOP";
         }

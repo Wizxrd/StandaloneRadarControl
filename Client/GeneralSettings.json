@@ -2,16 +2,26 @@
   "ConfirmDisconnect": true,
   "ConfirmExit": true,
   "PlayConnectDisconnectSound": true,
-  "Callsign": true,
   "ServerBookmarks": [
     {
       "Id": "5dee27fa-f625-4441-96f0-575982ad26e2",
       "Name": "Local Dev Server",
-      "LastUsedAt": "2025-11-27T19:04:53.2751088Z",
+      "LastUsedAt": "2025-11-30T01:14:24.400329Z",
       "Address": "192.168.1.79",
       "Port": "7500",
       "Password": "admin",
-      "Callsign": "Dev 1-1 | Wizard"
+      "Callsign": "Dev 1-1 | Wizard",
+      "Coalition": 2
+    },
+    {
+      "Id": "a2c9d4d4-99b0-462c-be58-39294092605d",
+      "Name": "Vader",
+      "LastUsedAt": "2025-11-30T01:14:22.0004898Z",
+      "Address": "192.168.1.79",
+      "Port": "7500",
+      "Password": "admin",
+      "Callsign": "Dev 1-1 | Vader",
+      "Coalition": 2
     }
   ]
 }
