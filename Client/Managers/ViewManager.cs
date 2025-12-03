@@ -77,23 +77,26 @@ public static class ViewManager
 
     public static void InitLoadProfile(Profile profile)
     {
+        var loadProfileView = Application.Current.MainWindow as LoadProfileView;
+
+        App.Profile = profile;
+
         for (int i = 0; i < profile.DisplayWindows.Count; i++)
         {
             DisplayWindow window = profile.DisplayWindows[i];
-            switch (window.DisplaySettings.Type)
+
+            if (window.DisplaySettings.Type == "Tactical")
             {
-                case "Tactical":
-                    {
-                        TacticalView tacticalView = new TacticalView();
-                        LoadProfileView loadProfileView = (LoadProfileView)Application.Current.MainWindow;
-                        Application.Current.MainWindow = tacticalView;
-                        loadProfileView.Close();
-                        App.Profile = profile;
-                        tacticalView.Id = i;
-                        tacticalView.ShowDialog();
-                        break;
-                    }
+                var tacticalView = new TacticalView
+                {
+                    Id = i
+                };
+                Application.Current.MainWindow = tacticalView;
+                tacticalView.Title.Text = $"SRC : TAC : {i+1}";
+                App.Displays.Add(tacticalView.ViewModel);
+                tacticalView.Show();
             }
         }
+        loadProfileView?.Close();
     }
 }

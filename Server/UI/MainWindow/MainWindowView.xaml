@@ -157,19 +157,6 @@
                         Style="{StaticResource FieldTextBoxStyle}"
                         Text="{Binding MaxBlueControllers, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock
-                        Grid.Row="7" Grid.Column="0"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Margin="0,0,0,5"
-                        Style="{StaticResource TextBlock}"
-                        Text="ADMIN PASSWORD"/>
-                    <TextBox
-                        Grid.Row="7" Grid.Column="1"
-                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Width="100"
-                        Margin="0,0,0,5"
-                        Style="{StaticResource FieldTextBoxStyle}"
-                        Text="{Binding AdminPassword, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock
                         Grid.Row="8" Grid.Column="0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                         Margin="0,0,0,5"

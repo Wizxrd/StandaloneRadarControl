@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Callbacks\" />
     <Folder Include="UI\Controls\ExportSettings\Custom\" />
     <Folder Include="UI\Controls\ExportSettings\Hardcore\" />
     <Folder Include="Updaters\" />

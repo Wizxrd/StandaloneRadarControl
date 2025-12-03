@@ -25,13 +25,14 @@
         <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding OpenMessagesCommand}"/>
     </adonisControls:AdonisWindow.InputBindings>
     <adonisControls:AdonisWindow.TitleBarContent>
-        <Menu
+        <StackPanel Orientation="Horizontal">
+            <Menu
             Margin="-8,0,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontFamily="Consolas"
             FontSize="13">
-            <MenuItem
+                <MenuItem
                 Background="#151515"
                 BorderBrush="#151515"
                 HorizontalContentAlignment="Center"
@@ -39,14 +40,14 @@
                 adonisExtensions:CursorSpotlightExtension.BackgroundBrush="#303030"
                 adonisExtensions:CursorSpotlightExtension.BorderBrush="#303030"
                 adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}">
-                <MenuItem.Header>
-                    <Image
+                    <MenuItem.Header>
+                        <Image
                         Source="/Resources/Images/Menu.png"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="15" Height="26"/>
-                </MenuItem.Header>
-                <MenuItem
+                    </MenuItem.Header>
+                    <MenuItem
                     Header="Connect"
                     InputGestureText="Ctrl+F12"
                     Background="#151515"
@@ -55,7 +56,7 @@
                     adonisExtensions:CursorSpotlightExtension.BorderBrush="#303030"
                     adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}"
                     Command="{Binding OpenConnectCommand}"/>
-                <MenuItem
+                    <MenuItem
                     Header="Views"
                     Background="#151515"
                     BorderBrush="#151515"
@@ -63,7 +64,7 @@
                     adonisExtensions:CursorSpotlightExtension.BorderBrush="#303030"
                     adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}"
                     Command="{Binding OpenConnectCommand}">
-                    <MenuItem
+                        <MenuItem
                         Header="Messages"
                         InputGestureText="Ctrl+M"
                         Background="#151515"
@@ -72,9 +73,11 @@
                         adonisExtensions:CursorSpotlightExtension.BorderBrush="#303030"
                         adonisExtensions:RippleExtension.BackgroundBrush="{StaticResource Blue}"
                         Command="{Binding OpenMessagesCommand}"/>
+                    </MenuItem>
                 </MenuItem>
-            </MenuItem>
-        </Menu>
+            </Menu>
+            <TextBlock x:Name="Title" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
     </adonisControls:AdonisWindow.TitleBarContent>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>

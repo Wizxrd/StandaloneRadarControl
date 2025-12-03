@@ -1,7 +1,7 @@
 {
   "Id": "74143cf2-3c32-43d7-8cbe-2458d92c961f",
   "Name": "TAC C2",
-  "LastUsedAt": "2025-11-30T01:38:45.6968141Z",
+  "LastUsedAt": "2025-12-03T03:49:30.1013376Z",
   "DisplayWindows": [
     {
       "Id": "a08bb697-4a73-444a-99bc-60de1aaf0c3b",
@@ -14,19 +14,6 @@
       "DisplaySettings": {
         "Type": "Tactical",
         "Position": "C2"
-      },
-      {
-        "Id": "a08bb697-4a73-434a-99bc-60de1aaf0c3b",
-        "WindowSettings": {
-          "Bounds": "0,0,1300,900",
-          "IsOpen": true,
-          "IsMaximized": false,
-          "ShowTitleBar": true
-        },
-        "DisplaySettings": {
-          "Type": "Tactical",
-          "Position": "C2"
-        }
       }
     }
   ]

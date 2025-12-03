@@ -1,6 +1,6 @@
 {
   "WindowSettings": {
-    "Bounds": "1904,409,900,600",
+    "Bounds": "50,50,900,600",
     "IsOpen": true,
     "IsMaximized": false,
     "ShowTitleBar": true
@@ -24,8 +24,8 @@
     },
     "Ports": {
       "SignalRServer": 7500,
-      "ServerUdpRecieve": 7600,
-      "DCSServerUdpRecieve": 7700
+      "ServerUdpReceive": 7600,
+      "DcsUdpReceive": 7700
     }
   },
   "BasicExportSettings": {

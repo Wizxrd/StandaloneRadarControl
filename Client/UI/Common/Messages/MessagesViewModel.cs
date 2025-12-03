@@ -129,6 +129,11 @@ public class MessagesViewModel : ViewModelBase
         {
             if (string.IsNullOrWhiteSpace(MessageText))
                 return;
+            if (SignalRClient.Connection == null || SignalRClient.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
+            {
+                AddErrorMessage("");
+                return;
+            }
             await SignalRClient.AsyncSendCommand("AtcChat", new ChatMessage(SelectedChannel, App.ServerBookmark.Callsign, MessageText, Brushes.LimeGreen));
             MessageText = string.Empty;
         }
@@ -159,9 +164,7 @@ public class MessagesViewModel : ViewModelBase
             return;
         }
 
-        if (SignalRClient.Connection == null ||
-            SignalRClient.Connection.State ==
-            Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
+        if (SignalRClient.Connection == null || SignalRClient.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Disconnected)
         {
             text = "[ERROR] Not connected to server";
             messages.Add(new ChatMessage(

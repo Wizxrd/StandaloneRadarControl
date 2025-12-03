@@ -96,7 +96,8 @@
                             HorizontalContentAlignment="Left"
                             VerticalContentAlignment="Center"
                             adonisExtensions:CornerRadiusExtension.CornerRadius="3"
-                            adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"/>
+                            adonisExtensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource FieldBrush}"
+                            adonisExtensions:CursorSpotlightExtension.BorderBrush="{StaticResource FieldBorderBrush}"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">

@@ -9,6 +9,6 @@ namespace Server.Models;
 public class Ports
 {
     public int SignalRServer { get; set; } = 7500;
-    public int ServerUdpRecieve { get; set; } = 7600;
-    public int DCSServerUdpRecieve { get; set; } = 7700;
+    public int ServerUdpReceive { get; set; } = 7600;
+    public int DcsUdpReceive { get; set; } = 7700;
 }

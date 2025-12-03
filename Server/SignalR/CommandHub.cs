@@ -1,8 +1,5 @@
-﻿using AdonisUI.Controls;
-using Common.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.SignalR;
+
 namespace Server.SignalR;
 
 public class CommandHub : Hub
@@ -10,6 +7,8 @@ public class CommandHub : Hub
     private static int clientCount = 0;
     public static int ClientCount => clientCount;
     public static event Action ClientCountChanged;
+
+    public static IHubContext<CommandHub> HubContext { get; set; }
 
     public override Task OnConnectedAsync()
     {
@@ -38,4 +37,11 @@ public class CommandHub : Hub
         await Clients.All.SendAsync("ReceiveEnvelope", envelope);
     }
 
+    public static Task SendToAll(string envelope)
+    {
+        if (HubContext == null)
+            return Task.CompletedTask;
+
+        return HubContext.Clients.All.SendAsync("ReceiveEnvelope", envelope);
+    }
 }

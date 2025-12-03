@@ -6,20 +6,20 @@
     {
       "Id": "5dee27fa-f625-4441-96f0-575982ad26e2",
       "Name": "Local Dev Server",
-      "LastUsedAt": "2025-11-30T01:14:24.400329Z",
+      "LastUsedAt": "2025-11-30T15:36:48.4426437Z",
       "Address": "192.168.1.79",
       "Port": "7500",
-      "Password": "admin",
+      "Password": "blue",
       "Callsign": "Dev 1-1 | Wizard",
       "Coalition": 2
     },
     {
       "Id": "a2c9d4d4-99b0-462c-be58-39294092605d",
       "Name": "Vader",
-      "LastUsedAt": "2025-11-30T01:14:22.0004898Z",
+      "LastUsedAt": "2025-11-30T15:36:53.6065081Z",
       "Address": "192.168.1.79",
       "Port": "7500",
-      "Password": "admin",
+      "Password": "blue",
       "Callsign": "Dev 1-1 | Vader",
       "Coalition": 2
     }

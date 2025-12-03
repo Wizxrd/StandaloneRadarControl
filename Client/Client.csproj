@@ -14,12 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Images\SRC.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Images\Menu.png" />
-    <Resource Include="Resources\Images\SRC.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Engines\" />
+    <Folder Include="DUMMY\" />
     <Folder Include="Profiles\" />
     <Folder Include="UI\Common\LoadingScreen\" />
     <Folder Include="UI\Common\NewServerBookmark\" />

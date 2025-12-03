@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.UI.Displays.Tactical;
 using Common.Utils;
 using Newtonsoft.Json;
 using System.Configuration;
@@ -15,6 +16,8 @@ public partial class App : Application
     public static DisplayState? DisplayState { get; set; }
     public static ServerBookmark ServerBookmark { get; set; }
     public static Profile Profile { get; set; }
+    public static List<object> Displays { get; set; } = new();
+
     public App()
     {
         Logger.DebugMode = true;
@@ -32,6 +35,17 @@ public partial class App : Application
             GeneralSettings = JsonConvert.DeserializeObject<GeneralSettings>(json);
         }
 
+    }
+
+    public static void RequestRender()
+    {
+        foreach (var display in Displays)
+        {
+            if (display is TacticalViewModel tacticalDisplay)
+            {
+                tacticalDisplay.SkiaEngine.RequestRender();
+            }
+        }   
     }
 
     public static void SaveGeneralSettings()

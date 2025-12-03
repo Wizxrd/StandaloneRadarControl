@@ -9,11 +9,13 @@ public partial class TacticalView : AdonisWindow
     private CommandCompositionView commandCompositionView;
 
     public int Id { get; set; }
+    public TacticalViewModel ViewModel { get; set; }
 
     public TacticalView()
     {
         InitializeComponent();
-        DataContext = new TacticalViewModel(RenderDisplayView);
+        ViewModel = new TacticalViewModel(RenderDisplayView);
+        DataContext = ViewModel;
         commandCompositionView = CommandComposition as CommandCompositionView;
         KeyDown += TacticalView_KeyDown;
     }

@@ -1,7 +1,6 @@
 ﻿using AdonisUI;
 using Common.Mvvm;
 using Newtonsoft.Json;
-using Server.Models;
 using Server.UI.Controls.ExportSettings.Realistic;
 using Server.UI.Views.Controls;
 using Common.Utils;
@@ -9,6 +8,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Server.SignalR;
+using Server.Socket;
+using Newtonsoft.Json.Linq;
+using Server.Models;
 namespace Server.UI.MainWindow;
 
 public class MainWindowViewModel : ViewModelBase
@@ -24,7 +26,6 @@ public class MainWindowViewModel : ViewModelBase
     private bool simultaneousConnect;
     private string maxRedControllers;
     private string maxBlueControllers;
-    private string adminPassword;
     private string redPassword;
     private string bluePassword;
 
@@ -113,15 +114,6 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public string AdminPassword
-    {
-        get => adminPassword;
-        set
-        {
-            adminPassword = value;            
-            OnPropertyChanged();
-        }
-    }
     public string RedPassword
     {
         get => redPassword;
@@ -164,7 +156,6 @@ public class MainWindowViewModel : ViewModelBase
         simultaneousConnect = App.Settings.GeneralSettings.SimultaneousConnect;
         maxRedControllers = App.Settings.GeneralSettings.MaxControllers.Red.ToString();
         maxBlueControllers = App.Settings.GeneralSettings.MaxControllers.Blue.ToString();
-        adminPassword = App.Settings.GeneralSettings.Passwords.Admin;
         redPassword = App.Settings.GeneralSettings.Passwords.Red;
         bluePassword = App.Settings.GeneralSettings.Passwords.Blue;
 
@@ -207,6 +198,16 @@ public class MainWindowViewModel : ViewModelBase
         });
     }
 
+    public UdpListener UdpListener = new();
+
+    public ScheduledFunction Scheduler { get; set; }
+
+
+    public async Task Test()
+    {
+        await UdpSender.SendToDCS(Callbacks.ExportAllAirplanes);
+    }
+
     private async void OnStartStopCommand()
     {
         if (Server.Started)
@@ -217,6 +218,9 @@ public class MainWindowViewModel : ViewModelBase
         else
         {
             StartStopText = "STARTING";
+            Scheduler = new(Test, 1);
+            Scheduler.Start();
+            UdpListener.Start();
             await Server.Start(App.Settings.GeneralSettings.Ports.SignalRServer);
             StartStopText = "STOP";
         }
@@ -230,7 +234,6 @@ public class MainWindowViewModel : ViewModelBase
         App.Settings.GeneralSettings.SimultaneousConnect = simultaneousConnect;
         App.Settings.GeneralSettings.MaxControllers.Red = int.Parse(maxRedControllers);
         App.Settings.GeneralSettings.MaxControllers.Blue = int.Parse(maxBlueControllers);
-        App.Settings.GeneralSettings.Passwords.Admin = adminPassword;
         App.Settings.GeneralSettings.Passwords.Red = redPassword;
         App.Settings.GeneralSettings.Passwords.Blue = bluePassword;
         App.SaveSettings();

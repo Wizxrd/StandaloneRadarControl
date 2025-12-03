@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Common.Utils;
+using System.IO;
+using Client.Services;
 
 namespace Client.SignalR
 {
@@ -20,6 +23,7 @@ namespace Client.SignalR
         public static void Create()
         {
             Handlers["AtcChat"] = AtcChat;
+            Handlers["OnExportAllAirplanes"] = OnExportAllAirplanes;
 
             SignalRClient.Connection?.On<string>("ReceiveEnvelope", json =>
             {
@@ -37,6 +41,19 @@ namespace Client.SignalR
             ChatMessage message = token?.ToObject<ChatMessage>();
             if (message == null) return Task.CompletedTask;
             ViewManager.MessagesViewModel.AddMessageFromATC(message.Sender, message.Text, message.Channel);
+            return Task.CompletedTask;
+        }
+
+        private static Task OnExportAllAirplanes(CommandEnvelope env)
+        {
+            var token = env.Payload as JToken;
+            JArray airplanes = token?.ToObject<JArray>();
+            SurveillanceService.Airplanes.Clear();
+            foreach (JObject airplane in airplanes)
+            {
+                SurveillanceService.Airplanes.Add(airplane);
+            }
+            App.RequestRender();
             return Task.CompletedTask;
         }
     }

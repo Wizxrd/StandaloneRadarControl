@@ -1,8 +1,8 @@
-﻿using SkiaSharp;
-using Client.Renderables;
+﻿using Client.Renderables;
 using Client.Renderables.Interfaces;
-using Size = System.Drawing.Size;
 using Common.Utils;
+using SkiaSharp;
+using Size = System.Drawing.Size;
 namespace Client.Engines;
 
 public class RenderEngine
@@ -67,6 +67,7 @@ public class RenderEngine
             else if (renderable.GetType() == typeof(Text)) RenderText((Text)renderable);
             else if (renderable.GetType() == typeof(Circle)) RenderCircle((Circle)renderable);
             else if (renderable.GetType() == typeof(Rect)) RenderRect((Rect)renderable);
+            else if (renderable.GetType() == typeof(Arc)) RenderArc((Arc)renderable);
         }
     }
 
@@ -95,5 +96,26 @@ public class RenderEngine
     private void RenderRect(Rect rect)
     {
         Canvas.DrawRect(rect.skRect, rect.Paint);
+    }
+
+    private void RenderArc(Arc arc)
+    {
+        float r = arc.Radius;
+        float heightFactor = 5f;          // how tall / skinny
+        float height = heightFactor * r;
+
+        float baseY = arc.Center.Y;       // arc should end here (where the line was)
+
+        var rect = new SKRect(
+            arc.Center.X - r,
+            baseY - height/2,               // top
+            arc.Center.X + r,
+            baseY + height/2                      // bottom
+        );
+
+        arc.Paint.Style = SKPaintStyle.Stroke;
+        arc.Paint.StrokeWidth = 1;
+
+        Canvas.DrawArc(rect, 180f, 180f, false, arc.Paint);
     }
 }

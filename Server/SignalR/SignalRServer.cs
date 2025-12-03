@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using System.Windows;
+
 namespace Server.SignalR;
 
 public class SignalRServer
@@ -15,6 +17,7 @@ public class SignalRServer
         try
         {
             if (host != null) return;
+
             host = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -34,6 +37,9 @@ public class SignalRServer
                     });
                 })
                 .Build();
+
+            CommandHub.HubContext = host.Services.GetRequiredService<IHubContext<CommandHub>>();
+
             await host.StartAsync();
         }
         catch (Exception ex)
@@ -51,6 +57,7 @@ public class SignalRServer
                 await host.StopAsync();
                 host.Dispose();
                 host = null;
+                CommandHub.HubContext = null;
             }
         }
         catch (Exception ex)
