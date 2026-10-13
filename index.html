@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standalone Radar Control</title>
+<link rel="icon" href="SRC.ico" type="image/ico">
+<style>
+  body {
+    background: #0b0f17;
+    color: #d0d6e0;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 20px;
+  }
+
+  #page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  h1, h2 {
+    color: #ff9429;
+    border-bottom: 1px solid #2a3550;
+    padding-bottom: 4px;
+  }
+
+  h1 {
+    margin-top: 10px;
+  }
+
+  h2 {
+    margin-top: 40px;
+  }
+
+  h3 {
+    color: #ff9429;
+    margin-top: 30px;
+  }
+
+  h4 {
+    margin-top: 25px;
+    margin-bottom: 5px;
+  }
+
+  a {
+    color: #73bdff;
+  }
+
+  code {
+    background: #1a2133;
+    padding: 1px 4px;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 10px 0;
+  }
+
+  td, th {
+    border: 1px solid #2a3550;
+    padding: 4px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #131a29;
+  }
+
+  li {
+    margin-bottom: 4px;
+  }
+
+  .small {
+    color: #8a93a6;
+    font-size: 13px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  .downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0 8px;
+  }
+
+  .download {
+    background: #ff9429;
+    color: #0b0f17;
+    font-weight: bold;
+    padding: 10px 18px;
+    text-decoration: none;
+    border: 1px solid #ff9429;
+  }
+
+  .download:hover {
+    background: #0b0f17;
+    color: #ff9429;
+  }
+</style>
+</head>
+<body>
+<div id="page">
+
+<h1>Standalone Radar Control for DCS World</h1>
+
+<h2 id="description">Description</h2>
+<p>
+  Standalone Radar Control or <b>SRC</b> for short, is a completely free, standalone radar control software
+  used for ATC/GCI/AIC outside the DCS World environment.
+</p>
+<p>
+  It's made of two parts, the <b>Server</b> which runs alongside your DCS server and the <b>Client</b> which controllers use to control.
+</p>
+<p class="small">SRC is still being worked on, so things will change and there will be bugs.</p>
+
+<h2 id="client">Client</h2>
+<div class="downloads">
+  <a class="download" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCClient.zip">DOWNLOAD CLIENT</a>
+</div>
+<h3>Requirements</h3>
+<ul>
+  <li>Windows 10 or 11</li>
+  <li>Support for OpenGL 4.1 or greater</li>
+  <li>Keyboard and mouse</li>
+  <li>Internet</li>
+</ul>
+
+<h2 id="server">Server</h2>
+<div class="downloads">
+  <a class="download" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCServer.zip">DOWNLOAD SERVER</a>
+</div>
+<h3>Requirements</h3>
+<ul>
+  <li>Windows 10 or 11</li>
+  <li>Runs on the same PC as your DCS World server</li>
+  <li>Port forwarding for controllers to connect</li>
+  <li>SRS, only for transponders (IFF) in Advanced or greater</li>
+</ul>
+
+<p class="small">Older versions and release notes are on the <a href="https://github.com/Wizxrd/StandaloneRadarControl/releases">releases page</a>.</p>
+
+</div>
+</body>
+</html>
