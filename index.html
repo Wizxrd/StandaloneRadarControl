@@ -122,7 +122,7 @@
 
 <h2 id="client">Client</h2>
 <div class="downloads">
-  <a class="download" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCClient.zip">DOWNLOAD CLIENT</a>
+  <a class="download" data-app="SRCClient" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD CLIENT</a>
 </div>
 <h3>Requirements</h3>
 <ul>
@@ -134,7 +134,7 @@
 
 <h2 id="server">Server</h2>
 <div class="downloads">
-  <a class="download" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCServer.zip">DOWNLOAD SERVER</a>
+  <a class="download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD SERVER</a>
 </div>
 <h3>Requirements</h3>
 <ul>
@@ -147,5 +147,20 @@
 <p class="small">Older versions and release notes are on the <a href="https://github.com/Wizxrd/StandaloneRadarControl/releases">releases page</a>.</p>
 
 </div>
+
+<script>
+  // Each release's zips are named with their build (SRCClient-v10.12.2026.246.zip), so point the buttons at the
+  // newest release's files. Without this they open the latest release's page.
+  fetch("https://api.github.com/repos/Wizxrd/StandaloneRadarControl/releases/latest")
+    .then(response => response.ok ? response.json() : null)
+    .then(release => {
+      if (!release) return;
+      for (const link of document.querySelectorAll("a.download[data-app]")) {
+        const asset = release.assets.find(a => a.name.startsWith(link.dataset.app + "-") && a.name.endsWith(".zip"));
+        if (asset) link.href = asset.browser_download_url;
+      }
+    })
+    .catch(() => {});
+</script>
 </body>
 </html>

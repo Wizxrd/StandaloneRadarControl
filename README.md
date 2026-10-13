@@ -12,7 +12,7 @@ It's made of two parts, the **Server** which runs alongside your DCS server and 
 
 ## Client
 
-**[Download Client](https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCClient.zip)**
+**[Download Client](https://github.com/Wizxrd/StandaloneRadarControl/releases/latest)** (SRCClient zip on the latest release)
 
 ### Requirements
 
@@ -23,7 +23,7 @@ It's made of two parts, the **Server** which runs alongside your DCS server and 
 
 ## Server
 
-**[Download Server](https://github.com/Wizxrd/StandaloneRadarControl/releases/latest/download/SRCServer.zip)**
+**[Download Server](https://github.com/Wizxrd/StandaloneRadarControl/releases/latest)** (SRCServer zip on the latest release)
 
 ### Requirements
 
