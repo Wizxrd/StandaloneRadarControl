@@ -138,25 +138,47 @@
   <li>Select the server and click <b>CONNECT</b></li>
 </ol>
 
-<h2 id="server">Server</h2>
-<div class="downloads">
-  <a class="download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD SERVER</a>
-</div>
-<h3>Requirements</h3>
-<ul>
-  <li>Windows 10 or 11</li>
-  <li>Runs on the same PC as your DCS World server</li>
-  <li>Port forwarding for controllers to connect</li>
-  <li>SRS, only for transponders in Advanced or greater</li>
-</ul>
-<h3>Quick Start</h3>
-<ol>
-  <li>Unzip and run <code>Application/Server.exe</code></li>
-  <li><b>DCS</b> tab: <b>SELECT</b> your DCS server's Saved Games folder, then <b>INSTALL SCRIPTS</b></li>
-  <li><b>NETWORK</b> tab: set Address to <code>0.0.0.0</code> and forward the Port (UDP, default <code>27020</code>)</li>
-  <li><b>COALITIONS</b> tab: set a password for each side</li>
-  <li>Click <b>START</b>, then start or restart your DCS server</li>
-</ol>
+  <h2 id="server">Server</h2>
+  <div class="downloads">
+    <a class="download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD
+      SERVER</a>
+  </div>
+  <h3>Requirements</h3>
+  <ul>
+    <li>Windows 10 or 11</li>
+    <li>Runs on the same PC as your DCS World server</li>
+    <li>Port forwarding for controllers to connect</li>
+    <li>SRS, only for transponders in Advanced simulation or greater, see <a href="#srs">SRS</a></li>
+  </ul>
+  <h3>Quick Start</h3>
+  <ol>
+    <li>
+      Open <code>DCS World/Scripts/MissionScripting.lua</code> in your DCS install folder and comment out the
+      <code>lfs</code>, <code>require</code> and <code>package</code> lines:
+      <pre><code>do
+    sanitizeModule('os')
+    sanitizeModule('io')
+    <span class="comment">--sanitizeModule('lfs')</span>
+    <span class="comment">--_G['require'] = nil</span>
+    _G['loadlib'] = nil
+    <span class="comment">--_G['package'] = nil</span>
+end</code></pre>
+      DCS updates overwrite this file, so you'll need to do this again after each update
+    </li>
+    <li>Unzip and run <code>Application/Server.exe</code></li>
+    <li><b>DCS</b> tab: <b>SELECT</b> your DCS server's Saved Games folder, then <b>INSTALL SCRIPTS</b></li>
+    <li><b>NETWORK</b> tab: set Address to <code>0.0.0.0</code> and forward the Port (UDP, default <code>27020</code>)
+    </li>
+    <li><b>COALITIONS</b> tab: set a <b>optional</b> password for each side</li>
+    <li>Click <b>START</b>, then start or restart your DCS server</li>
+  </ol>
+
+  <h3 id="srs">SRS</h3>
+  <p>Only needed for transponders in Advanced simulation or greater. Do these before clicking <b>START</b>.</p>
+  <ol>
+    <li>Enable <code>Distance Limit</code> on your SRS server so it sends coordinate and altitude information</li>
+    <li>Forward your SRS export server port (UDP, default <code>10712</code>)</li>
+  </ol>
 
 </div>
 
