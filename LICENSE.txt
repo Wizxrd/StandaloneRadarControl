@@ -1,0 +1,58 @@
+SRC License v1.0
+
+Standalone Radar Control ("SRC") is Copyright (c) 2026 Wizxrd. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+the SRC Client and SRC Server applications, their scripts, video maps, themes,
+other assets and documentation (the "Software"), to download, install and use
+the Software for personal and community use, including on DCS World servers
+they run or play on, subject to the following conditions:
+
+1.0. The above copyright notice and this permission notice shall be included in
+all copies of the Software.
+
+2.0. Without written permission from Wizxrd, no person may:
+
+2.1. sell, rent or charge for the Software, or for access to it.
+
+2.2. redistribute, re-host or mirror the Software. The only official source of
+the Software is https://github.com/Wizxrd/StandaloneRadarControl.
+
+2.3. modify, decompile, disassemble or reverse engineer the Software, except
+where the law expressly allows this despite this condition.
+
+2.4. remove or alter any copyright notice, this license or
+THIRD_PARTY_NOTICES.txt.
+
+3.0. Users may create and share their own video maps, themes and profiles for
+use with the Software.
+
+4.0. Where the Software redistributes third-party components, they are listed,
+together with the licences that govern them, in THIRD_PARTY_NOTICES.txt. Those
+licences continue to apply to those components, and nothing stated here limits
+any right they grant you.
+
+5.0. The Software is an independent project. It is not affiliated with,
+endorsed by or supported by Eagle Dynamics SA (DCS World) or the
+DCS-SimpleRadioStandalone (SRS) project. All product names and trademarks
+belong to their respective owners.
+
+6.0. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. THE SOFTWARE IS FOR ENTERTAINMENT AND SIMULATION ONLY AND SHALL NOT BE
+USED FOR REAL-WORLD NAVIGATION OR AIR TRAFFIC CONTROL.
+
+7.0. Any person submitting any contribution to the Software hereby grants
+Wizxrd a perpetual, worldwide, non-exclusive, no-charge, royalty-free,
+irrevocable license to include the contribution in the Software and use it
+under the terms of this license. Any person submitting any contribution
+represents that they are legally entitled to grant this license and that their
+contribution does not infringe upon any third-party rights.
+
+8.0. This license ends automatically if its conditions are broken.
+
+By installing or using the Software you agree to this license.
