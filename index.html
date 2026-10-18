@@ -6,156 +6,618 @@
 <title>Standalone Radar Control</title>
 <link rel="icon" href="SRC.ico" type="image/ico">
 <style>
+  :root {
+    --bg: #0f131b;
+    --bar: #151a24;
+    --band: #121722;
+    --card: #181e2a;
+    --border: #262e3e;
+    --text: #d5dbe5;
+    --muted: #8b95a7;
+    --accent: #ff9429;
+    --accent-text: #0f131b;
+    --link: #73bdff;
+    --code: #1f2738;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-padding-top: 70px;
+  }
+
   body {
-    background: #0b0f17;
-    color: #d0d6e0;
-    font-family: Consolas, "Courier New", monospace;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0;
-    padding: 20px;
-  }
-
-  #page {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  h1, h2 {
-    color: #ff9429;
-    border-bottom: 1px solid #2a3550;
-    padding-bottom: 4px;
-  }
-
-  h1 {
-    margin-top: 10px;
-  }
-
-  h2 {
-    margin-top: 40px;
-  }
-
-  h3 {
-    color: #ff9429;
-    margin-top: 30px;
-  }
-
-  h4 {
-    margin-top: 25px;
-    margin-bottom: 5px;
   }
 
   a {
-    color: #73bdff;
+    color: var(--link);
   }
 
-  code {
-    background: #1a2133;
-    padding: 1px 4px;
+  code, pre, kbd {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
   }
 
-  table {
-    border-collapse: collapse;
-    margin: 10px 0;
+  code, kbd {
+    background: var(--code);
+    border-radius: 3px;
+    padding: 1px 5px;
   }
 
-  td, th {
-    border: 1px solid #2a3550;
-    padding: 4px 10px;
-    text-align: left;
-    vertical-align: top;
+  pre {
+    background: var(--code);
+    border-radius: 4px;
+    padding: 10px 12px;
+    overflow-x: auto;
   }
 
-  th {
-    background: #131a29;
+  pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .comment {
+    color: var(--accent);
+  }
+
+  /* ---- Top bar ---- */
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bar);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 54px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .brand img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    height: 100%;
+  }
+
+  .tabs a {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .tabs a:hover {
+    color: var(--text);
+  }
+
+  .tabs a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ---- Header strip ---- */
+
+  .hero {
+    background: var(--band);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .hero-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-title img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .hero h1 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .tagline {
+    color: var(--accent);
+    margin: 2px 0 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .button:hover {
+    filter: brightness(1.1);
+  }
+
+  .button.secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .button.secondary:hover {
+    border-color: var(--muted);
+  }
+
+  /* ---- Content ---- */
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  .page {
+    display: none;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 28px;
+  }
+
+  .label {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+
+  .card > :first-child {
+    margin-top: 0;
+  }
+
+  .card > :last-child {
+    margin-bottom: 0;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .apps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .apps .card {
+    margin: 0;
+  }
+
+  .apps h3 {
+    margin: 0 0 6px;
   }
 
   li {
     margin-bottom: 4px;
   }
 
-  .small {
-    color: #8a93a6;
-    font-size: 13px;
+  /* ---- Documentation ---- */
+
+  .docs {
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .docs h2 {
+    margin: 0 0 4px;
+  }
+
+  .docs h3 {
+    margin: 30px 0 8px;
+    color: var(--text);
+    font-size: 17px;
   }
 
   .table-wrap {
     overflow-x: auto;
   }
 
-  .downloads {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  td, th {
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--card);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  td:first-child {
+    white-space: nowrap;
+  }
+
+  td code {
+    white-space: nowrap;
+  }
+
+  /* ---- Changelog ---- */
+
+  .release {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+  }
+
+  .release:last-child {
+    border-bottom: none;
+  }
+
+  .release-head {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 12px;
-    margin: 16px 0 8px;
+    flex-wrap: wrap;
   }
 
-  .download {
-    background: #ff9429;
-    color: #0b0f17;
-    font-weight: bold;
-    padding: 10px 18px;
+  .release-head a {
+    color: var(--text);
+    font-weight: 700;
     text-decoration: none;
-    border: 1px solid #ff9429;
   }
 
-  .download:hover {
-    background: #0b0f17;
-    color: #ff9429;
+  .release h4 {
+    margin: 10px 0 4px;
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  .release ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .show-more {
+    margin-top: 12px;
+    cursor: pointer;
+  }
+
+  /* ---- FAQ ---- */
+
+  .faq {
+    margin-top: 28px;
+  }
+
+  .faq-item {
+    margin-bottom: 14px;
+  }
+
+  .faq-item h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .faq-item p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  @media (max-width: 760px) {
+    .grid, .apps {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-inner {
+      gap: 12px;
+    }
+
+    .tabs a {
+      padding: 0 10px;
+    }
+
+    .hero h1 {
+      font-size: 24px;
+    }
+
+    td:first-child {
+      white-space: normal;
+    }
   }
 </style>
 </head>
 <body>
-<div id="page">
 
-<h1>Standalone Radar Control for DCS World</h1>
-
-<h2 id="description">Description</h2>
-<p>
-  Standalone Radar Control or <b>SRC</b> for short, is a completely free, standalone radar control software
-  used for ATC/GCI/AIC outside the DCS World environment.
-</p>
-<p>
-  It's made of two parts, the <b>Server</b> which runs alongside your DCS server and the <b>Client</b>.
-</p>
-<p class="small">Pardon the dust, SRC & its Documentation is in alpha, so things will change and there will be bugs.</p>
-<h2 id="client">Client</h2>
-<div class="downloads">
-  <a class="download" data-app="SRCClient" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD CLIENT</a>
-</div>
-<h3>Requirements</h3>
-<ul>
-  <li>Windows 10 or 11</li>
-  <li>Support for OpenGL 4.1 or greater</li>
-  <li>Keyboard and mouse</li>
-  <li>Internet</li>
-</ul>
-<h3>Quick Start</h3>
-<ol>
-  <li>Unzip and run <code>Application/Client.exe</code></li>
-  <li>In <b>System Connect</b>, click <b>ADD SERVER</b></li>
-  <li>Give the server profile a name, enter the server's address, port, your coalition, callsign and optional password, then <b>CREATE</b></li>
-  <li>Select the server and click <b>CONNECT</b></li>
-</ol>
-
-  <h2 id="server">Server</h2>
-  <div class="downloads">
-    <a class="download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">DOWNLOAD
-      SERVER</a>
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#src"><img src="SRC.ico" alt="">SRC</a>
+    <div class="tabs">
+      <a href="#src" data-tab="src">SRC</a>
+      <a href="#client" data-tab="client">Client</a>
+      <a href="#server" data-tab="server">Server</a>
+    </div>
   </div>
-  <h3>Requirements</h3>
-  <ul>
-    <li>Windows 10 or 11</li>
-    <li>Runs on the same PC as your DCS World server</li>
-    <li>Port forwarding for controllers to connect</li>
-    <li>SRS, only for transponders in Advanced simulation or greater, see <a href="#srs">SRS</a></li>
-  </ul>
-  <h3>Quick Start</h3>
-  <ol>
-    <li>
-      Open <code>DCS World/Scripts/MissionScripting.lua</code> in your DCS install folder and comment out the
-      <code>lfs</code>, <code>require</code> and <code>package</code> lines:
-      <pre><code>do
+</nav>
+
+<!-- ======================================================== SRC ======================================================== -->
+<section class="page" id="page-src">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-title">
+        <img src="SRC.ico" alt="">
+        <div>
+          <h1>Standalone Radar Control</h1>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="button download" data-app="SRCClient" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">Download Client</a>
+        <a class="button download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">Download Server</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="grid">
+      <div>
+        <p class="label">About</p>
+        <p>
+          Standalone Radar Control, or <b>SRC</b> for short, is completely free, standalone radar control software
+          for ATC, GCI and AIC outside the DCS World environment.
+        </p>
+        <p>
+          SRC comes as 2 standalone applications, the <b>Client</b> & the <b>Server</b>
+        </p>
+        <p class="muted">Pardon the construction, SRC and its documentation are in alpha.</p>
+      </div>
+    </div>
+    <div class="faq">
+      <p class="label">FAQ</p>
+      <div>
+        <div class="faq-item">
+          <h3>What is this?</h3>
+          <p>A standalone way to control players on a radar scope outside of DCS World, most commonly known as ATC, GCI and AIC.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I need DCS World installed, or own any maps?</h3>
+          <p>No, not to control. The client runs on its own. Only whoever hosts the SRC Server runs it next to their DCS server.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does it use Tacview, DCS-gRPC, MIST or MOOSE?</h3>
+          <p>No. The SRC Server uses its own custom export scripts, written in Lua.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What do I need?</h3>
+          <p>See the <a href="#client">client</a> and <a href="#server">server</a> requirements.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I need SRS?</h3>
+          <p>Yes, only for servers in Advanced simulation or above, where IFF reads transponders through SRS. Without it, tracks stay PENDING. This is <b>NOT</b> required for Arcade.
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ======================================================= CLIENT ====================================================== -->
+<section class="page" id="page-client">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-title">
+        <img src="Client.ico" alt="">
+        <div>
+          <h1>Client</h1>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="button download" data-app="SRCClient" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">Download</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="grid">
+      <div>
+        <p class="label">About</p>
+        <p>
+          The client and its interface is loosely based upon real-world software.
+        </p>
+
+        <p class="label" style="margin-top: 28px">Installation</p>
+        <ol>
+          <li>Unzip and run <code>Application/Client.exe</code></li>
+          <li>In <b>System Connect</b>, click <b>ADD SERVER</b></li>
+          <li>Give the server profile a name, enter the server's address, port, your coalition, callsign and optional password, then <b>CREATE</b></li>
+          <li>Select the server and click <b>CONNECT</b></li>
+        </ol>
+      </div>
+
+      <div>
+        <p class="label">Requirements</p>
+        <div class="card">
+          <ul>
+            <li>Windows 10 or 11</li>
+            <li>Support for OpenGL 4.1 or greater</li>
+            <li>Keyboard and mouse</li>
+            <li>Internet</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs" id="client-docs">
+      <h2>Documentation</h2>
+
+      <h3>Commands</h3>
+      <p>
+        Commands are typed into <b>SYSTEM COMMAND</b>, or anywhere on the scope, and executed by pressing <kbd>Enter</kbd>
+        or by middle clicking a track. Middle clicking a track inputs the TID and executes the command.
+      </p>
+      <p>
+        <code>&lt;TID&gt;</code> is a track number or a callsign. Leave it out to use the selected track.
+      </p>
+
+      <h3>Implied Commands</h3>
+      <p>Implied commands can be executed without the TID</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Command</th><th>Description</th></tr>
+          <tr><td><code>/&lt;TID&gt;</code> or <code>/ &lt;TID&gt;</code></td><td>Switches a data block between LIMITED and FULL</td></tr>
+          <tr><td><code>//&lt;TID&gt;</code> or <code>// &lt;TID&gt;</code></td><td>Toggles a track's VCI</td></tr>
+          <tr><td><code>&lt;1-9&gt; &lt;track&gt;</code></td><td>Positions a data block</td></tr>
+        </table>
+      </div>
+
+      <h3>System Commands</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Command</th><th>Description</th></tr>
+          <tr><td><code>QF &lt;track&gt;</code></td><td>Shows a track's flight data in <b>SYSTEM RESPONSE</b></td></tr>
+          <tr><td><code>BR &lt;track&gt;</code></td><td>Shows bearing, range, altitude and aspect from the selected track to another</td></tr>
+          <tr><td><code>BR &lt;track&gt; &lt;track&gt;</code></td><td>Shows bearing, range, altitude and aspect between two tracks</td></tr>
+          <tr><td><code>QR &lt;callsign&gt;</code></td><td>Renames the selected track for your whole side</td></tr>
+          <tr><td><code>QR &lt;track&gt;`&lt;callsign&gt;</code></td><td>Renames a track for your whole side</td></tr>
+          <tr><td><code>QR &lt;track&gt;`</code></td><td>Resets a track's callsign</td></tr>
+        </table>
+      </div>
+      <ul>
+        <li><code>BR</code> adds the pair to the <b>BRAA LIST</b>. With middle click, the first click inputs one track and the second runs it.</li>
+        <li><kbd>Up</kbd> and <kbd>Down</kbd> step through earlier commands, <kbd>Ctrl</kbd>+<kbd>R</kbd> brings back the last one, <kbd>Esc</kbd> clears the line.</li>
+      </ul>
+
+      <h3>Keybinds</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Mouse</th><th>Description</th></tr>
+          <tr><td>Left click track</td><td>Selects track. <b>TRACK DETAIL</b> displays it and its data block goes FULL</td></tr>
+          <tr><td>Left click data block</td><td>Turns the track's VCI (Voice Communication Indicator) on or off</td></tr>
+          <tr><td>Left drag</td><td>Draws a bearing / range line while you hold the button</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + left drag</td><td>From one track to another: selects the first, adds the pair to the <b>BRAA LIST</b>, and the scope keeps both bracketed with a line and its bearing / range between them. Remove it from the <b>BRAA LIST</b> to clear it.</td></tr>
+          <tr><td>Right drag</td><td>Pan</td></tr>
+          <tr><td>Mouse wheel</td><td>Zoom</td></tr>
+          <tr><td>Middle click track</td><td>Switches its data block between FULL and LIMITED without selecting it. With a command typed, runs that command on the track instead.</td></tr>
+          <tr><td>Middle drag</td><td>Zooms to the box you draw, when Selection Zoom is on in <b>Display Settings</b>.</td></tr>
+          <tr><th>Keys</th><th>Description</th></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>L</kbd></td><td>Load profile</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Save profile</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>Save profile as a new one</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>General Settings</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Display Settings</td></tr>
+        </table>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ======================================================= SERVER ====================================================== -->
+<section class="page" id="page-server">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-title">
+        <img src="Server.ico" alt="">
+        <div>
+          <h1>Server</h1>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="button download" data-app="SRCServer" href="https://github.com/Wizxrd/StandaloneRadarControl/releases/latest">Download</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="grid">
+      <div>
+        <p class="label">About</p>
+        <p>
+          The server runs on the same PC as your DCS World server feeding surveillance data to controllers.
+        </p>
+
+        <p class="label" style="margin-top: 28px">Installation</p>
+        <ol>
+          <li>
+            Open <code>DCS World/Scripts/MissionScripting.lua</code> in your DCS install folder and comment out the
+            <code>lfs</code>, <code>require</code> and <code>package</code> lines:
+            <pre><code>do
     sanitizeModule('os')
     sanitizeModule('io')
     <span class="comment">--sanitizeModule('lfs')</span>
@@ -163,27 +625,145 @@
     _G['loadlib'] = nil
     <span class="comment">--_G['package'] = nil</span>
 end</code></pre>
-      DCS updates overwrite this file, so you'll need to do this again after each update
-    </li>
-    <li>Unzip and run <code>Application/Server.exe</code></li>
-    <li><b>DCS</b> tab: <b>SELECT</b> your DCS server's Saved Games folder, then <b>INSTALL SCRIPTS</b></li>
-    <li><b>NETWORK</b> tab: set Address to <code>0.0.0.0</code> and forward the Port (UDP, default <code>27020</code>)
-    </li>
-    <li><b>COALITIONS</b> tab: set a <b>optional</b> password for each side</li>
-    <li>Click <b>START</b>, then start or restart your DCS server</li>
-  </ol>
+            DCS updates overwrite this file, so you'll need to do this again after each update
+          </li>
+          <li>Unzip and run <code>Application/Server.exe</code></li>
+          <li><b>DCS</b> tab: <b>SELECT</b> your DCS server's Saved Games folder, then <b>INSTALL SCRIPTS</b></li>
+          <li><b>NETWORK</b> tab: set Address to <code>0.0.0.0</code> and forward the Port (UDP, default <code>27020</code>)</li>
+          <li><b>COALITIONS</b> tab: set an <b>optional</b> password for each side</li>
+          <li>Click <b>START</b>, then start or restart your DCS server</li>
+        </ol>
 
-  <h3 id="srs">SRS Server</h3>
-  <p>Only needed for transponders in Advanced simulation or greater. Do these before clicking <b>START</b>.</p>
-  <ol>
-    <li>Enable <code>LotATC Transponder Export</code></li>
-    <li>Enable <code>Distance Limit</code></li>
-    <li>Forward your SRS export server port (UDP, default <code>10712</code>)</li>
-  </ol>
+        <p class="label" style="margin-top: 28px" id="server-srs">SRS Server</p>
+        <p>Only needed for transponders in Advanced simulation or greater. Do these before starting the server</p>
+        <ol>
+          <li>Enable <code>LotATC Transponder Export</code></li>
+          <li>Enable <code>Distance Limit</code></li>
+          <li>Forward your SRS export server port (UDP, default <code>10712</code>)</li>
+        </ol>
+      </div>
 
-</div>
+      <div>
+        <p class="label">Requirements</p>
+        <div class="card">
+          <ul>
+            <li>Windows 10 or 11</li>
+            <li>Runs on the same PC as your DCS World server</li>
+            <li>Port forwarding for controllers to connect</li>
+            <li>SRS, only for transponders in Advanced simulation or greater, see <a href="#server/srs">SRS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs" id="server-docs">
+      <h2>Documentation</h2>
+      <h3>Headless (No GUI)</h3>
+      <p>
+        Setup your instances in the GUI window first.
+      </p>
+      <pre><code>Server.exe --headless --instance "My Server Name" --autoupdate</code></pre>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>Option</th><th>Description</th></tr>
+          <tr><td><code>--headless</code></td><td>Runs in the console with no window context, and starts every instance with <b>Auto Launch Server</b> on</td></tr>
+          <tr><td><code>--instance "name"</code></td><td>With <code>--headless</code>, starts this instance instead, by name or by its number from <code>--list</code>. Use it more than once for several</td></tr>
+          <tr><td><code>--all</code></td><td>With <code>--headless</code>, starts every instance</td></tr>
+          <tr><td><code>--autoupdate</code></td><td>With <code>--headless</code>, checks for a new release when on start and restarts with the same options</td></tr>
+          <tr><td><code>--list</code></td><td>Prints the instances and exits</td></tr>
+          <tr><td><code>--verbose</code></td><td>Also logs every network message</td></tr>
+          <tr><td><code>--help</code></td><td>Prints the options</td></tr>
+        </table>
+      </div>
+
+      <p>While running, type a command into the console and press <kbd>Enter</kbd>. An instance is its name or its number from <code>list</code>, and you can leave it out when you only have one.</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Command</th><th>Description</th></tr>
+          <tr><td><code>help</code></td><td>Lists the commands</td></tr>
+          <tr><td><code>list</code></td><td>Instances and whether they're running</td></tr>
+          <tr><td><code>status [instance]</code></td><td>The dashboard, with the server, controllers, radar, DCS and mission</td></tr>
+          <tr><td><code>clients [instance]</code></td><td>Connected controllers</td></tr>
+          <tr><td><code>start &lt;instance | all&gt;</code></td><td>Starts an instance</td></tr>
+          <tr><td><code>stop &lt;instance | all&gt;</code></td><td>Stops an instance</td></tr>
+          <tr><td><code>restart [instance]</code></td><td>Stops an instance, then starts it again</td></tr>
+          <tr><td><code>install-scripts [instance]</code></td><td>Installs the DCS scripts into Saved Games</td></tr>
+          <tr><td><code>fps</code></td><td>Update rate and time over the last 5 seconds</td></tr>
+          <tr><td><code>profile</code></td><td>Display stats on the slowest functions</td></tr>
+          <tr><td><code>quit</code></td><td>Stops every instance and exits</td></tr>
+        </table>
+      </div>
+      <ul>
+        <li><kbd>Ctrl</kbd>+<kbd>C</kbd> or closing the console stops every instance cleanly, the same as <code>quit</code>.</li>
+        <li>Without <code>--autoupdate</code>, a headless server doesn't update itself. Update it from the window, or download the new release.</li>
+      </ul>
+      <h3>GUI</h3>
+      <h4>Tabs</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tab</th><th>Description</th></tr>
+          <tr><td>DASHBOARD</td><td>The server's status</td></tr>
+          <tr><td>DCS</td><td>
+            <b>Saved Games Path</b> (required)
+          </td></tr>
+          <tr><td>NETWORK</td><td>
+            <b>Address</b> and <b>Port</b> controllers connect to: <code>127.0.0.1</code> for this PC only, <code>0.0.0.0</code> to allow outside connections.
+            The ports DCS and SRC talk to each other on.
+            <b>Dual Connect</b> lets a player be in DCS and SRC at the same time.
+          </td></tr>
+          <tr><td>SIMULATION</td><td>
+            The mode, plus <b>Refresh Rate</b> (seconds between radar refreshes), <b>History</b> (past positions kept per track) and
+            <b>Default Range</b> for radars that don't report one.
+          </td></tr>
+          <tr><td>COALITIONS</td><td>Max controllers and an optional password for <b>RED</b> and <b>BLUE</b>.</td></tr>
+          <tr><td>CONSOLE</td><td>Log tailing, <b>OPEN LOG FOLDER</b> for its log files.</td></tr>
+        </table>
+      </div>
+
+      <h4>Simulations</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Mode</th><th>Description</th></tr>
+          <tr><td>Arcade</td><td>All aircraft, with its identity known from its DCS coalition. No SRS needed.</td></tr>
+          <tr><td>Advanced</td><td>Only what the side's radars detect. A contact becomes a track after enough returns, and IFF decides its identity from Mode 4 replies over SRS.</td></tr>
+          <tr><td>Realism</td><td>Runs the Advanced settings for now.</td></tr>
+          <tr><td>Custom</td><td>Custom toggles from the above simulations</td></tr>
+        </table>
+      </div>
+      <p>Without SRS, Advanced and above can't interrogate transponders, so tracks stay <b>PENDING</b>.</p>
+    </div>
+  </main>
+</section>
 
 <script>
+  // ---- Pages: #src, #client and #server, with #client/docs, #server/docs and #server/srs scrolling to a section ----
+
+  const anchors = {"client/docs": "client-docs", "server/docs": "server-docs", "server/srs": "server-srs"};
+
+  function show() {
+    const route = location.hash.slice(1) || "src";
+    const page = ["src", "client", "server"].includes(route.split("/")[0]) ? route.split("/")[0] : "src";
+
+    for (const section of document.querySelectorAll(".page"))
+      section.classList.toggle("active", section.id === "page-" + page);
+
+    for (const tab of document.querySelectorAll(".tabs a"))
+      tab.classList.toggle("active", tab.dataset.tab === page);
+
+    const target = anchors[route] && document.getElementById(anchors[route]);
+
+    if (target)
+      target.scrollIntoView();
+    else
+      window.scrollTo(0, 0);
+  }
+
+  window.addEventListener("hashchange", show);
+  show();
+
+  // ---- Releases: download buttons and the changelog ----
+
   // Each release's zips are named with their build (SRCClient-v10.12.2026.246.zip), so point the buttons at the
   // newest release's files. Without this they open the latest release's page.
   fetch("https://api.github.com/repos/Wizxrd/StandaloneRadarControl/releases/latest")
@@ -196,6 +776,73 @@ end</code></pre>
       }
     })
     .catch(() => {});
+
+  function escape(text) {
+    return text.replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[c]);
+  }
+
+  // Release notes as Package.py writes them: "### Client v..." headings and "- change" lines.
+  function notes(body) {
+    let html = "";
+    let list = false;
+
+    for (const raw of (body || "").split(/\r?\n/)) {
+      const line = raw.trim();
+
+      if (line.startsWith("- ") || line.startsWith("* ")) {
+        if (!list) { html += "<ul>"; list = true; }
+        html += "<li>" + escape(line.slice(2)) + "</li>";
+        continue;
+      }
+
+      if (list) { html += "</ul>"; list = false; }
+
+      if (line.startsWith("#"))
+        html += "<h4>" + escape(line.replace(/^#+\s*/, "")) + "</h4>";
+      else if (line)
+        html += "<p>" + escape(line) + "</p>";
+    }
+
+    return html + (list ? "</ul>" : "");
+  }
+
+  const Shown = 5;
+
+  // Only when the page has a changelog box.
+  if (document.getElementById("changelog"))
+  fetch("https://api.github.com/repos/Wizxrd/StandaloneRadarControl/releases?per_page=20")
+    .then(response => response.ok ? response.json() : Promise.reject())
+    .then(releases => {
+      const box = document.getElementById("changelog");
+      releases = releases.filter(release => !release.draft);
+
+      if (!releases.length) {
+        box.innerHTML = '<p class="muted">No releases yet.</p>';
+        return;
+      }
+
+      box.innerHTML = releases.map((release, i) => {
+        const date = new Date(release.published_at).toISOString().slice(0, 10);
+        return '<div class="release"' + (i >= Shown ? ' hidden' : '') + '>' +
+          '<div class="release-head"><a href="' + escape(release.html_url) + '">' + escape(release.name || release.tag_name) + '</a>' +
+          '<span class="muted">' + date + '</span></div>' + notes(release.body) + '</div>';
+      }).join("");
+
+      if (releases.length > Shown) {
+        const more = document.createElement("a");
+        more.className = "button secondary show-more";
+        more.textContent = "Show all " + releases.length;
+        more.onclick = () => {
+          box.querySelectorAll(".release[hidden]").forEach(release => release.hidden = false);
+          more.remove();
+        };
+        box.appendChild(more);
+      }
+    })
+    .catch(() => {
+      document.getElementById("changelog").innerHTML =
+        '<p class="muted">Couldn\'t load releases. See them on <a href="https://github.com/Wizxrd/StandaloneRadarControl/releases">GitHub</a>.</p>';
+    });
 </script>
 </body>
 </html>
