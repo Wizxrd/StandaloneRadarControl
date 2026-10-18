@@ -35,6 +35,11 @@
     font-size: 15px;
     line-height: 1.55;
     margin: 0;
+
+    /* The page fills the window, so a short page still has the footer at the bottom. */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   a {
@@ -215,6 +220,7 @@
 
   .page.active {
     display: block;
+    flex: 1;
   }
 
   .grid {
