@@ -561,18 +561,15 @@
         Commands are typed into <b>SYSTEM COMMAND</b>, or anywhere on the scope, and executed by pressing <kbd>Enter</kbd>
         or by middle clicking a track. Middle clicking a track inputs the TID and executes the command.
       </p>
-      <p>
-        <code>&lt;TID&gt;</code> is a track number or a callsign. Leave it out to use the selected track.
-      </p>
 
       <h3>Implied Commands</h3>
-      <p>Implied commands can be executed without the TID</p>
+      <p>Implied commands can be executed without the TID (Track ID) or callsign</p>
       <div class="table-wrap">
         <table>
           <tr><th>Command</th><th>Description</th></tr>
           <tr><td><code>/&lt;TID&gt;</code> or <code>/ &lt;TID&gt;</code></td><td>Switches a data block between LIMITED and FULL</td></tr>
           <tr><td><code>//&lt;TID&gt;</code> or <code>// &lt;TID&gt;</code></td><td>Toggles a track's VCI</td></tr>
-          <tr><td><code>&lt;1-9&gt; &lt;track&gt;</code></td><td>Positions a data block</td></tr>
+          <tr><td><code>&lt;1-9&gt; &lt;TID&gt;</code></td><td>Positions a data block</td></tr>
         </table>
       </div>
 
@@ -580,12 +577,12 @@
       <div class="table-wrap">
         <table>
           <tr><th>Command</th><th>Description</th></tr>
-          <tr><td><code>QF &lt;track&gt;</code></td><td>Shows a track's flight data in <b>SYSTEM RESPONSE</b></td></tr>
-          <tr><td><code>BR &lt;track&gt;</code></td><td>Shows bearing, range, altitude and aspect from the selected track to another</td></tr>
-          <tr><td><code>BR &lt;track&gt; &lt;track&gt;</code></td><td>Shows bearing, range, altitude and aspect between two tracks</td></tr>
+          <tr><td><code>QF &lt;TID&gt;</code></td><td>Shows a track's flight data in <b>SYSTEM RESPONSE</b></td></tr>
+          <tr><td><code>BR &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect from the selected track to another</td></tr>
+          <tr><td><code>BR &lt;TID&gt; &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect between two tracks</td></tr>
           <tr><td><code>QR &lt;callsign&gt;</code></td><td>Renames the selected track for your whole side</td></tr>
-          <tr><td><code>QR &lt;track&gt;`&lt;callsign&gt;</code></td><td>Renames a track for your whole side</td></tr>
-          <tr><td><code>QR &lt;track&gt;`</code></td><td>Resets a track's callsign</td></tr>
+          <tr><td><code>QR &lt;TID&gt;`&lt;callsign&gt;</code></td><td>Renames a track for your whole side</td></tr>
+          <tr><td><code>QR &lt;TID&gt;`</code></td><td>Resets a track's callsign</td></tr>
         </table>
       </div>
       <ul>
