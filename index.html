@@ -579,15 +579,20 @@
         <table>
           <tr><th>Command</th><th>Description</th></tr>
           <tr><td><code>QF &lt;TID&gt;</code></td><td>Shows a track's flight data in <b>SYSTEM RESPONSE</b></td></tr>
-          <tr><td><code>BR &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect from the selected track to another</td></tr>
-          <tr><td><code>BR &lt;TID&gt; &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect between two tracks</td></tr>
+          <tr><td><code>QQ &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect from the selected track to another</td></tr>
+          <tr><td><code>QQ &lt;TID&gt; &lt;TID&gt;</code></td><td>Shows bearing, range, altitude and aspect between two tracks</td></tr>
+          <tr><td><code>QB &lt;code&gt;</code></td><td>Assigns a beacon code (four digits, 0-7) to the selected track</td></tr>
+          <tr><td><code>QB &lt;code&gt; &lt;TID&gt;</code></td><td>Assigns a beacon code to a track. Friendly tracks only; reserved and in-use codes are refused</td></tr>
           <tr><td><code>QR &lt;callsign&gt;</code></td><td>Renames the selected track for your whole side</td></tr>
           <tr><td><code>QR &lt;TID&gt;`&lt;callsign&gt;</code></td><td>Renames a track for your whole side</td></tr>
           <tr><td><code>QR</code> or <code>QR &lt;TID&gt;`</code></td><td>Resets a track's callsign</td></tr>
+          <tr><td><code>QS &lt;text&gt;</code></td><td>Sets the selected track's scratchpad, up to 16 characters, on your scope only</td></tr>
+          <tr><td><code>QS &lt;TID&gt;`&lt;text&gt;</code></td><td>Sets a track's scratchpad</td></tr>
+          <tr><td><code>QS</code> or <code>QS &lt;TID&gt;`</code></td><td>Clears a track's scratchpad</td></tr>
         </table>
       </div>
       <ul>
-        <li><code>BR</code> adds the pair to the <b>BRAA LIST</b>. With middle click, the first click inputs one track and the second runs it.</li>
+        <li><code>QQ</code> adds the pair to the <b>BRAA LIST</b>. With middle click, the first click inputs one track and the second runs it.</li>
         <li><kbd>Up</kbd> and <kbd>Down</kbd> step through earlier commands, <kbd>Ctrl</kbd>+<kbd>R</kbd> brings back the last one, <kbd>Esc</kbd> clears the line.</li>
       </ul>
 
@@ -768,8 +773,8 @@ end</code></pre>
 
 <footer>
   <div class="footer-inner">
-    <p>&copy; 2026 Wizxrd. Standalone Radar Control is free to use under the <a href="LICENSE.txt">SRC License</a>.</p>
-    <p><a href="https://discord.gg/xm7UFNFxXt" target="_blank" rel="noopener">Discord</a> for help and bug reports &middot; <a href="THIRD_PARTY_NOTICES.txt">Third party notices</a></p>
+    <p>&copy; 2026 Wizxrd. Standalone Radar Control is free to use under the <a href="LICENSE.txt">SRC License</a> &middot; <a href="THIRD_PARTY_NOTICES.txt">Third party notices</a></p>
+    <p><a href="https://discord.gg/xm7UFNFxXt" target="_blank" rel="noopener">Discord</a> for help and bug reports</p>
     <p class="muted">DCS World is a trademark of Eagle Dynamics SA. SRC is not affiliated with or endorsed by Eagle Dynamics.</p>
   </div>
 </footer>
